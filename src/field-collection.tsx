@@ -1,0 +1,13 @@
+import React,{useEffect,useRef,useState} from 'react';
+import {LoaderCircle,ArrowRight,Check} from 'lucide-react';
+import {api} from './api';
+import type {PublicProfile} from '../server/model';
+import type {CardDefinition} from '../engine/types';
+export function FieldCollection({observationId,mode,setProfile,onCollected}:{observationId:string;mode:string;setProfile:(p:PublicProfile)=>void;onCollected:(card:{id:string;definition:CardDefinition})=>void}){
+ const active=useRef(true);useEffect(()=>{active.current=true;return()=>{active.current=false;};},[]);
+ const [question,setQuestion]=useState<{q:string;options:string[];attempt:number}|null>(null),[choice,setChoice]=useState<number|null>(null),[feedback,setFeedback]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ const load=async()=>{setBusy(true);setError('');setQuestion(null);setChoice(null);setFeedback('');try{const q=await api('/field-quiz?observation='+encodeURIComponent(observationId),{},mode);if(active.current)setQuestion(q);}catch(e){if(active.current)setError((e as Error).message);}finally{if(active.current)setBusy(false);}};
+ useEffect(()=>{void load();},[observationId,mode]);
+ const answer=async()=>{if(choice===null||!question)return;setBusy(true);setError('');try{const result=await api('/collect',{method:'POST',body:JSON.stringify({observationId,choice,attempt:question.attempt})},mode);setProfile(result.profile);if(!active.current)return;if(result.correct)onCollected(result.card);else setFeedback(result.explanation);}catch(e){setError((e as Error).message);}finally{setBusy(false);}};
+ return <section className="field-question"><span className="eyebrow">DISCOVER · LEARN · COLLECT</span><h3>回答問題，迎接新夥伴</h3><p>答對一題才生成卡牌，四方向點數與技能會在收集後揭曉。</p>{error&&<div className="notice" role="alert">{error}<button className="text-link" disabled={busy} onClick={load}>重新載入題目</button></div>}{question?<><h3>{question.q}</h3><div className="quiz-options">{question.options.map((text,i)=><button key={i} className={choice===i?'selected':''} onClick={()=>setChoice(i)} disabled={busy||!!feedback}><span>{String.fromCharCode(65+i)}</span>{text}{choice===i&&<Check size={16}/>}</button>)}</div>{feedback?<><div className="quiz-result wrong" role="status"><strong>再認識一下，換一題試試。</strong><p>{feedback}</p></div><button className="primary full" disabled={busy} onClick={load}>我學會了，回答另一題<ArrowRight size={16}/></button></>:<button className="primary full" disabled={busy||choice===null} onClick={answer}>{busy?<LoaderCircle className="spin" size={17}/>:<>確認答案並收集<ArrowRight size={16}/></>}</button>}</>:busy?<LoaderCircle className="spin"/>:null}</section>;
+}

@@ -10,3 +10,12 @@ test('Taiwan collection covers common introduced and domestic animals, not just 
 test('low-scoring forest and blank images still choose their highest candidate without abstaining',()=>{for(const item of negatives){const r=rankSpecies(item.vector,realBank as ReferenceBank);assert.equal(r.status,'identified',item.label);assert.equal(r.speciesId,r.candidates[0].speciesId);assert.equal(r.lowConfidence,true);}});
 
 test('an unsupported preferred text label does not block the highest supported candidate',()=>{const r=rankSpecies([1,1],{...bank,textPrototypes:[{speciesId:'unsupported',vector:[Math.SQRT1_2,Math.SQRT1_2]}],imageWeight:1,textWeight:0});assert.equal(r.status,'identified');assert.equal(r.speciesId,r.candidates[0].speciesId);assert.equal(r.lowConfidence,true);});
+
+test('new directional allocation varies widely while preserving budget, limits and reproducibility',()=>{
+ for(const tags of [[],['ARMOR'],['SOCIAL'],['AMBUSH'],['CAMOUFLAGE']]){
+ const layouts=new Set<string>();for(let seed=0;seed<1000;seed++){
+ const card=generateCard('sparrow',tags,'capture-0.3',seed);layouts.add(card.values.join(','));
+ assert.equal(card.values.reduce((a,b)=>a+b,0)+SKILLS[card.skill].cost,28);assert.ok(card.values.every(v=>v>=1&&v<=10));assert.ok(Math.max(...card.values)-Math.min(...card.values)>=3);assert.deepEqual(generateCard('sparrow',tags,'capture-0.3',seed),card);
+ }assert.ok(layouts.size>300);
+ }
+});

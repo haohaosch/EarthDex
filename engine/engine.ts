@@ -10,6 +10,14 @@ export const SKILLS: Record<SkillId,{name:string; description:string; cost:numbe
 };
 export function hash(s:string):number { let h=2166136261; for(const c of s) {h^=c.charCodeAt(0);h=Math.imul(h,16777619);} return h>>>0; }
 export function rng(seed:number) { let a=seed>>>0; return ()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}; }
+const directionalOptions=new Map<number,Values[]>();
+export function randomDirections(budget:number,random:()=>number):Values {
+ let options=directionalOptions.get(budget);
+ if(!options){options=[];for(let up=1;up<=10;up++)for(let right=1;right<=10;right++)for(let down=1;down<=10;down++){const left=budget-up-right-down;if(left>=1&&left<=10&&Math.max(up,right,down,left)-Math.min(up,right,down,left)>=3)options.push([up,right,down,left]);}directionalOptions.set(budget,options);}
+ if(!options.length)throw Error('點數預算無法產生有效方向組合');
+ return [...options[Math.min(options.length-1,Math.floor(random()*options.length))]] as Values;
+}
+export function redistributeDirections(card:CardDefinition,seed:number):CardDefinition{return {...card,version:'capture-0.3',seed,values:randomDirections(28-SKILLS[card.skill].cost,rng(seed))};}
 export function generateCard(speciesId:string,tags:string[]=[],version=RULE_VERSION,instanceSeed?:number):CardDefinition {
  const seed=instanceSeed===undefined?hash(`${speciesId}:${version}:traits-1`):instanceSeed>>>0,random=rng(seed);
  const eligible=(Object.keys(SKILLS) as SkillId[]).filter(k=>SKILLS[k].tag&&tags.includes(SKILLS[k].tag!)).sort();
@@ -17,7 +25,8 @@ export function generateCard(speciesId:string,tags:string[]=[],version=RULE_VERS
  const skill=pool.length?pool[Math.floor(random()*pool.length)]:'neutral';
  const budget=28-SKILLS[skill].cost;
  const values:Values=[1,1,1,1];
- if(!pool.length&&instanceSeed===undefined) {values.fill(budget/4);} else for(let n=4;n<budget;n++){const available=[0,1,2,3].filter(i=>values[i]<10);values[available[Math.floor(random()*available.length)]]++;}
+ if(version==='capture-0.3'||version==='fixture-0.3'){values.splice(0,4,...randomDirections(budget,random));}
+ else if(!pool.length&&instanceSeed===undefined) {values.fill(budget/4);} else for(let n=4;n<budget;n++){const available=[0,1,2,3].filter(i=>values[i]<10);values[available[Math.floor(random()*available.length)]]++;}
  return {speciesId,version,values,skill,seed};
 }
 export function validateDeck(cards:{speciesId:string;id?:string}[]):string[] {
