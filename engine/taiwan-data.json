@@ -1,0 +1,718 @@
+[
+  {
+    "id": "bulbul",
+    "name": "白頭翁",
+    "latin": "Pycnonotus sinensis",
+    "group": "鳥類",
+    "habitat": "公園與林緣",
+    "wiki": "Light-vented bulbul",
+    "fact": "頭部醒目的白色羽毛，是成鳥常見的辨識線索。",
+    "tags": []
+  },
+  {
+    "id": "spotted-dove",
+    "name": "珠頸斑鳩",
+    "latin": "Spilopelia chinensis",
+    "group": "鳥類",
+    "habitat": "公園與農地",
+    "wiki": "Spotted dove",
+    "fact": "頸側黑底白點的斑塊，是珠頸斑鳩的辨識線索。",
+    "tags": []
+  },
+  {
+    "id": "red-dove",
+    "name": "紅鳩",
+    "latin": "Streptopelia tranquebarica",
+    "group": "鳥類",
+    "habitat": "平原與農地",
+    "wiki": "Red collared dove",
+    "fact": "雄鳥身體偏紅褐色，常見於開闊農地。",
+    "tags": []
+  },
+  {
+    "id": "pigeon",
+    "name": "野鴿",
+    "latin": "Columba livia",
+    "group": "鳥類",
+    "habitat": "城市與聚落",
+    "wiki": "Rock dove",
+    "fact": "都市中的野鴿，多來自家鴿的野化族群。",
+    "tags": [
+      "SOCIAL"
+    ]
+  },
+  {
+    "id": "oriental-magpie",
+    "name": "喜鵲",
+    "latin": "Pica serica",
+    "group": "鳥類",
+    "habitat": "平原與公園",
+    "wiki": "Oriental magpie",
+    "fact": "黑白相間的身體與長尾，是喜鵲的明顯特徵。",
+    "tags": []
+  },
+  {
+    "id": "drongo",
+    "name": "大卷尾",
+    "latin": "Dicrurus macrocercus",
+    "group": "鳥類",
+    "habitat": "農地與林緣",
+    "wiki": "Black drongo",
+    "fact": "叉形尾羽與全身深色羽毛，是大卷尾的辨識線索。",
+    "tags": []
+  },
+  {
+    "id": "treepie",
+    "name": "樹鵲",
+    "latin": "Dendrocitta formosae",
+    "group": "鳥類",
+    "habitat": "低海拔森林",
+    "wiki": "Grey treepie",
+    "fact": "樹鵲尾巴很長，常在樹冠間活動。",
+    "tags": []
+  },
+  {
+    "id": "black-bulbul",
+    "name": "紅嘴黑鵯",
+    "latin": "Hypsipetes leucocephalus",
+    "group": "鳥類",
+    "habitat": "山林與果園",
+    "wiki": "Black bulbul",
+    "fact": "紅色的嘴與腳，是觀察紅嘴黑鵯時可留意的特徵。",
+    "tags": []
+  },
+  {
+    "id": "crested-myna",
+    "name": "八哥",
+    "latin": "Acridotheres cristatellus",
+    "group": "鳥類",
+    "habitat": "農地與聚落",
+    "wiki": "Crested myna",
+    "fact": "嘴基部向上翹起的羽冠，是八哥的重要特徵。",
+    "tags": []
+  },
+  {
+    "id": "javan-myna",
+    "name": "白尾八哥",
+    "latin": "Acridotheres javanicus",
+    "group": "鳥類",
+    "habitat": "城市與農地",
+    "wiki": "Javan myna",
+    "fact": "白尾八哥在臺灣屬於外來鳥種，可留意尾端的白色。",
+    "tags": []
+  },
+  {
+    "id": "white-eye",
+    "name": "綠繡眼",
+    "latin": "Zosterops simplex",
+    "group": "鳥類",
+    "habitat": "公園與樹林",
+    "wiki": "Swinhoe's white-eye",
+    "fact": "眼睛周圍的白色眼圈，是綠繡眼醒目的辨識特徵。",
+    "tags": [
+      "SOCIAL"
+    ]
+  },
+  {
+    "id": "swallow",
+    "name": "家燕",
+    "latin": "Hirundo rustica",
+    "group": "鳥類",
+    "habitat": "聚落與農地",
+    "wiki": "Barn swallow",
+    "fact": "家燕常在建築物屋簷下，用泥土築巢。",
+    "tags": []
+  },
+  {
+    "id": "shrike",
+    "name": "紅尾伯勞",
+    "latin": "Lanius cristatus",
+    "group": "鳥類",
+    "habitat": "草地與灌叢",
+    "wiki": "Brown shrike",
+    "fact": "紅尾伯勞是臺灣可見的候鳥，常停在突出枝頭觀察四周。",
+    "tags": []
+  },
+  {
+    "id": "night-heron",
+    "name": "夜鷺",
+    "latin": "Nycticorax nycticorax",
+    "group": "鳥類",
+    "habitat": "濕地與河岸",
+    "wiki": "Black-crowned night heron",
+    "fact": "夜鷺常在黃昏或夜間覓食，成鳥頭頂和背部顏色較深。",
+    "tags": []
+  },
+  {
+    "id": "cattle-egret",
+    "name": "黃頭鷺",
+    "latin": "Ardea coromanda",
+    "group": "鳥類",
+    "habitat": "農地與草原",
+    "wiki": "Eastern cattle egret",
+    "fact": "黃頭鷺常在農地活動，跟隨耕作或牲畜捕食被驚起的小動物。",
+    "tags": []
+  },
+  {
+    "id": "great-egret",
+    "name": "大白鷺",
+    "latin": "Ardea alba",
+    "group": "鳥類",
+    "habitat": "濕地與河口",
+    "wiki": "Great egret",
+    "fact": "大白鷺身形修長，常在淺水中捕食魚類。",
+    "tags": []
+  },
+  {
+    "id": "grey-heron",
+    "name": "蒼鷺",
+    "latin": "Ardea cinerea",
+    "group": "鳥類",
+    "habitat": "濕地與河岸",
+    "wiki": "Grey heron",
+    "fact": "蒼鷺具有灰色背部與長長的頸部，常在水邊安靜等待獵物。",
+    "tags": []
+  },
+  {
+    "id": "spotbill",
+    "name": "花嘴鴨",
+    "latin": "Anas zonorhyncha",
+    "group": "鳥類",
+    "habitat": "池塘與濕地",
+    "wiki": "Eastern spot-billed duck",
+    "fact": "花嘴鴨的黑色嘴端常帶黃色，是辨識時可留意的特徵。",
+    "tags": []
+  },
+  {
+    "id": "moorhen",
+    "name": "紅冠水雞",
+    "latin": "Gallinula chloropus",
+    "group": "鳥類",
+    "habitat": "池塘與濕地",
+    "wiki": "Common moorhen",
+    "fact": "紅冠水雞的紅色額甲和黃色嘴尖十分醒目。",
+    "tags": []
+  },
+  {
+    "id": "waterhen",
+    "name": "白腹秧雞",
+    "latin": "Amaurornis phoenicurus",
+    "group": "鳥類",
+    "habitat": "濕地與草澤",
+    "wiki": "White-breasted waterhen",
+    "fact": "白腹秧雞常沿著水邊草叢活動，胸腹部呈白色。",
+    "tags": []
+  },
+  {
+    "id": "kite",
+    "name": "黑鳶",
+    "latin": "Milvus migrans",
+    "group": "鳥類",
+    "habitat": "河岸與開闊地",
+    "wiki": "Black kite",
+    "fact": "黑鳶在空中盤旋時，較淺的叉形尾部是辨識線索之一。",
+    "tags": []
+  },
+  {
+    "id": "eagle",
+    "name": "大冠鷲",
+    "latin": "Spilornis cheela",
+    "group": "鳥類",
+    "habitat": "森林與山地",
+    "wiki": "Crested serpent eagle",
+    "fact": "大冠鷲是猛禽，常在森林上空盤旋。",
+    "tags": []
+  },
+  {
+    "id": "owl",
+    "name": "領角鴞",
+    "latin": "Otus lettia",
+    "group": "鳥類",
+    "habitat": "低海拔森林",
+    "wiki": "Collared scops owl",
+    "fact": "領角鴞多在夜間活動，觀察時應避免使用強光照射。",
+    "tags": []
+  },
+  {
+    "id": "squirrel",
+    "name": "赤腹松鼠",
+    "latin": "Callosciurus erythraeus",
+    "group": "哺乳類",
+    "habitat": "公園與森林",
+    "wiki": "Pallas's squirrel",
+    "fact": "赤腹松鼠常在樹上活動，也會取食果實與種子。",
+    "tags": []
+  },
+  {
+    "id": "civet",
+    "name": "白鼻心",
+    "latin": "Paguma larvata",
+    "group": "哺乳類",
+    "habitat": "森林與淺山",
+    "wiki": "Masked palm civet",
+    "fact": "白鼻心多在夜間活動，臉部具有醒目的黑白花紋。",
+    "tags": []
+  },
+  {
+    "id": "mongoose",
+    "name": "食蟹獴",
+    "latin": "Urva urva",
+    "group": "哺乳類",
+    "habitat": "溪流與森林",
+    "wiki": "Crab-eating mongoose",
+    "fact": "食蟹獴會在溪流周邊覓食，食物包含蟹與其他小動物。",
+    "tags": []
+  },
+  {
+    "id": "muntjac",
+    "name": "山羌",
+    "latin": "Muntiacus reevesi",
+    "group": "哺乳類",
+    "habitat": "低中海拔森林",
+    "wiki": "Reeves's muntjac",
+    "fact": "山羌體型較小，叫聲有時像犬吠。",
+    "tags": []
+  },
+  {
+    "id": "boar",
+    "name": "野豬",
+    "latin": "Sus scrofa",
+    "group": "哺乳類",
+    "habitat": "森林與山地",
+    "wiki": "Wild boar",
+    "fact": "野豬以鼻部翻動土壤覓食，會吃植物與多種動物性食物。",
+    "tags": []
+  },
+  {
+    "id": "shrew",
+    "name": "臭鼩",
+    "latin": "Suncus murinus",
+    "group": "哺乳類",
+    "habitat": "聚落與草叢",
+    "wiki": "Asian house shrew",
+    "fact": "臭鼩有尖長的吻部，主要取食昆蟲等小動物。",
+    "tags": []
+  },
+  {
+    "id": "rat",
+    "name": "溝鼠",
+    "latin": "Rattus norvegicus",
+    "group": "哺乳類",
+    "habitat": "城市與聚落",
+    "wiki": "Brown rat",
+    "fact": "溝鼠適應能力強，常在有人類活動的環境出現。",
+    "tags": []
+  },
+  {
+    "id": "bat",
+    "name": "東亞家蝠",
+    "latin": "Pipistrellus abramus",
+    "group": "哺乳類",
+    "habitat": "城市與聚落",
+    "wiki": "Japanese house bat",
+    "fact": "東亞家蝠會在傍晚飛出，以飛行中的昆蟲為食。",
+    "tags": []
+  },
+  {
+    "id": "domestic-cat",
+    "name": "家貓",
+    "latin": "Felis catus",
+    "group": "哺乳類",
+    "habitat": "聚落與住家",
+    "wiki": "Cat",
+    "fact": "家貓是馴養動物；讓貓留在室內可減少對野生動物的影響。",
+    "tags": [
+      "AMBUSH"
+    ]
+  },
+  {
+    "id": "dog",
+    "name": "家犬",
+    "latin": "Canis lupus familiaris",
+    "group": "哺乳類",
+    "habitat": "聚落與住家",
+    "wiki": "Dog",
+    "fact": "家犬是馴養動物，戶外活動繫上牽繩能降低對野生動物的干擾。",
+    "tags": [
+      "SOCIAL"
+    ]
+  },
+  {
+    "id": "gecko",
+    "name": "疣尾蝎虎",
+    "latin": "Hemidactylus frenatus",
+    "group": "爬蟲類",
+    "habitat": "聚落與建築",
+    "wiki": "Common house gecko",
+    "fact": "疣尾蝎虎常在夜間出現於燈光附近，捕食昆蟲。",
+    "tags": []
+  },
+  {
+    "id": "lizard",
+    "name": "斯文豪氏攀蜥",
+    "latin": "Diploderma swinhonis",
+    "group": "爬蟲類",
+    "habitat": "林緣與公園",
+    "wiki": "Swinhoe's tree lizard",
+    "fact": "斯文豪氏攀蜥常停在樹幹或枝條上，觀察時不應抓取。",
+    "tags": []
+  },
+  {
+    "id": "skink",
+    "name": "長尾南蜥",
+    "latin": "Eutropis longicaudata",
+    "group": "爬蟲類",
+    "habitat": "草地與林緣",
+    "wiki": "Long-tailed sun skink",
+    "fact": "長尾南蜥會在草地與林緣活動，體表有光澤的鱗片。",
+    "tags": []
+  },
+  {
+    "id": "slider",
+    "name": "紅耳龜",
+    "latin": "Trachemys scripta elegans",
+    "group": "爬蟲類",
+    "habitat": "池塘與河流",
+    "wiki": "Red-eared slider",
+    "fact": "紅耳龜原產美洲，在臺灣屬外來動物，不應任意放生。",
+    "tags": [
+      "ARMOR"
+    ]
+  },
+  {
+    "id": "stripe-turtle",
+    "name": "斑龜",
+    "latin": "Mauremys sinensis",
+    "group": "爬蟲類",
+    "habitat": "池塘與河流",
+    "wiki": "Chinese stripe-necked turtle",
+    "fact": "斑龜頭頸部有細長條紋，常在淡水環境活動。",
+    "tags": [
+      "ARMOR"
+    ]
+  },
+  {
+    "id": "softshell",
+    "name": "鱉",
+    "latin": "Pelodiscus sinensis",
+    "group": "爬蟲類",
+    "habitat": "池塘與河流",
+    "wiki": "Chinese softshell turtle",
+    "fact": "鱉的背甲表面覆有柔軟皮膚，常潛伏在水底。",
+    "tags": []
+  },
+  {
+    "id": "green-snake",
+    "name": "青蛇",
+    "latin": "Ptyas major",
+    "group": "爬蟲類",
+    "habitat": "低海拔森林",
+    "wiki": "Chinese green snake",
+    "fact": "青蛇身體多呈綠色，與植被相近；任何野生蛇都應保持距離。",
+    "tags": []
+  },
+  {
+    "id": "cobra",
+    "name": "眼鏡蛇",
+    "latin": "Naja atra",
+    "group": "爬蟲類",
+    "habitat": "農地與淺山",
+    "wiki": "Chinese cobra",
+    "fact": "眼鏡蛇是毒蛇；發現時應後退保持距離，不追逐或試圖捕捉。",
+    "tags": []
+  },
+  {
+    "id": "toad",
+    "name": "黑眶蟾蜍",
+    "latin": "Duttaphrynus melanostictus",
+    "group": "兩棲類",
+    "habitat": "聚落與農地",
+    "wiki": "Asian common toad",
+    "fact": "黑眶蟾蜍皮膚粗糙，眼周常有深色稜脊。",
+    "tags": []
+  },
+  {
+    "id": "bankor-toad",
+    "name": "盤古蟾蜍",
+    "latin": "Bufo bankorensis",
+    "group": "兩棲類",
+    "habitat": "森林與山地",
+    "wiki": "Taiwan common toad",
+    "fact": "盤古蟾蜍是臺灣特有的蟾蜍，常在較潮濕的山林環境出現。",
+    "tags": []
+  },
+  {
+    "id": "tree-frog",
+    "name": "斑腿樹蛙",
+    "latin": "Polypedates megacephalus",
+    "group": "兩棲類",
+    "habitat": "農地與池塘",
+    "wiki": "Spot-legged tree frog",
+    "fact": "斑腿樹蛙在臺灣屬外來種，蛙卵形成泡沫狀卵塊。",
+    "tags": []
+  },
+  {
+    "id": "paddy-frog",
+    "name": "澤蛙",
+    "latin": "Fejervarya limnocharis",
+    "group": "兩棲類",
+    "habitat": "水田與草澤",
+    "wiki": "Paddy field frog",
+    "fact": "澤蛙常在水田、池塘與草澤附近活動。",
+    "tags": []
+  },
+  {
+    "id": "micro-frog",
+    "name": "小雨蛙",
+    "latin": "Microhyla fissipes",
+    "group": "兩棲類",
+    "habitat": "草地與水田",
+    "wiki": "Ornate narrow-mouthed frog",
+    "fact": "小雨蛙體型小，雨後常能聽到牠們的鳴叫。",
+    "tags": []
+  },
+  {
+    "id": "polytes",
+    "name": "玉帶鳳蝶",
+    "latin": "Papilio polytes",
+    "group": "昆蟲",
+    "habitat": "花園與林緣",
+    "wiki": "Papilio polytes",
+    "fact": "玉帶鳳蝶幼蟲會取食柑橘等芸香科植物。",
+    "tags": []
+  },
+  {
+    "id": "xuthus",
+    "name": "柑橘鳳蝶",
+    "latin": "Papilio xuthus",
+    "group": "昆蟲",
+    "habitat": "花園與果園",
+    "wiki": "Papilio xuthus",
+    "fact": "柑橘鳳蝶翅膀有黃黑相間的花紋，幼蟲以芸香科植物為食。",
+    "tags": []
+  },
+  {
+    "id": "lime-butterfly",
+    "name": "無尾鳳蝶",
+    "latin": "Papilio demoleus",
+    "group": "昆蟲",
+    "habitat": "花園與農地",
+    "wiki": "Papilio demoleus",
+    "fact": "無尾鳳蝶後翅沒有長尾突，常出現在柑橘植物附近。",
+    "tags": []
+  },
+  {
+    "id": "white-butterfly",
+    "name": "紋白蝶",
+    "latin": "Pieris rapae",
+    "group": "昆蟲",
+    "habitat": "菜園與草地",
+    "wiki": "Pieris rapae",
+    "fact": "紋白蝶翅膀以白色為主，幼蟲會取食十字花科植物。",
+    "tags": []
+  },
+  {
+    "id": "tiger-butterfly",
+    "name": "黑脈樺斑蝶",
+    "latin": "Danaus genutia",
+    "group": "昆蟲",
+    "habitat": "草地與林緣",
+    "wiki": "Danaus genutia",
+    "fact": "黑脈樺斑蝶橙色的翅膀上，有明顯的黑色翅脈。",
+    "tags": []
+  },
+  {
+    "id": "plain-tiger",
+    "name": "樺斑蝶",
+    "latin": "Danaus chrysippus",
+    "group": "昆蟲",
+    "habitat": "草地與花園",
+    "wiki": "Danaus chrysippus",
+    "fact": "樺斑蝶以橙褐色翅膀為主，常到開花植物上訪花。",
+    "tags": []
+  },
+  {
+    "id": "blue-crow",
+    "name": "斯氏紫斑蝶",
+    "latin": "Euploea mulciber",
+    "group": "昆蟲",
+    "habitat": "低海拔森林",
+    "wiki": "Euploea mulciber",
+    "fact": "斯氏紫斑蝶翅面在不同光線角度下，可能呈現藍紫色光澤。",
+    "tags": []
+  },
+  {
+    "id": "paper-kite",
+    "name": "大白斑蝶",
+    "latin": "Idea leuconoe",
+    "group": "昆蟲",
+    "habitat": "林緣與海岸林",
+    "wiki": "Idea leuconoe",
+    "fact": "大白斑蝶翅膀有黑白斑紋，飛行時動作較緩慢。",
+    "tags": []
+  },
+  {
+    "id": "emigrant",
+    "name": "淡黃蝶",
+    "latin": "Catopsilia pomona",
+    "group": "昆蟲",
+    "habitat": "草地與花園",
+    "wiki": "Catopsilia pomona",
+    "fact": "淡黃蝶翅色偏淡黃或淡綠，幼蟲可取食阿勃勒等植物。",
+    "tags": []
+  },
+  {
+    "id": "ladybird",
+    "name": "七星瓢蟲",
+    "latin": "Coccinella septempunctata",
+    "group": "昆蟲",
+    "habitat": "草地與農地",
+    "wiki": "Coccinella septempunctata",
+    "fact": "七星瓢蟲的成蟲和幼蟲，都會捕食蚜蟲等小昆蟲。",
+    "tags": []
+  },
+  {
+    "id": "beetle",
+    "name": "獨角仙",
+    "latin": "Trypoxylus dichotomus",
+    "group": "昆蟲",
+    "habitat": "闊葉林與公園",
+    "wiki": "Japanese rhinoceros beetle",
+    "fact": "獨角仙雄蟲具有明顯的角，成蟲常吸食樹汁。",
+    "tags": [
+      "ARMOR"
+    ]
+  },
+  {
+    "id": "golden-spider",
+    "name": "人面蜘蛛",
+    "latin": "Trichonephila pilipes",
+    "group": "蛛形類",
+    "habitat": "林緣與公園",
+    "wiki": "Nephila pilipes",
+    "fact": "人面蜘蛛會結大型圓網，雌蛛通常比雄蛛大很多。",
+    "tags": []
+  },
+  {
+    "id": "jumping-spider",
+    "name": "白鬚跳蛛",
+    "latin": "Plexippus paykulli",
+    "group": "蛛形類",
+    "habitat": "聚落與建築",
+    "wiki": "Plexippus paykulli",
+    "fact": "白鬚跳蛛會主動跳躍捕捉獵物，不依賴捕捉網。",
+    "tags": []
+  },
+  {
+    "id": "dragonfly",
+    "name": "薄翅蜻蜓",
+    "latin": "Pantala flavescens",
+    "group": "昆蟲",
+    "habitat": "開闊地與水域",
+    "wiki": "Pantala flavescens",
+    "fact": "薄翅蜻蜓善於飛行，可進行長距離移動。",
+    "tags": []
+  },
+  {
+    "id": "skimmer",
+    "name": "杜松蜻蜓",
+    "latin": "Orthetrum sabina",
+    "group": "昆蟲",
+    "habitat": "池塘與濕地",
+    "wiki": "Orthetrum sabina",
+    "fact": "杜松蜻蜓身體有綠黑相間的花紋，是水域附近常見的蜻蜓。",
+    "tags": []
+  },
+  {
+    "id": "mantis",
+    "name": "中華大刀螳",
+    "latin": "Tenodera sinensis",
+    "group": "昆蟲",
+    "habitat": "草地與灌叢",
+    "wiki": "Chinese mantis",
+    "fact": "中華大刀螳會用特化的前足捕捉獵物。",
+    "tags": [
+      "AMBUSH"
+    ]
+  },
+  {
+    "id": "cockroach",
+    "name": "美洲蟑螂",
+    "latin": "Periplaneta americana",
+    "group": "昆蟲",
+    "habitat": "聚落與建築",
+    "wiki": "American cockroach",
+    "fact": "美洲蟑螂多在夜間活動，喜歡溫暖潮濕的環境。",
+    "tags": []
+  },
+  {
+    "id": "tilapia",
+    "name": "莫三比克口孵魚",
+    "latin": "Oreochromis mossambicus",
+    "group": "魚類",
+    "habitat": "池塘與河流",
+    "wiki": "Mozambique tilapia",
+    "fact": "莫三比克口孵魚具有口孵行為，雌魚會把卵含在口中保護。",
+    "tags": []
+  },
+  {
+    "id": "guppy",
+    "name": "孔雀魚",
+    "latin": "Poecilia reticulata",
+    "group": "魚類",
+    "habitat": "池塘與緩流",
+    "wiki": "Guppy",
+    "fact": "孔雀魚屬卵胎生魚類，雌魚會直接產下幼魚。",
+    "tags": []
+  },
+  {
+    "id": "mudskipper",
+    "name": "彈塗魚",
+    "latin": "Periophthalmus modestus",
+    "group": "魚類",
+    "habitat": "河口與潮間帶",
+    "wiki": "Shuttles hoppfish",
+    "fact": "彈塗魚能在潮濕的泥灘上活動，是河口常見的小型魚。",
+    "tags": []
+  },
+  {
+    "id": "fiddler",
+    "name": "弧邊招潮蟹",
+    "latin": "Tubuca arcuata",
+    "group": "甲殼類",
+    "habitat": "河口與潮間帶",
+    "wiki": "Tubuca arcuata",
+    "fact": "雄性弧邊招潮蟹有一隻特別大的螯，可用於展示。",
+    "tags": []
+  },
+  {
+    "id": "hermit",
+    "name": "皺紋陸寄居蟹",
+    "latin": "Coenobita rugosus",
+    "group": "甲殼類",
+    "habitat": "海岸與海岸林",
+    "wiki": "Coenobita rugosus",
+    "fact": "陸寄居蟹利用螺殼保護柔軟的腹部，不應帶走牠們的殼。",
+    "tags": []
+  },
+  {
+    "id": "snail",
+    "name": "非洲大蝸牛",
+    "latin": "Lissachatina fulica",
+    "group": "軟體動物",
+    "habitat": "花園與農地",
+    "wiki": "Lissachatina fulica",
+    "fact": "非洲大蝸牛在臺灣屬外來種，觀察時不應徒手觸摸。",
+    "tags": []
+  },
+  {
+    "id": "apple-snail",
+    "name": "福壽螺",
+    "latin": "Pomacea canaliculata",
+    "group": "軟體動物",
+    "habitat": "水田與池塘",
+    "wiki": "Pomacea canaliculata",
+    "fact": "福壽螺會把粉紅色的卵塊產在水面以上。",
+    "tags": []
+  }
+]

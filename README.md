@@ -1,38 +1,42 @@
-# EarthDex
+# EarthDex · Field Adventure v0.2
 
-A playable Traditional Chinese web demo implementing the confirmed core of the attached [v0.6 specification](docs/specification-v0.6.md). The web/TypeScript option in the draft is used to share one deterministic engine across the browser, local server and hosted Worker. The proposal for Flutter/FastAPI/PostgreSQL is not treated as a mandated stack.
+繁體中文的臺灣生物探索與九宮格卡牌遊戲。最新使用者指示優先於原始 v0.6 草案：現在拍照直接辨識，不經人工審核；卡牌在收集時逐張隨機生成，未持有前隱藏能力。
 
-## Run
+## 本機執行
 
-Requires Node 24. Install with `npm ci`, then run `npm run dev`. The dev server uses a local SQLite database and private observation media under ignored `.sites-runtime/`. A fresh browser session gets its own HttpOnly session cookie. `npm test` runs engine and server integration tests; `npm run build` type-checks, builds React, and bundles a self-contained Cloudflare Worker into `dist/server/index.js`. `npm run check` runs the type checker.
+Node 24：`npm ci` → `npm run dev`，開啟終端顯示的網址。相機需要 HTTPS 或 localhost。`npm test` 驗證引擎、收集與伺服器；`npm run build` 進行 TypeScript 檢查及正式建置。產出自含前端資產的 `dist/server/index.js` Cloudflare Worker。
 
-Managed preview: `sites-preview start /workspace/sites/earthdex`. Ordinary local preview: `npm run dev`, then open the printed URL. Use HTTPS or localhost for camera access. The built-in camera captures one JPEG photo with preview and retake. No microphone is requested. No album input is accepted as field evidence.
+資料存在本機忽略版控的 `.sites-runtime/`；正式環境使用 `DB` D1 與 `BUCKET` R2。Drizzle 結構遷移位於 `drizzle/`。不要把私人觀察、權杖、模型權重或執行期資料提交至 Git。
 
-## Implemented
+## 拍照 → 辨識 → 收集
 
-- A 3×3 deterministic battle engine: arbitrary empty cells, fixed card orientation, strict opposing-edge comparison, simultaneous base flips, nine-turn board scoring, no ordinary chain reaction, event trace and exact replay.
-- Explicit experimental skill registry, budget-constrained seeded generation, neutral fallback, armor, cooperation, corner ambush, camouflage, test-only flip chain, and a three-additional-wave cap.
-- Five actually owned card instances, maximum two of a species and minimum three species. Definition, ownership, observations, dex unlocks and board controllers remain separate. Every fixture instance has a unique observation and grant reference. Live official card issuance is disabled.
-- Server-driven themed AI at three reproducible strategy levels. PVP rooms with server-side turn validation, compare-and-swap revisions, durable state, two-second polling, session reconnect, and resignation.
-- Server-validated quizzes for unknown enemy-origin species still controlled at complete match end. Wrong answers show learning content and rotate questions. Settlement and unlock retries are idempotent. Battle never mints or transfers cards.
-- Twelve initial animal taxa, source-linked knowledge, Wikimedia portrait author/license records, search, filters, overlapping collections, and cosmetic collection completion badges.
-- Camera-only single-photo capture, JPEG preview and retake, optional GPS accuracy, private photo storage, viewing, and observation/photo deletion. Previously saved videos remain viewable. Exact coordinates are not sent or stored. New photos remain unverified; saving a photo never automatically grants a card or a dex unlock.
-- Distinct **demo explorer** and **fresh real profile**. Demo includes seven preconstructed fixture cards and observations for testing. This is not a production starter deck or a bypass of field collection rules. Real profiles start empty and cannot battle.
+1. 內建相機拍下單張 JPEG，預覽、重拍；不接受相簿輸入。
+2. 裝置端 BioCLIP ViT-B/16 int8 視覺編碼器擷取 512 維影像特徵。伺服器以臺灣動物的影像參考庫與物種名稱特徵比對，回傳物種、相似度及候選。分數不是校準過的正確率。
+3. 不明確或低於門檻的結果直接提示重新拍攝，不進入人工等待佇列，也不發卡。
+4. 明確結果立即顯示物種介紹與一題知識問答。答錯可學習後換題，毋須重拍。
+5. 答對才由伺服器產生新隨機種子，生成卡牌方向值、技能與版本，保存為該實例的快照，再以翻牌動畫揭曉。重載不會重抽；同種可有不同配置。
+6. 同一觀察重送只領一次；相同照片 SHA-256 在同一玩家檔案內不重複建立觀察。所有權、圖鑑與戰場控制者保持分離。
 
-## Decisions deliberately pending
+首次辨識需要下載約 83 MiB 的公開 MIT 模型，瀏覽器會嘗試快取。模型在使用者裝置運算，照片不送至 Hugging Face 或第三方推論 API；下載程式與權重需要可連線至 jsDelivr 與 Hugging Face。模型推論與首次載入時間依裝置、網路而異。辨識照片只存入該玩家的私人觀察空間，可查看與刪除。
 
-See [implementation notes](docs/IMPLEMENTATION.md) for the draft-to-implementation mapping, experimental choices and remaining production work. Formal GPS issuance, actual AI wildlife identification, reviewer operations, mobile native builds, global taxonomy ETL and venue verification are not represented as finished features.
+## 物種與辨識範圍
 
-## Persistence and hosting
+82 筆物種／分類單元，其中 81 筆為臺灣可見動物（都市、公園、農地、山林、濕地、海岸、常見飼養／外來動物），另保留舊版小貓熊資料以相容已存對局。不是只收錄特有種，也不是臺灣完整名錄。臺灣鹿與黑熊的名稱含亞種；目前為遊戲分類單元，未實作完整分類學 ETL。
 
-Cloudflare Worker uses the `DB` D1 binding and `BUCKET` R2 binding. Hosted migrations are generated with `npm run db:generate` into the standard `drizzle/` directory. The same generated SQL is used by the local runtime and integration tests. For local use the same migration is applied once to SQLite automatically. All access is scoped to the server-derived platform identity, with separate `:demo` and `:real` namespaces. Local fallback sessions exist only in the dev adapter; production requires the platform's authenticated user header. Keep the Site owner-private unless its owner explicitly changes access. Another PVP player must have Site access; use separate browser sessions locally to test two people.
+參考庫的實際支援數、公開照片數與小型測試結果見 `docs/recognition-evaluation.json`。未完成參考照片的分類單元仍可瀏覽圖鑑，但不被當作已支援的識別類別。Wikimedia 圖片作者、授權與來源保存在 `src/media.json`；模型參考照片及其授權列於 `engine/recognition/reference-bank.json`。
 
-The static React build is embedded into the Worker for a self-contained deployment without asset bindings. The hosting manifest declares Site identity and storage. No secrets, observation media or local runtime files belong in source control or the artifact. Observation photos and legacy videos are private, not public assets.
+## 模型建立與誠實限制
 
-## Reproducible balance exploration
+這是自己建立的臺灣物種比對分類器，搭配現成 BioCLIP 編碼器，**不是從零訓練通用視覺基礎模型**。BioCLIP 出自 Imageomics Institute（Stevens 等，CVPR 2024，MIT）。影像 ONNX int8 轉換由 NaturDex 提供，文字 ONNX 轉換由 Trail Bingo 提供；權重固定到特定 Hugging Face commit。模型與程式來源、方法與評估細節見 [模型說明](docs/MODEL.md)。
 
-`node --import tsx scripts/simulate.ts 100 normal` reports a seed range, strategy, exact deck species, sample size, first-player wins and Wilson 95% interval. The result describes this matchup only and must not be advertised as general fairness evidence. Seeded fixtures and initial match snapshots preserve historical card definitions even when a later generator version changes.
+`build-reference-library.py` 蒐集有授權的公有圖片，`build-text-prototypes.py` 產生名稱向量，`train-recognizer.py` 建立參考庫並執行小型留出測試。測試照片不是使用者真實野外樣本，不能將結果宣稱為一般使用準確率。相似種、幼體、遮擋、拍攝角度及背景都可能影響辨識。
 
-## Media
+瀏覽器回傳的特徵不能證明照片真實性，亦不能阻止被修改的客戶端作弊。這版依使用者要求採即時識別與遊戲收集，不宣稱已完成野外防作弊驗證。原草案中未定案的 GPS 1 km / 7 天條件未套用。正式的反作弊、裝置驗證、座標規則、稽核與大規模營運仍是後續工作。
 
-`src/media.json` records photo attribution, licenses and file source URLs. Individual species details and the guide display credits. Portraits are reference photographs, not user-submitted observation evidence. The illustrative hero is a source-attributed Taiwan forest photograph. Refreshing image sources is a deliberate development operation; the deployed app never calls Wikipedia for identification.
+## 卡牌與對戰
+
+5 張實際持有卡牌，每種最多 2 張、至少 3 種；無借用牌組。3×3 自由落牌、不可旋轉、嚴格大於才翻牌；同一波快照比較後同時翻轉，普通翻牌不連鎖。技能最多額外 3 波。9 格填滿後以控制格數判勝。AI 與 PVP 使用同一引擎，伺服器驗證操作及版本。PVP 使用兩秒輪詢，可重新連線，必須有網站存取權；本機兩個獨立瀏覽器工作階段可測試。
+
+對戰仍只授予圖鑑問答資格，不授予／轉移卡牌。重播保存當時實例定義。`capture-0.2` 採 28 點總預算、各方向 1–10，技能成本與方向共用預算。技能條件仍以有來源的特徵標籤過濾，缺少特徵時使用中性技能。
+
+舊版卡牌若未保存能力，維持原 v0.1 物種能力；新收集的卡牌一律使用獨立隨機快照，不會破壞歷史對局內已存的卡牌定義。

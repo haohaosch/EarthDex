@@ -1,0 +1,13 @@
+{
+  "id": "Virien/naturdex-bioclip-onnx",
+  "revision": "fa3c062ea31a6e1881b1977fe555b2d481dca730",
+  "file": "bioclip-image-int8.onnx",
+  "license": "MIT",
+  "source": "https://huggingface.co/imageomics/bioclip",
+  "exportSource": "https://huggingface.co/Virien/naturdex-bioclip-onnx",
+  "input": "pixels",
+  "output": "embedding",
+  "family": "BioCLIP ViT-B/16",
+  "taxa": 78,
+  "referenceImages": 179
+}

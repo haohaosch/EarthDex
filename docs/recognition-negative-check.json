@@ -1,0 +1,46 @@
+[
+  {
+    "label": "forest",
+    "status": "uncertain",
+    "speciesId": null,
+    "similarity": 0.40705733774381503,
+    "margin": 0.06833546086391307,
+    "modelVersion": "earthdex-taiwan-bioclip-1",
+    "candidates": [
+      {
+        "speciesId": "deer",
+        "similarity": 0.40705733774381503
+      },
+      {
+        "speciesId": "sparrow",
+        "similarity": 0.33872187687990196
+      },
+      {
+        "speciesId": "boar",
+        "similarity": 0.33237239323426016
+      }
+    ]
+  },
+  {
+    "label": "blank",
+    "status": "uncertain",
+    "speciesId": null,
+    "similarity": 0.32465098377097923,
+    "margin": 0.013966575205410448,
+    "modelVersion": "earthdex-taiwan-bioclip-1",
+    "candidates": [
+      {
+        "speciesId": "ladybird",
+        "similarity": 0.32465098377097923
+      },
+      {
+        "speciesId": "plain-tiger",
+        "similarity": 0.3106844085655688
+      },
+      {
+        "speciesId": "white-butterfly",
+        "similarity": 0.3083984730115359
+      }
+    ]
+  }
+]

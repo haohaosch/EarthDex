@@ -1,6 +1,5 @@
 {
   "magpie": {
-    "id": "magpie",
     "image": "/media/magpie.jpg",
     "artist": "Charles J. Sharp",
     "license": "CC BY-SA 4.0",
@@ -9,7 +8,6 @@
     "evidence": "https://en.wikipedia.org/wiki/Taiwan_blue_magpie"
   },
   "sparrow": {
-    "id": "sparrow",
     "image": "/media/sparrow.jpg",
     "artist": "Laitche",
     "license": "Public domain",
@@ -27,7 +25,6 @@
     "evidence": "https://en.wikipedia.org/wiki/Red_panda"
   },
   "kingfisher": {
-    "id": "kingfisher",
     "image": "/media/kingfisher.jpg",
     "artist": "Tony Wood",
     "license": "CC BY 2.0",
@@ -36,7 +33,6 @@
     "evidence": "https://en.wikipedia.org/wiki/Common_kingfisher"
   },
   "deer": {
-    "id": "deer",
     "image": "/media/deer.jpg",
     "artist": "SuOllie",
     "license": "CC BY-SA 4.0",
@@ -45,7 +41,6 @@
     "evidence": "https://en.wikipedia.org/wiki/Formosan_sika_deer"
   },
   "bear": {
-    "id": "bear",
     "image": "/media/bear.jpg",
     "artist": "Abu0804",
     "license": "CC BY-SA 3.0",
@@ -54,7 +49,6 @@
     "evidence": "https://en.wikipedia.org/wiki/Formosan_black_bear"
   },
   "butterfly": {
-    "id": "butterfly",
     "image": "/media/butterfly.jpg",
     "artist": "pjt56 --- If you use the picture outside Wikipedia I would appreciate a short e-mail to pjt56@gmx.net",
     "license": "CC BY 3.0",
@@ -63,7 +57,6 @@
     "evidence": "https://en.wikipedia.org/wiki/Papilio_memnon"
   },
   "turtle": {
-    "id": "turtle",
     "image": "/media/turtle.jpg",
     "artist": "Charles J. Sharp",
     "license": "CC BY-SA 4.0",
@@ -72,7 +65,6 @@
     "evidence": "https://en.wikipedia.org/wiki/Green_sea_turtle"
   },
   "cat": {
-    "id": "cat",
     "image": "/media/cat.jpg",
     "artist": "Abujoy",
     "license": "CC BY-SA 3.0",
@@ -85,7 +77,7 @@
     "artist": "Shantanu Kuveskar",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "source": "https://commons.wikimedia.org/wiki/File%3ALittle%20egret%20%28Egretta%20garzetta%29%20Photograph%20by%20Shantanu%20Kuveskar.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Little_egret_%28Egretta_garzetta%29_Photograph_by_Shantanu_Kuveskar.jpg",
     "evidence": "https://en.wikipedia.org/wiki/Little_egret"
   },
   "barbet": {
@@ -93,7 +85,7 @@
     "artist": "Charles J. Sharp",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "source": "https://commons.wikimedia.org/wiki/File%3ATaiwan%20barbet%20%28Psilopogon%20nuchalis%29%20Qianshan.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Taiwan_barbet_%28Psilopogon_nuchalis%29_Qianshan.jpg",
     "evidence": "https://en.wikipedia.org/wiki/Taiwan_barbet"
   },
   "macaque": {
@@ -101,7 +93,7 @@
     "artist": "Charles J. Sharp",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "source": "https://commons.wikimedia.org/wiki/File%3ATaiwanese%20macaque%20%28Macaca%20cyclopis%29%20female%20Yangmingshan%202.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Taiwanese_macaque_%28Macaca_cyclopis%29_female_Yangmingshan_2.jpg",
     "evidence": "https://en.wikipedia.org/wiki/Formosan_rock_macaque"
   },
   "forest": {
@@ -111,5 +103,565 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "source": "https://commons.wikimedia.org/wiki/File:%E5%A1%94%E9%AD%94%E5%B7%B4%E4%B9%8B%E8%B5%B7%E9%9C%A7%E7%9A%84%E6%A8%B9%E6%9E%97.jpg",
     "evidence": "https://en.wikipedia.org/wiki/Taiwan_subtropical_evergreen_forests"
+  },
+  "bulbul": {
+    "image": "/media/bulbul.jpg",
+    "artist": "Flickr user CharlesLam . Photo uploaded to commons by user ltshears",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Light-vented_Bulbul2.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Light-vented_bulbul"
+  },
+  "spotted-dove": {
+    "image": "/media/spotted-dove.jpg",
+    "artist": "iNaturalist/zinogre",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Spilopelia_chinensis_Zhengzhou_20220915%2C_crop.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Spotted_dove"
+  },
+  "red-dove": {
+    "image": "/media/red-dove.jpg",
+    "artist": "Lip Kee",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Streptopelia_tranquebarica.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Red_collared_dove"
+  },
+  "pigeon": {
+    "image": "/media/pigeon.jpg",
+    "artist": "william_stephens",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Columba_livia_%28Rock_Dove%2C_wild%29%2C_Duncansby_Head%2C_Caithness%2C_Scotland_1.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Rock_dove"
+  },
+  "oriental-magpie": {
+    "image": "/media/oriental-magpie.jpg",
+    "artist": "Yoo Chung",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:Korean_magpie_in_Daejeon_%28side_profile%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Oriental_magpie"
+  },
+  "drongo": {
+    "image": "/media/drongo.jpg",
+    "artist": "Swardeepak",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bdrongo-Sandeep1.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Black_drongo"
+  },
+  "treepie": {
+    "image": "/media/treepie.jpg",
+    "artist": "Dendrocitta_formosae.jpg: Flickr user wagtail . Photo uploaded to commons by user ltshears\nderivative work: Berichard (talk)",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Dendrocitta_formosae_formosae_1.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Grey_treepie"
+  },
+  "black-bulbul": {
+    "image": "/media/black-bulbul.jpg",
+    "artist": "JJ Harrison",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Black_Bulbul_0A2A0215.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Black_bulbul"
+  },
+  "crested-myna": {
+    "image": "/media/crested-myna.jpg",
+    "artist": "Laitche",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Crested_myna%2C_Osaka%2C_Japan.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Crested_myna"
+  },
+  "javan-myna": {
+    "image": "/media/javan-myna.jpg",
+    "artist": "JJ Harrison (https://tiny.jjharrison.com.au/t/YB68VBb3iPkna4Pg)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Acridotheres_javanicus_-_Kent_Ridge_Park.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Javan_myna"
+  },
+  "white-eye": {
+    "image": "/media/white-eye.jpg",
+    "artist": "Charles Lam",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Resting_Zosterops_japonicus.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Swinhoe's_white-eye"
+  },
+  "swallow": {
+    "image": "/media/swallow.jpg",
+    "artist": "Andreas Trepte",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:Rauchschwalbe_Hirundo_rustica.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Barn_swallow"
+  },
+  "shrike": {
+    "image": "/media/shrike.jpg",
+    "artist": "Tisha Mukherjee",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Brown_Shrike_in_Bakkhali_September_2024_by_Tisha_Mukherjee_01.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Brown_shrike"
+  },
+  "night-heron": {
+    "image": "/media/night-heron.jpg",
+    "artist": "ramidos",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Nycticorax_nycticorax_457953189.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Black-crowned_night_heron"
+  },
+  "cattle-egret": {
+    "image": "/media/cattle-egret.jpg",
+    "artist": "Hari K  Patibanda",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:A_Cattle_Egret_Balancing_on_a_Goat_%2850126917227%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Eastern_cattle_egret"
+  },
+  "great-egret": {
+    "image": "/media/great-egret.jpg",
+    "artist": "Chuck Homler (FocusOnWildlife.Me)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Great_Egret_%28Ardea_alba%29_in_Breeding_Plumage%2C_Cape_May_County%2C_New_Jersey%2C_USA_%28cropped%29.png",
+    "evidence": "https://en.wikipedia.org/wiki/Great_egret"
+  },
+  "grey-heron": {
+    "image": "/media/grey-heron.jpg",
+    "artist": "Giacomo Cimino (foto.giacomocimino.workers.dev · @giacomociminoph)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Il_pescatore_solitario.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Grey_heron"
+  },
+  "spotbill": {
+    "image": "/media/spotbill.jpg",
+    "artist": "Alpsdake",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Anas_zonorhyncha_swimming.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Eastern_spot-billed_duck"
+  },
+  "moorhen": {
+    "image": "/media/moorhen.jpg",
+    "artist": "Alexis Lours",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Common_moorhen_%28Gallinula_chloropus%29_France.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Common_moorhen"
+  },
+  "waterhen": {
+    "image": "/media/waterhen.jpg",
+    "artist": "JJ Harrison (https://tiny.jjharrison.com.au/t/zpppq3u5TIMicNgw)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Amaurornis_phoenicurus_-_Singapore_Botanic_Gardens.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/White-breasted_waterhen"
+  },
+  "kite": {
+    "image": "/media/kite.jpg",
+    "artist": "Andreas Trepte",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Schwarzmilan.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Black_kite"
+  },
+  "eagle": {
+    "image": "/media/eagle.jpg",
+    "artist": "Yathin S Krishnappa",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Spilornis_cheela_%28Bandipur%2C_2008%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Crested_serpent_eagle"
+  },
+  "owl": {
+    "image": "/media/owl.jpg",
+    "artist": "JJ Harrison",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Collared_Scops_Owl_0A2A6332.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Collared_scops_owl"
+  },
+  "squirrel": {
+    "image": "/media/squirrel.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Pallas%27s_squirrel_%28Callosciurus_erythraeus_thaiwanensis%29_Qianshan.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Pallas's_squirrel"
+  },
+  "civet": {
+    "image": "/media/civet.jpg",
+    "artist": "Denise Chan from Hong Kong, China",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Palm_civet_on_tree_%28detail%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Masked_palm_civet"
+  },
+  "mongoose": {
+    "image": "/media/mongoose.jpg",
+    "artist": "Rejoice Gassah",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Urva_urva_77938111.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Crab-eating_mongoose"
+  },
+  "muntjac": {
+    "image": "/media/muntjac.jpg",
+    "artist": "Rufus46",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Chinesischer_Muntjak_Muntiacus_reevesi_Zoo_Augsburg-04.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Reeves's_muntjac"
+  },
+  "boar": {
+    "image": "/media/boar.jpg",
+    "artist": "Valentin Panzirsch",
+    "license": "CC BY-SA 3.0 at",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/at/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Wildschwein%2C_N%C3%A4he_Pulverstampftor_%28cropped%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Wild_boar"
+  },
+  "shrew": {
+    "image": "/media/shrew.jpg",
+    "artist": "L. Shyamal",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:Suncus_murinus.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Asian_house_shrew"
+  },
+  "rat": {
+    "image": "/media/rat.jpg",
+    "artist": "Dunpharlain",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Brown_Rat_%28Rattus_norvegicus%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Brown_rat"
+  },
+  "domestic-cat": {
+    "image": "/media/domestic-cat.jpg",
+    "artist": "Karin Langner-Bahmann, upload von Martin Bahmann",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Siam_lilacpoint.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Cat"
+  },
+  "dog": {
+    "image": "/media/dog.jpg",
+    "artist": "M. Rehemtulla",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Huskiesatrest.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Dog"
+  },
+  "gecko": {
+    "image": "/media/gecko.jpg",
+    "artist": "Basile Morin",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Common_House_Gecko_with_open_mouth%2C_in_Laos.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Common_house_gecko"
+  },
+  "slider": {
+    "image": "/media/slider.jpg",
+    "artist": "Greg Hume",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:RedEaredSlider05.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Red-eared_slider"
+  },
+  "stripe-turtle": {
+    "image": "/media/stripe-turtle.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Chinese_stripe-necked_turtle_%28Mauremys_sinensis%29_Bach_Ma.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Chinese_stripe-necked_turtle"
+  },
+  "softshell": {
+    "image": "/media/softshell.jpg",
+    "artist": "Dennis G. Jarvis",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:DSC09767_-_Chinese_Softshell_Turtle_%2837081082331%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Chinese_softshell_turtle"
+  },
+  "green-snake": {
+    "image": "/media/green-snake.jpg",
+    "artist": "Johnsonwang6688",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Cyclophiops%20major1.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Chinese_green_snake"
+  },
+  "cobra": {
+    "image": "/media/cobra.jpg",
+    "artist": "Thomas Brown",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Naja_atra_%2803%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Chinese_cobra"
+  },
+  "xuthus": {
+    "image": "/media/xuthus.jpg",
+    "artist": "Peellden",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Papilio_xuthus_20130804.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Papilio_xuthus"
+  },
+  "lime-butterfly": {
+    "image": "/media/lime-butterfly.jpg",
+    "artist": "Jeevan Jose, Kerala, India",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Common_Lime_Butterfly_Papilio_demoleus_by_Kadavoor.JPG",
+    "evidence": "https://en.wikipedia.org/wiki/Papilio_demoleus"
+  },
+  "white-butterfly": {
+    "image": "/media/white-butterfly.jpg",
+    "artist": "Sarefo",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Pieris.rapae.mounted.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Pieris_rapae"
+  },
+  "tiger-butterfly": {
+    "image": "/media/tiger-butterfly.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Common_tiger_%28Danaus_genutia%29_2.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Danaus_genutia"
+  },
+  "plain-tiger": {
+    "image": "/media/plain-tiger.jpg",
+    "artist": "Jeevan Jose, Kerala, India",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Danaus_chrysippus_Female_by_kadavoor.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Danaus_chrysippus"
+  },
+  "blue-crow": {
+    "image": "/media/blue-crow.jpg",
+    "artist": "Sandipoutsider",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Open_wing_position_busking_of_Euploea_mulciber_Cramer%2C_1777_%E2%80%93_Striped_Blue_Crow_WLB_DSC_0293.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Euploea_mulciber"
+  },
+  "paper-kite": {
+    "image": "/media/paper-kite.jpg",
+    "artist": "Greg Hume",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Idea_leuconoe_Dorsal.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Idea_leuconoe"
+  },
+  "emigrant": {
+    "image": "/media/emigrant.jpg",
+    "artist": "Ronald Vaz",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:C.Pomona%20cat%204.JPG",
+    "evidence": "https://en.wikipedia.org/wiki/Catopsilia_pomona"
+  },
+  "ladybird": {
+    "image": "/media/ladybird.jpg",
+    "artist": "Photographer: Dominik Stodulski   Graphic Processing: User:MathKnight",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:7-Spotted-Ladybug-Coccinella-septempunctata-sq1.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Coccinella_septempunctata"
+  },
+  "beetle": {
+    "image": "/media/beetle.jpg",
+    "artist": "Gombe at Japanese Wikipedia",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Kabutomushi-JapaneseBeetle-July2004.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Japanese_rhinoceros_beetle"
+  },
+  "bat": {
+    "image": "/media/bat.jpg",
+    "artist": "Original uploader was OAS at ja.wikipedia",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Pipistrellus%20abramus.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Japanese_house_bat"
+  },
+  "lizard": {
+    "image": "/media/lizard.jpg",
+    "artist": "J. Patrick Fischer",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Diploderma%20swinhonis%20in%20Taiwan%202.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Swinhoe's_tree_lizard"
+  },
+  "toad": {
+    "image": "/media/toad.jpg",
+    "artist": "LiCheng Shih",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Duttaphrynus%20melanostictus%20at%20Niaosong%20Wetland%20Park%2C%20Kaohsiung%202022-01-23%20%28cropped%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Asian_common_toad"
+  },
+  "tree-frog": {
+    "image": "/media/tree-frog.jpg",
+    "artist": "Thomas Brown",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Polypedetes%20megacephalus.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Spot-legged_tree_frog"
+  },
+  "micro-frog": {
+    "image": "/media/micro-frog.jpg",
+    "artist": "L. Shyamal",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:MicrohylaOrnata2.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Ornate_narrow-mouthed_frog"
+  },
+  "polytes": {
+    "image": "/media/polytes.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Common%20mormon%20%28Papilio%20polytes%20romulus%29%20female%20form%20stichius%20Kuang%20Si.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Papilio_polytes"
+  },
+  "golden-spider": {
+    "image": "/media/golden-spider.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Golden%20orb-weavers%20%28Nephila%20pilipes%29%20female%20and%20male%20Double%20Haven.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Nephila_pilipes"
+  },
+  "jumping-spider": {
+    "image": "/media/jumping-spider.jpg",
+    "artist": "Billjones94",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:A%20Plexippus%20paykulli%20%28possibly%29%20in%20India.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Plexippus_paykulli"
+  },
+  "dragonfly": {
+    "image": "/media/dragonfly.jpg",
+    "artist": "\nJeevan Jose, Kerala, India",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Pantala%20flavescens-Kadavoor-2017-05-04-002.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Pantala_flavescens"
+  },
+  "skimmer": {
+    "image": "/media/skimmer.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Slender%20skimmer%20%28Orthetrum%20sabina%29%20male%20Cyprus.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Orthetrum_sabina"
+  },
+  "mantis": {
+    "image": "/media/mantis.jpg",
+    "artist": "Luc Viatour",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Tenodera%20sinensis%205%20Luc%20Viatour.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Chinese_mantis"
+  },
+  "cockroach": {
+    "image": "/media/cockroach.jpg",
+    "artist": "Gary Alpert",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:American-cockroach.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/American_cockroach"
+  },
+  "tilapia": {
+    "image": "/media/tilapia.jpg",
+    "artist": "Greg Hume",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Oreochromis%20mossambicus.JPG",
+    "evidence": "https://en.wikipedia.org/wiki/Mozambique_tilapia"
+  },
+  "guppy": {
+    "image": "/media/guppy.jpg",
+    "artist": "Per Harald Olsen",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Guppy%20pho%200048.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Guppy"
+  },
+  "mudskipper": {
+    "image": "/media/mudskipper.jpg",
+    "artist": "See source",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:Periophthalmus%20modestus.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Shuttles_hoppfish"
+  },
+  "fiddler": {
+    "image": "/media/fiddler.jpg",
+    "artist": "JeffreyGammon",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bowed%20Fiddler%20Crab%20Tubuca%20arcuata%20JG.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Tubuca_arcuata"
+  },
+  "snail": {
+    "image": "/media/snail.jpg",
+    "artist": "Alexander R. Jenner",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Snail_in_Ubud%2C_Bali%2C_2010_%281%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Lissachatina_fulica"
+  },
+  "apple-snail": {
+    "image": "/media/apple-snail.jpg",
+    "artist": "KENPEI",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomacea%20canaliculata1.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Pomacea_canaliculata"
+  },
+  "bankor-toad": {
+    "image": "/media/bankor-toad.jpg",
+    "artist": "Evan Pickett",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABufo%20bankorensis.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "evidence": "https://en.wikipedia.org/wiki/Bufo_bankorensis"
+  },
+  "hermit": {
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Coenobita_rugosus_%28land_hermit_crab%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "artist": "Michael Quigley Quigabyte 05:19, 6 September 2006 (UTC)",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACoenobita%20rugosus%20%28land%20hermit%20crab%29.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "evidence": "https://en.wikipedia.org/wiki/Coenobita_rugosus"
+  },
+  "paddy-frog": {
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Fejervarya_limnocharis_%2843659333105%29.jpg/960px-Fejervarya_limnocharis_%2843659333105%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "artist": "LiCheng Shih",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFejervarya%20limnocharis%20%2843659333105%29.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "evidence": "https://en.wikipedia.org/wiki/Fejervarya_limnocharis"
+  },
+  "skink": {
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Long-tailed_Skink_%28Mabuya_longicaudata%29_%E9%95%B7%E5%B0%BE%E5%8D%97%E8%9C%A52.jpg/960px-Long-tailed_Skink_%28Mabuya_longicaudata%29_%E9%95%B7%E5%B0%BE%E5%8D%97%E8%9C%A52.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "artist": "Thomas Brown",
+    "source": "https://commons.wikimedia.org/wiki/File%3ALong-tailed%20Skink%20%28Mabuya%20longicaudata%29%20%E9%95%B7%E5%B0%BE%E5%8D%97%E8%9C%A52.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "evidence": "https://en.wikipedia.org/wiki/Eutropis_longicaudata"
   }
 }

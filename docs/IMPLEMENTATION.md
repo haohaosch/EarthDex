@@ -1,46 +1,35 @@
-# v0.6 implementation notes
+# EarthDex v0.2 implementation and changes from the draft
 
-## Confirmed rules implemented
+The user's latest directions supersede the original draft for card generation, photo identification and review flow. The original document remains in `specification-v0.6.md` as historical input, not as an instruction to block this work.
 
-`engine/engine.ts` is pure and shared by all modes. It validates deck instances, alternating turns and empty cells, computes base comparisons from one snapshot, applies resistance only after a successful comparison, commits flips together, changes skill controller with the board controller, and records deterministic events. The first player places five cards, the second four; the leftover hand does not count toward score. Exact replay uses the persisted initial definitions, version, seed and move sequence.
+## Current behavior
 
-`server/model.ts` separates owned instances, observation/grant references, dex unlock events, pending quizzes and deck selection. Fixtures are explicitly marked and isolated from real accounts. `server/api.ts` derives identity from the deployment gateway and applies revision checks. Quizzes never award cards. Neither PVP flips nor AI outcomes change card ownership. Settling a match twice does not duplicate statistics or quiz eligibility.
+- Taiwan-first catalog with 81 locally observable animal taxa, including ordinary, domestic and introduced animals. One legacy global taxon is retained for old matches. Scientific taxonomy import and rank normalization are not complete; the catalog includes familiar species/subspecies labels.
+- Live-camera still-photo capture, preview and retake. The animal should be near the center of the frame; there is no album picker and no manual species dropdown.
+- On-device BioCLIP image encoding, then server-side image/name reference ranking. Classification results are immediate. Uncertain results request a new photo; no human review queue exists in the new flow.
+- Identified observations offer one knowledge question. Correct answer atomically records an owned card instance, dex unlock and collected status. A wrong answer rotates questions without requiring a new photo.
+- Card abilities are generated only at collection time with server cryptographic randomness and stored as immutable per-instance snapshots. Same species can vary. The dex displays question marks until the player owns that species' card; a dex-only unlock reveals no ability values. Card reloading and battle entry reuse saved snapshots, never reroll them.
+- Collection is idempotent per observation. Exact photo hashes are deduplicated within the player's namespace. A client-supplied observation ID or species name cannot create a card. Match outcomes still unlock only dex questions and never mint/transfer cards.
+- Bright card frames distinguish mammals, birds, reptiles, amphibians, insects, fish and water animals. Scores use dark numerals on gold/ivory fields. Enemy/player territories are separately distinguished by red/cyan outlines. The interface uses an adventure-game palette, scan feedback and a new-card reveal.
 
-The minimum required species count is three (2+2+1). There is no real new-player loan or starter deck. The UI defaults to an explicit demo namespace solely to make this deliverable reviewable.
+## Engine and persistence
 
-## Experimental configuration, not approved product rules
+The deterministic battle engine remains a pure shared module. It validates alternating turns, distinct owned instances and five-card decks (max two of one species), compares all orthogonal enemies from a common snapshot, applies resistance after a successful comparison, commits simultaneously, limits explicit skill waves, and scores only the nine board cells. Replays retain actual card snapshots from that match.
 
-All proposal-dependent behavior is labeled `experimental-0.1`, documented in the guide, and lives in a replaceable registry. It is not promoted to a final official rule version.
+`capture-0.2` uses a 28-point directional-plus-skill budget and values 1–10. Server-owned card generation has a fresh random seed per issuance; battle replay uses the saved seed/definition. Ecological tags filter skills; absent evidence uses a neutral skill. The old versioned deterministic generator remains available for engine fixtures. Legacy instances without snapshots retain their original v0.1 species abilities. New demo fixtures and collected cards store their own definitions.
 
-- Budget 28, values 1–10, sorted eligible skill pool with uniform seeded selection; unknown traits get neutral 7/7/7/7.
-- Placement → snapshot comparisons with modifiers → resistance → simultaneous commits → at most three additional skill waves. Each wave snapshots first and sorts source/target cells numerically. A card can trigger again in a later wave, bounded by three waves.
-- Cooperation reads adjacent current allies, including a newly placed ally; +2 maximum. Camouflage defense +1. Ambush gives +2 only to the newly placed source at a corner (chain-only ripple sources cannot also have ambush because a card has one skill).
-- Armor cancels its first eligible flip per match and never resets on control change. All current skill definitions explicitly use `resetOnFlip=false`. No skill moves/swaps positions or overrides strict-greater comparison.
-- Test-only `ripple` skill creates comparison waves after capture; it is **not attached to a real animal**, so it makes no unsupported ecological claim.
-- Fixed-seed first player, no move timeout, resignation yields a loss, no dex candidates for a resigned match. Online transport is polling, not WebSocket. Room visibility is scoped to participants. Reopening a stored room ID resumes it.
-- Wrong quiz answers rotate between a species question and a safe-observation question; retries are unlimited. The small editorial question bank needs professional review before production.
-- Series membership is the fixed v0.1 list. Historical badges are retained; there is no taxonomy migration or revocation flow yet.
+Profiles and matches are separate D1 JSON aggregates protected by compare-and-swap revisions. The collection commit saves the observation, card instance and dex unlock in one profile row update. D1 schemas are generated under `drizzle/`; no tables are created from request handlers. No schema migration is needed for optional fields within profile JSON. Private photos remain in R2; old videos remain viewable. Public profile payloads strip internal storage keys and do not expose exact locations.
 
-## GPS and verification boundary
+## What the model is and is not
 
-The conflict in Q1–Q3 is preserved as an unresolved product decision. `/api/grant` always returns 409; no official grant can be produced from a manual claim, photo upload, quiz, AI or PVP match. Distance is implemented as a tested pure haversine function, **not used as reward eligibility**. Repeated submissions retain separate observation IDs; they create no cards.
+See `MODEL.md` and `recognition-evaluation.json`. EarthDex's Taiwan classifier is built from licensed reference images and taxon-name vectors using a pre-trained BioCLIP encoder. It is not a visual model trained from scratch, not global species coverage, and not a guarantee of a correct identification. The small development calibration set does not measure field performance.
 
-The prototype requests optional browser location but only transmits accuracy. This avoids retaining sensitive exact coordinates before an approved location/reward policy and encryption design exist. A production observation location store, field grant transaction and anti-replay/GPS validations remain to be designed once the conflict is resolved. Therefore the official grant idempotency acceptance test is currently replaced with a stricter assertion that all grant retries are blocked and never mint cards.
+Only device features are compared by the server; the browser currently performs the expensive image encoder. Modified clients could send forged features. MIME/signature checks, authenticated ownership, exact-file duplicate detection and idempotency are implemented; sophisticated replay/device/anti-cheat detection is not. The application follows the user's requested direct-recognition workflow without presenting it as wildlife authenticity certification.
 
-At the user’s request, the exploration flow now takes a single still photo instead of a video. It captures a JPEG from the live camera feed, scales the longest edge to at most 2048 pixels, previews the result and supports retaking. There is no album upload. The old judgment/review paragraph has been removed from the camera form. The server accepts JPEG, PNG and WebP with type/signature checks and a 10 MB limit. These checks do not establish authenticity. Actual media analysis, device attestation, deduplication, confidence thresholds, model inference and reviewer permissions are not implemented. Photos remain `manual_review`, never automatically verified. Reviewers cannot be impersonated by the player; no player-accessible approve endpoint exists.
+The draft's conflicting 1 km / 7 day GPS reward policy is not applied. No exact GPS coordinates are collected. Operational moderation, hardened server inference, sensitive location storage, privacy retention automation, native mobile builds, global ETL, venue integrations, matchmaking and taxonomic split/merge maintenance remain future work.
 
-Private photo viewing, legacy video playback and deletion are authenticated and observation ownership checked. A persisted MIME type distinguishes new photos from legacy videos without a database schema migration. Files are on R2 in production and ignored filesystem storage locally. There is no public observation/coordinate sharing route. Production work includes encrypted sensitive-location storage, video scanning, retention jobs, per-account quotas, rate limiting, audit logs and operational review staffing. A 100-observation per-profile prototype cap is enforced, not a production abuse defense.
+## Validation
 
-## Data and scope
+`npm test` covers battle invariants, instance randomness and budget bounds, stable snapshots, legal decks, no battle minting, complete AI/PVP games, exact replay, direct identification/quiz/collection, retries, exact-file duplicates, photo ownership/deletion and legacy media. TypeScript checking is included in the production build.
 
-Twelve hand-curated initial taxa are included. This is a limited Taiwan-first educational dataset with two global collection entries, not global taxonomy coverage. The sika deer and black bear entries use familiar Taiwan subspecies names; a production COL/GBIF import must explicitly model rank/parent species and normalize taxon identity before official species grants. External IDs, accepted-name changes, taxon splits/merges and large-scale ETL are not implemented.
-
-Knowledge and ecological trait tags refer to the corresponding source-linked encyclopedia entries. All photo authors, licenses and source links are pinned in `src/media.json` and visible in-app. This is initial provenance, not a claim of comprehensive scientific curation or licensing audit.
-
-Data is persisted as versioned JSON aggregates in a D1/SQLite profile table and an independent match table, with atomic optimistic updates. The logical entities are separated in typed models but are not a complete normalized PostgreSQL schema. This keeps the demo transport and persistence executable on the provided hosting runtime. PostgreSQL/PostGIS, native Flutter builds, global ETL, authorized zoo integrations, multiplayer matchmaking and operational moderation remain future modules.
-
-## Verification
-
-`npm test`: engine invariants, 500 generated-card checks, 20 seeded complete games/replays, server-owned deck validation, quiz retries/no card minting, blocked formal rewards, idempotent settlement, two-user PVP and reconnect, cross-origin rejection, private photo ownership and deletion, photo payload validation and legacy video compatibility. `npm run build` includes strict TypeScript checking. The shared browser initialization failed with “the gaas-browser node_repl sandbox cannot be disabled”; the managed preview relay also timed out. No replacement browser path was used, so visual, device-camera and browser-interaction QA remain unverified in this environment.
-
-The hosted D1 schema is declared in `server/schema.ts` and generated with Drizzle into `drizzle/` (including migration journal/snapshot). `migrations/0000_initial.sql` is retained as the original prototype schema; the local runtime and tests now read the generated Drizzle SQL directly. Neither is executed during hosted request handling.
+Real ONNX encoder inference and reference ranking are exercised by the model-building scripts, with a disjoint reference/held-out image split for the calibration report. Model download provenance and counts are retained. Shared browser initialization still fails with “the gaas-browser node_repl sandbox cannot be disabled”, so visual, browser-WASM and actual device-camera QA could not be completed here. That limit is not represented as a passing browser test.

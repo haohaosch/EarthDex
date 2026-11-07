@@ -1,7 +1,10 @@
-import {applyMove,chooseAI,createBattle,dexCandidates,hash,score} from '../engine/engine';
+import {applyMove,chooseAI,createBattle,dexCandidates,hash,score,generateCard} from '../engine/engine';
 import {definition,SPECIES,speciesById,SERIES} from '../engine/species';
 import type {BattleState,Move,Side} from '../engine/types';
 import {answerQuiz,newProfile,ownedDeck,publicProfile,type Profile,type Observation} from './model';
+import referenceBank from '../engine/recognition/reference-bank.json';
+import {rankSpecies,normalizedVector,type ReferenceBank} from '../engine/recognition/rank';
+import {fieldQuestion,collectObservation} from './field';
 export interface Statement {bind(...args:unknown[]):Statement;first<T=any>():Promise<T|null>;all():Promise<any>;run():Promise<any>}
 export interface Database {prepare(sql:string):Statement;batch(statements:Statement[]):Promise<any>}
 export interface Bucket {put(key:string,value:ArrayBuffer|Uint8Array,options?:any):Promise<any>;get(key:string):Promise<any>;delete(key:string):Promise<any>}
@@ -32,20 +35,27 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   if(route==='/deck'&&req.method==='POST'){const body=await readBody(req);if(!Array.isArray(body.ids))throw Error('牌組格式錯誤');ownedDeck(profile,body.ids);profile.deck=body.ids;await saveProfile();return json(publicProfile(profile));}
   if(route==='/quiz'&&req.method==='GET'){const pending=profile.pending.find(p=>p.speciesId===url.searchParams.get('species'));if(!pending)throw Error('沒有問答資格');const s=speciesById(pending.speciesId),q=s.questions[pending.attempt%s.questions.length];return json({speciesId:s.id,q:q.q,options:q.options,attempt:pending.attempt});}
   if(route==='/quiz'&&req.method==='POST'){const body=await readBody(req);const result=answerQuiz(profile,body.speciesId,body.choice);for(const series of SERIES){if(series.ids.every(id=>profile.unlocks.some(u=>u.speciesId===id))&&!profile.badges.includes(series.id))profile.badges.push(series.id);}await saveProfile();return json({...result,profile:publicProfile(profile)});}
-  if(route==='/grant'&&req.method==='POST')return error('正式 GPS 領卡規則待確認，目前不開放發卡。觀察仍可保存。',409);
+  if(route==='/grant'&&req.method==='POST')return error('請先拍照完成辨識，再回答觀察問答收集卡牌。',409);
+  if(route==='/field-quiz'&&req.method==='GET')return json(fieldQuestion(profile,url.searchParams.get('observation')||''));
+  if(route==='/collect'&&req.method==='POST'){const body=await readBody(req);const result=collectObservation(profile,body.observationId,body.choice,body.attempt);if(!result.alreadyCollected)await saveProfile();return json({...result,profile:publicProfile(profile)});}
   if(route==='/observations'&&req.method==='POST'){
    if(profile.observations.length>=100)throw Error('展示版最多保存 100 筆觀察，請先刪除舊紀錄');
    if(!env.BUCKET)return error('照片儲存尚未配置',503);
-   const speciesId=url.searchParams.get('species')||'';speciesById(speciesId);
+   const encoded=req.headers.get('x-earthdex-features')||'';let vector:Float32Array;try{const binary=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));if(binary.byteLength!==2048)throw Error();vector=new Float32Array(binary.buffer);}catch{throw Error('影像辨識特徵缺失，請重新辨識');}
+   const recognition=rankSpecies(vector,referenceBank as ReferenceBank);
+   if(recognition.status!=='identified')return json({recognition,profile:publicProfile(profile),observationId:null});
+   const speciesId=recognition.speciesId!;speciesById(speciesId);
    const type=(req.headers.get('content-type')||'').split(';')[0].trim().toLowerCase();if(!['image/jpeg','image/png','image/webp'].includes(type))throw Error('請使用相機拍攝 JPEG、PNG 或 WebP 照片');
    if(Number(req.headers.get('content-length'))>PHOTO_LIMIT)throw Error('照片不可為空，且須小於 10 MB');
    const bytes=await req.arrayBuffer();if(bytes.byteLength===0||bytes.byteLength>PHOTO_LIMIT)throw Error('照片不可為空，且須小於 10 MB');
    if(!isPhoto(new Uint8Array(bytes),type))throw Error('照片格式不正確，請重新拍攝');
+   const imageHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(b=>b.toString(16).padStart(2,'0')).join('');
+   const duplicate=profile.observations.find(o=>o.imageHash===imageHash);if(duplicate)return json({recognition:duplicate.recognition?{...recognition,...duplicate.recognition,speciesId:duplicate.speciesId}:recognition,profile:publicProfile(profile),observationId:duplicate.id,alreadyCollected:profile.instances.some(c=>c.observationId===duplicate.id)});
    const id=crypto.randomUUID(),key='observations/'+player+'/'+id;
    await env.BUCKET.put(key,bytes,{httpMetadata:{contentType:type}});
    const accuracy=Number(url.searchParams.get('accuracy'));
-   const o:Observation={id,speciesId,at:new Date().toISOString(),status:'manual_review',region:'私人觀察・精確位置不保留',accuracy:Number.isFinite(accuracy)&&accuracy>0?accuracy:null,mediaKey:key,mediaType:type,reason:'照片觀察已保存，物種為玩家提名；尚未完成物種驗證。'};
-   profile.observations.push(o);try{await saveProfile();}catch(e){await env.BUCKET.delete(key);throw e;}return json(publicProfile(profile),201);
+   const o:Observation={id,speciesId,at:new Date().toISOString(),status:'identified',region:'私人觀察・精確位置不保留',accuracy:Number.isFinite(accuracy)&&accuracy>0?accuracy:null,mediaKey:key,mediaType:type,imageHash,recognition:{speciesId,similarity:recognition.similarity,margin:recognition.margin,modelVersion:recognition.modelVersion},quizAttempt:0,reason:'影像比對已辨識物種；完成知識問答即可收集卡牌。'};
+   profile.observations.push(o);try{await saveProfile();}catch(e){await env.BUCKET.delete(key);throw e;}return json({recognition,profile:publicProfile(profile),observationId:id,alreadyCollected:false},201);
   }
   const observationRoute=route.match(/^\/observations\/([^/]+)(\/media|\/video|\/appeal)?$/);
   if(observationRoute){
@@ -56,10 +66,10 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   }
   if(route==='/matches'&&req.method==='POST'){
    const body=await readBody(req);const mode=body.mode==='pvp'?'pvp':'ai',difficulty=['easy','normal','hard'].includes(body.difficulty)?body.difficulty:'normal',theme=body.theme==='global'?'global':'taiwan';const deck=ownedDeck(profile).map(c=>({...c,id:'p0:'+c.id}));
-   const seed=crypto.getRandomValues(new Uint32Array(1))[0],aiIds=theme==='global'?['panda','turtle','cat','kingfisher','bear']:['macaque','barbet','kingfisher','bear','cat'];
-   let state=mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:definition(id)}))],seed):null;
+   const seed=crypto.getRandomValues(new Uint32Array(1))[0],aiIds=theme==='global'?['turtle','egret','spotbill','moorhen','mudskipper']:['macaque','barbet','kingfisher','bear','cat'];
+   let state=mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:generateCard(id,speciesById(id).tags,'capture-0.2',hash(`${seed}:${id}:${i}`))}))],seed):null;
    if(state?.turn===1)state=applyMove(state,chooseAI(state,difficulty));
-   const match:Match={mode,state,initial:mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:definition(id)}))],seed):null,difficulty,theme,settled:[],createdAt:new Date().toISOString()};
+   const match:Match={mode,state,initial:mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:generateCard(id,speciesById(id).tags,'capture-0.2',hash(`${seed}:${id}:${i}`))}))],seed):null,difficulty,theme,settled:[],createdAt:new Date().toISOString()};
    // Waiting rooms retain their validated deck snapshot, not an untrusted client deck.
    const data=mode==='pvp'?{...match,waitingDeck:deck,seed}:match;
    const id=mode==='pvp'?crypto.randomUUID().replaceAll('-','').slice(0,10).toUpperCase():crypto.randomUUID();

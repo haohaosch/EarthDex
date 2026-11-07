@@ -1,7 +1,7 @@
 import type { BattleState, BattleCard, CardDefinition, Move, Side, SkillId, Values } from './types';
 export const RULE_VERSION = 'experimental-0.1';
 export const SKILLS: Record<SkillId,{name:string; description:string; cost:number; tag?:string; priority:number; stackCap:number; resetOnFlip:boolean; trigger:string; limit:number}> = {
- neutral:{name:'適應',description:'無額外效果。資料不足時使用的中性技能。',cost:0,priority:0,stackCap:0,resetOnFlip:false,trigger:'none',limit:0},
+ neutral:{name:'適應',description:'穩定的基礎能力，沒有額外觸發效果。',cost:0,priority:0,stackCap:0,resetOnFlip:false,trigger:'none',limit:0},
  armor:{name:'堅甲',description:'每局抵抗第一次原本成功的翻轉；翻面後不恢復次數。',cost:6,tag:'ARMOR',priority:10,stackCap:1,resetOnFlip:false,trigger:'BeforeFlip',limit:1},
  cooperate:{name:'群聚',description:'比較時，每張相鄰友軍使方向值 +1，最多 +2。',cost:4,tag:'SOCIAL',priority:20,stackCap:2,resetOnFlip:false,trigger:'Compare',limit:99},
  ambush:{name:'伏擊',description:'放在角落時，該次基本攻方比較值 +2。',cost:4,tag:'AMBUSH',priority:20,stackCap:2,resetOnFlip:false,trigger:'CompareAttack',limit:99},
@@ -10,13 +10,14 @@ export const SKILLS: Record<SkillId,{name:string; description:string; cost:numbe
 };
 export function hash(s:string):number { let h=2166136261; for(const c of s) {h^=c.charCodeAt(0);h=Math.imul(h,16777619);} return h>>>0; }
 export function rng(seed:number) { let a=seed>>>0; return ()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}; }
-export function generateCard(speciesId:string,tags:string[]=[],version=RULE_VERSION):CardDefinition {
- const seed=hash(`${speciesId}:${version}:traits-1`),random=rng(seed);
- const pool=(Object.keys(SKILLS) as SkillId[]).filter(k=>SKILLS[k].tag&&tags.includes(SKILLS[k].tag!)).sort();
+export function generateCard(speciesId:string,tags:string[]=[],version=RULE_VERSION,instanceSeed?:number):CardDefinition {
+ const seed=instanceSeed===undefined?hash(`${speciesId}:${version}:traits-1`):instanceSeed>>>0,random=rng(seed);
+ const eligible=(Object.keys(SKILLS) as SkillId[]).filter(k=>SKILLS[k].tag&&tags.includes(SKILLS[k].tag!)).sort();
+ const pool=instanceSeed===undefined?eligible:[...eligible,'neutral' as SkillId].sort();
  const skill=pool.length?pool[Math.floor(random()*pool.length)]:'neutral';
  const budget=28-SKILLS[skill].cost;
  const values:Values=[1,1,1,1];
- if(!pool.length) {values.fill(budget/4);} else for(let n=4;n<budget;n++){const available=[0,1,2,3].filter(i=>values[i]<10);values[available[Math.floor(random()*available.length)]]++;}
+ if(!pool.length&&instanceSeed===undefined) {values.fill(budget/4);} else for(let n=4;n<budget;n++){const available=[0,1,2,3].filter(i=>values[i]<10);values[available[Math.floor(random()*available.length)]]++;}
  return {speciesId,version,values,skill,seed};
 }
 export function validateDeck(cards:{speciesId:string;id?:string}[]):string[] {
