@@ -1,7 +1,8 @@
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync,mkdirSync,existsSync,writeFileSync,unlinkSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {handleApi,type Database,type Bucket} from './api';
+import type {Database,Bucket} from './api';
+import {handleVisitorApi} from './visitor';
 const runtimePath=resolve('.sites-runtime');mkdirSync(runtimePath,{recursive:true});
 const sql=new DatabaseSync(resolve(runtimePath,'earthdex.sqlite'));
 sql.exec('PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS schema_migrations(name TEXT PRIMARY KEY)');
@@ -11,5 +12,5 @@ const bucket:Bucket={async put(key,body,options){const name=Buffer.from(key).toS
 export async function localApi(req:Request){
  const cookie=req.headers.get('cookie')||'';let identity=cookie.match(/earthdex_session=([a-f0-9-]{36})/)?.[1];let setCookie='';
  if(!identity){identity=crypto.randomUUID();setCookie=`earthdex_session=${identity}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`;}
- const r=await handleApi(req,{DB:db,BUCKET:bucket},'local:'+identity);if(setCookie)r.headers.set('Set-Cookie',setCookie);return r;
+ const r=await handleVisitorApi(req,{DB:db,BUCKET:bucket},'local:'+identity);if(setCookie)r.headers.set('Set-Cookie',setCookie);return r;
 }

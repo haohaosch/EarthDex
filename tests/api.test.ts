@@ -81,3 +81,26 @@ test('manual species claims, missing feature vectors and forged observation IDs 
  const r=await handleApi(new Request('https://earthdex.test/api/observations?species=cat&profile=real',{method:'POST',headers:{'Content-Type':'image/jpeg'},body:readFileSync('public/media/cat.jpg')}),env,'alice');assert.equal(r.status,400);
  assert.equal((await call('/collect','alice',{observationId:'fake',choice:0,attempt:0},'real')).status,400);assert.equal((await call('/profile','alice',undefined,'real')).data.instances.length,0);
 });
+
+test('public visitors get secure isolated demo sessions and cannot enter formal profiles or another match',async()=>{
+ const {handleVisitorApi}=await import('../server/visitor');
+ const request=(path:string,cookie='',body?:unknown,account='')=>new Request('https://earthdex.test/api'+path,{method:body?'POST':'GET',headers:{...(cookie?{Cookie:cookie}:{}),...(account?{'oai-authenticated-user-id':account}:{}),...(body?{'Content-Type':'application/json',Origin:'https://earthdex.test'}:{})},body:body?JSON.stringify(body):undefined});
+ const a=await handleVisitorApi(request('/session'),env),b=await handleVisitorApi(request('/session'),env);
+ assert.deepEqual(await a.json(),{authenticated:false,guest:true});assert.match(a.headers.get('Set-Cookie')!,/HttpOnly; Secure; SameSite=Lax; Path=\//);assert.equal(a.headers.get('Cache-Control'),'private, no-store');
+ const cookieA=a.headers.get('Set-Cookie')!.split(';')[0],cookieB=b.headers.get('Set-Cookie')!.split(';')[0];assert.notEqual(cookieA,cookieB);
+ const profileA=await handleVisitorApi(request('/profile?profile=demo',cookieA),env);const p:any=await profileA.json();assert.equal(p.instances.length,7);assert.equal(profileA.headers.get('Set-Cookie'),null);
+ assert.equal((await handleVisitorApi(request('/profile?profile=real',cookieA),env)).status,401);
+ const changed=await handleVisitorApi(request('/deck?profile=demo',cookieA,{ids:p.instances.slice(2,7).map((c:any)=>c.id)}),env);assert.equal(changed.status,200);
+ const profileB:any=await (await handleVisitorApi(request('/profile?profile=demo',cookieB),env)).json();assert.deepEqual(profileB.deck,p.deck);
+ const mine:any=await (await handleVisitorApi(request('/matches?profile=demo',cookieA,{mode:'ai'}),env)).json();assert.ok(mine.id);assert.equal((await handleVisitorApi(request('/matches/'+mine.id+'?profile=demo',cookieB),env)).status,403);
+ const authenticated=await handleVisitorApi(request('/profile?profile=real',cookieA,undefined,'signed-in-owner'),env);assert.equal(authenticated.status,200);assert.equal((await authenticated.json() as any).instances.length,0);assert.equal(authenticated.headers.get('Set-Cookie'),null);
+ const session=await handleVisitorApi(request('/session',cookieA,undefined,'signed-in-owner'),env);assert.deepEqual(await session.json(),{authenticated:true,guest:false});
+ const bad=await handleVisitorApi(request('/session','__Host-earthdex_guest=invalid'),env);assert.match(bad.headers.get('Set-Cookie')!,/__Host-earthdex_guest=[a-f0-9-]{36};/);
+});
+test('public demonstration photos stay in the visitor namespace and cross-origin writes fail',async()=>{
+ const {handleVisitorApi}=await import('../server/visitor');
+ const visit=await handleVisitorApi(new Request('https://earthdex.test/api/session'),env),cookie=visit.headers.get('Set-Cookie')!.split(';')[0];
+ const photo=await handleVisitorApi(new Request('https://earthdex.test/api/observations?profile=demo',{method:'POST',headers:{Cookie:cookie,'Content-Type':'image/jpeg','X-Earthdex-Features':features,Origin:'https://earthdex.test'},body:readFileSync('public/media/cat.jpg')}),env);assert.equal(photo.status,201);const result:any=await photo.json();
+ const url='https://earthdex.test/api/observations/'+result.observationId+'/media?profile=demo';assert.equal((await handleVisitorApi(new Request(url,{headers:{Cookie:cookie}}),env)).status,200);assert.equal((await handleVisitorApi(new Request(url),env)).status,404);assert.equal((await handleVisitorApi(new Request(url,{headers:{'oai-authenticated-user-id':'signed-in-owner'}}),env)).status,404);
+ const denied=await handleVisitorApi(new Request('https://earthdex.test/api/deck?profile=demo',{method:'POST',headers:{Cookie:cookie,Origin:'https://evil.test','Content-Type':'application/json'},body:JSON.stringify({ids:[]})}),env);assert.equal(denied.status,403);
+});

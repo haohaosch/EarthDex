@@ -46,3 +46,9 @@ Node 24：`npm ci` → `npm run dev`，開啟終端顯示的網址。相機需�
 瀏覽器推論相容性檢查：先準備固定版本模型（`python scripts/download-vision-model.py`）及 Python Pillow/NumPy，再執行 `npm run test:wasm`。此檢查使用與網站同版的 ONNX Runtime Web 1.22.0 WASM provider，實際將公開海龜照片轉成特徵並確認辨識為綠蠵龜；不是以 Python CPU provider 代替。報告見 `docs/wasm-recognition-check.json`。
 
 戰報與技能視窗的比點紀錄會顯示基礎方向值、技能加成與實際比較值。加成取自該次結算紀錄，不以目前鄰牌重算，因此後續翻面不會改寫歷史結果。獼猴群聚占 4 點預算（方向合計 24），鄰接友軍每張 +1、最多 +2；藍鵲上 6 對獼猴下 5＋群聚 2＝7 時不會翻面。
+
+## 公開展示與手機
+
+網站採公開連結存取。訪客免登入即可使用獨立展示檔案，內含示範牌組，可瀏覽圖鑑、體驗 AI／PVP 及拍照收集。訪客以 Secure、HttpOnly 的主機限定 Cookie 識別，展示紀錄保存在該瀏覽器的訪客空間；清除 Cookie 或換裝置不會帶入原進度。正式檔案仍需 Sites 的 ChatGPT 登入，依帳號隔離；訪客不能讀取正式收藏或他人照片與對局。登入沿用平台入口，不自建 OAuth。
+
+手機提供底部導覽、可橫向滑動的較大手牌、兩欄卡牌收藏、觸控按鈕與瀏海／底部安全區適配。相機使用 HTTPS 與裝置相機權限；辨識模型於拍照時才載入。

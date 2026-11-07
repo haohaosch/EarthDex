@@ -1,4 +1,5 @@
-import {handleApi,type Env} from './api';
+import type {Env} from './api';
+import {handleVisitorApi} from './visitor';
 declare const ASSETS:Record<string,{type:string;data:string}>;
-export default {async fetch(request:Request,env:Env):Promise<Response>{const url=new URL(request.url);if(url.pathname.startsWith('/api/')){if(!env.DB)return new Response(JSON.stringify({error:'資料庫尚未綁定'}),{status:503,headers:{'Content-Type':'application/json'}});return handleApi(request,env,request.headers.get('oai-authenticated-user-id')||'');}
+export default {async fetch(request:Request,env:Env):Promise<Response>{const url=new URL(request.url);if(url.pathname.startsWith('/api/')){if(!env.DB)return new Response(JSON.stringify({error:'資料庫尚未綁定'}),{status:503,headers:{'Content-Type':'application/json'}});return handleVisitorApi(request,env);}
  const file=ASSETS[url.pathname]||(!url.pathname.includes('.')?ASSETS['/index.html']:null);if(!file)return new Response('Not found',{status:404});if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});const bytes=Uint8Array.from(atob(file.data),c=>c.charCodeAt(0));return new Response(request.method==='HEAD'?null:bytes,{headers:{'Content-Type':file.type,'Cache-Control':url.pathname==='/recognition-config.json'?'no-store':url.pathname.startsWith('/assets/')?'public, max-age=31536000, immutable':'public, max-age=300','X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','Permissions-Policy':'camera=(self), microphone=(), geolocation=(self)'}});}};
