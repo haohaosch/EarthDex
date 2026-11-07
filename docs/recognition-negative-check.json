@@ -1,8 +1,8 @@
 [
   {
     "label": "forest",
-    "status": "uncertain",
-    "speciesId": null,
+    "status": "identified",
+    "speciesId": "deer",
     "similarity": 0.4188878217859993,
     "margin": 0.06529695711877431,
     "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
@@ -19,12 +19,14 @@
         "speciesId": "boar",
         "similarity": 0.3456492765508667
       }
-    ]
+    ],
+    "lowConfidence": true,
+    "selectionPolicy": "highest"
   },
   {
     "label": "blank",
-    "status": "uncertain",
-    "speciesId": null,
+    "status": "identified",
+    "speciesId": "ladybird",
     "similarity": 0.3260432654788195,
     "margin": 0.021189375926168874,
     "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
@@ -41,6 +43,8 @@
         "speciesId": "oriental-magpie",
         "similarity": 0.2963369744180337
       }
-    ]
+    ],
+    "lowConfidence": true,
+    "selectionPolicy": "highest"
   }
 ]

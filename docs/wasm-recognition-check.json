@@ -27,6 +27,8 @@
         "speciesId": "slider",
         "similarity": 0.37653097412443637
       }
-    ]
+    ],
+    "lowConfidence": false,
+    "selectionPolicy": "highest"
   }
 }

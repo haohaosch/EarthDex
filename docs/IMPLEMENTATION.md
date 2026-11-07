@@ -1,13 +1,13 @@
 # EarthDex v0.2 implementation and changes from the draft
 
-The user's latest directions supersede the original draft for card generation, photo identification and review flow. The original document remains in `specification-v0.6.md` as historical input, not as an instruction to block this work.
+The user's latest directions supersede the original draft for card generation, photo identification and review flow. The latest collection policy always selects the highest scoring supported candidate and grants the card immediately, without a confidence or field-question gate. The original document remains in `specification-v0.6.md` as historical input, not as an instruction to block this work.
 
 ## Current behavior
 
 - Taiwan-first catalog with 81 locally observable animal taxa, including ordinary, domestic and introduced animals. One legacy global taxon is retained for old matches. Scientific taxonomy import and rank normalization are not complete; the catalog includes familiar species/subspecies labels.
 - Live-camera still-photo capture, preview and retake. The animal should be near the center of the frame; there is no album picker and no manual species dropdown.
-- On-device BioCLIP image encoding (FP16 weights with FP32 math), then server-side image/name reference ranking. Classification results are immediate. Uncertain results request a new photo; no human review queue exists in the new flow.
-- Identified observations offer one knowledge question. Correct answer atomically records an owned card instance, dex unlock and collected status. A wrong answer rotates questions without requiring a new photo.
+- On-device BioCLIP image encoding (FP16 weights with FP32 math), then server-side image/name reference ranking. Classification results are immediate. Valid feature vectors always choose the top ranked candidate, including low scores and ties; no human review queue exists in the new flow.
+- The photo submission itself atomically records a collected observation, owned card instance and dex unlock. No field quiz or confirmation is required. Earlier identified observations can also be collected immediately from the journal.
 - Card abilities are generated only at collection time with server cryptographic randomness and stored as immutable per-instance snapshots. Same species can vary. The dex displays question marks until the player owns that species' card; a dex-only unlock reveals no ability values. Card reloading and battle entry reuse saved snapshots, never reroll them.
 - Collection is idempotent per observation. Exact photo hashes are deduplicated within the player's namespace. A client-supplied observation ID or species name cannot create a card. Match outcomes still unlock only dex questions and never mint/transfer cards.
 - Bright card frames distinguish mammals, birds, reptiles, amphibians, insects, fish and water animals. Scores use dark numerals on gold/ivory fields. Enemy/player territories are separately distinguished by red/cyan outlines. The interface uses an adventure-game palette, scan feedback and a new-card reveal.
@@ -30,7 +30,7 @@ The draft's conflicting 1 km / 7 day GPS reward policy is not applied. No exact 
 
 ## Validation
 
-`npm test` covers battle invariants, instance randomness and budget bounds, stable snapshots, legal decks, no battle minting, complete AI/PVP games, exact replay, direct identification/quiz/collection, retries, exact-file duplicates, photo ownership/deletion and legacy media. TypeScript checking is included in the production build.
+`npm test` covers battle invariants, instance randomness and budget bounds, stable snapshots, legal decks, no battle minting, complete AI/PVP games, exact replay, direct highest-candidate identification/automatic collection, retries, exact-file duplicates, photo ownership/deletion and legacy media. TypeScript checking is included in the production build.
 
 Real ONNX encoder inference and reference ranking are exercised by the model-building scripts, with a disjoint reference/held-out image split for the calibration report. Model download provenance and counts are retained. Shared browser initialization still fails with “the gaas-browser node_repl sandbox cannot be disabled”, so visual, browser-WASM and actual device-camera QA could not be completed here. That limit is not represented as a passing browser test.
 
