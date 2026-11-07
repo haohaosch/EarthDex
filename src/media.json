@@ -1,0 +1,115 @@
+{
+  "magpie": {
+    "id": "magpie",
+    "image": "/media/magpie.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Taiwan_blue_magpie_%28Urocissa_caerulea%29_Xindian.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Taiwan_blue_magpie"
+  },
+  "sparrow": {
+    "id": "sparrow",
+    "image": "/media/sparrow.jpg",
+    "artist": "Laitche",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File:Tree_Sparrow_August_2007_Osaka_Japan.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Eurasian_tree_sparrow"
+  },
+  "panda": {
+    "id": "panda",
+    "image": "/media/panda.jpg",
+    "artist": "Sunuwargr",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Red_Panda%2C_Gentle_Tree-Dweller_of_the_Himalayas.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Red_panda"
+  },
+  "kingfisher": {
+    "id": "kingfisher",
+    "image": "/media/kingfisher.jpg",
+    "artist": "Tony Wood",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Alcedo_atthis_-England-8_%28cropped%29.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Common_kingfisher"
+  },
+  "deer": {
+    "id": "deer",
+    "image": "/media/deer.jpg",
+    "artist": "SuOllie",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Formosan_sika_deer_of_Daqiu.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Formosan_sika_deer"
+  },
+  "bear": {
+    "id": "bear",
+    "image": "/media/bear.jpg",
+    "artist": "Abu0804",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Formosan_Black_Bear.JPG",
+    "evidence": "https://en.wikipedia.org/wiki/Formosan_black_bear"
+  },
+  "butterfly": {
+    "id": "butterfly",
+    "image": "/media/butterfly.jpg",
+    "artist": "pjt56 --- If you use the picture outside Wikipedia I would appreciate a short e-mail to pjt56@gmx.net",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Papilio-pjt1.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Papilio_memnon"
+  },
+  "turtle": {
+    "id": "turtle",
+    "image": "/media/turtle.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Green_sea_turtle_%28Chelonia_mydas%29_Moorea.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Green_sea_turtle"
+  },
+  "cat": {
+    "id": "cat",
+    "image": "/media/cat.jpg",
+    "artist": "Abujoy",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Prionailurus_bengalensis_bengalensis_2-D%C3%A9coupe.JPG",
+    "evidence": "https://en.wikipedia.org/wiki/Leopard_cat"
+  },
+  "egret": {
+    "image": "/media/egret.jpg",
+    "artist": "Shantanu Kuveskar",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ALittle%20egret%20%28Egretta%20garzetta%29%20Photograph%20by%20Shantanu%20Kuveskar.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Little_egret"
+  },
+  "barbet": {
+    "image": "/media/barbet.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ATaiwan%20barbet%20%28Psilopogon%20nuchalis%29%20Qianshan.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Taiwan_barbet"
+  },
+  "macaque": {
+    "image": "/media/macaque.jpg",
+    "artist": "Charles J. Sharp",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File%3ATaiwanese%20macaque%20%28Macaca%20cyclopis%29%20female%20Yangmingshan%202.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Formosan_rock_macaque"
+  },
+  "forest": {
+    "image": "/media/forest.jpg",
+    "artist": "Original Soymilk",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%A1%94%E9%AD%94%E5%B7%B4%E4%B9%8B%E8%B5%B7%E9%9C%A7%E7%9A%84%E6%A8%B9%E6%9E%97.jpg",
+    "evidence": "https://en.wikipedia.org/wiki/Taiwan_subtropical_evergreen_forests"
+  }
+}
