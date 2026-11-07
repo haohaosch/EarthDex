@@ -10,7 +10,13 @@ interface Match {mode:'ai'|'pvp';state:BattleState|null;initial:BattleState|null
 interface MatchRow {id:string;revision:number;p0:string;p1:string|null;data:string;updated_at:string}
 const json=(data:unknown,status=200,headers:Record<string,string>={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers}});
 const error=(msg:string,status=400)=>json({error:msg},status);
-const LIMIT=25*1024*1024;
+const PHOTO_LIMIT=10*1024*1024;
+function isPhoto(bytes:Uint8Array,type:string):boolean {
+ if(type==='image/jpeg')return bytes.length>=3&&bytes[0]===255&&bytes[1]===216&&bytes[2]===255;
+ if(type==='image/png')return bytes.length>=8&&[137,80,78,71,13,10,26,10].every((v,i)=>bytes[i]===v);
+ if(type==='image/webp')return bytes.length>=12&&String.fromCharCode(...bytes.slice(0,4))==='RIFF'&&String.fromCharCode(...bytes.slice(8,12))==='WEBP';
+ return false;
+}
 async function readBody(req:Request):Promise<any>{if(Number(req.headers.get('content-length'))>10000)throw Error('請求過大');const text=await req.text();if(text.length>10000)throw Error('請求過大');try{return JSON.parse(text);}catch{throw Error('無效的 JSON');}}
 export async function handleApi(req:Request,env:Env,identity:string):Promise<Response>{
  try{
@@ -29,21 +35,23 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   if(route==='/grant'&&req.method==='POST')return error('正式 GPS 領卡規則待確認，目前不開放發卡。觀察仍可保存。',409);
   if(route==='/observations'&&req.method==='POST'){
    if(profile.observations.length>=100)throw Error('展示版最多保存 100 筆觀察，請先刪除舊紀錄');
-   if(!env.BUCKET)return error('影片儲存尚未配置',503);
+   if(!env.BUCKET)return error('照片儲存尚未配置',503);
    const speciesId=url.searchParams.get('species')||'';speciesById(speciesId);
-   const type=req.headers.get('content-type')||'';if(!/^video\/(webm|mp4|ogg)/.test(type))throw Error('僅支援內建相機錄製的影片');
-   const bytes=await req.arrayBuffer();if(bytes.byteLength===0||bytes.byteLength>LIMIT)throw Error('影片不可為空，且須小於 25 MB');
+   const type=(req.headers.get('content-type')||'').split(';')[0].trim().toLowerCase();if(!['image/jpeg','image/png','image/webp'].includes(type))throw Error('請使用相機拍攝 JPEG、PNG 或 WebP 照片');
+   if(Number(req.headers.get('content-length'))>PHOTO_LIMIT)throw Error('照片不可為空，且須小於 10 MB');
+   const bytes=await req.arrayBuffer();if(bytes.byteLength===0||bytes.byteLength>PHOTO_LIMIT)throw Error('照片不可為空，且須小於 10 MB');
+   if(!isPhoto(new Uint8Array(bytes),type))throw Error('照片格式不正確，請重新拍攝');
    const id=crypto.randomUUID(),key='observations/'+player+'/'+id;
    await env.BUCKET.put(key,bytes,{httpMetadata:{contentType:type}});
    const accuracy=Number(url.searchParams.get('accuracy'));
-   const o:Observation={id,speciesId,at:new Date().toISOString(),status:'manual_review',region:'私人觀察・精確位置不保留',accuracy:Number.isFinite(accuracy)&&accuracy>0?accuracy:null,mediaKey:key,challenge:(url.searchParams.get('challenge')||'').slice(0,120),reason:'物種為玩家提名；尚未配置 AI 模型，等待人工辨識與真實性審核。正式獲卡資格待決。'};
+   const o:Observation={id,speciesId,at:new Date().toISOString(),status:'manual_review',region:'私人觀察・精確位置不保留',accuracy:Number.isFinite(accuracy)&&accuracy>0?accuracy:null,mediaKey:key,mediaType:type,reason:'照片觀察已保存，物種為玩家提名；尚未完成物種驗證。'};
    profile.observations.push(o);try{await saveProfile();}catch(e){await env.BUCKET.delete(key);throw e;}return json(publicProfile(profile),201);
   }
-  const observationRoute=route.match(/^\/observations\/([^/]+)(\/video|\/appeal)?$/);
+  const observationRoute=route.match(/^\/observations\/([^/]+)(\/media|\/video|\/appeal)?$/);
   if(observationRoute){
    const o=profile.observations.find(o=>o.id===observationRoute[1]);if(!o)return error('觀察不存在',404);
    if(req.method==='DELETE'&&!observationRoute[2]){if(o.mediaKey&&env.BUCKET)await env.BUCKET.delete(o.mediaKey);profile.observations=profile.observations.filter(x=>x.id!==o.id);await saveProfile();return json(publicProfile(profile));}
-   if(req.method==='GET'&&observationRoute[2]==='/video'){if(!o.mediaKey||!env.BUCKET)return error('此展示紀錄沒有影片',404);const media=await env.BUCKET.get(o.mediaKey);if(!media)return error('影片不存在',404);return new Response(media.body,{headers:{'Content-Type':media.httpMetadata?.contentType||'video/webm','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});}
+   if(req.method==='GET'&&['/media','/video'].includes(observationRoute[2])){if(!o.mediaKey||!env.BUCKET)return error('此觀察沒有影像',404);if(observationRoute[2]==='/video'&&o.mediaType?.startsWith('image/'))return error('此觀察為照片',404);const media=await env.BUCKET.get(o.mediaKey);if(!media)return error('觀察影像不存在',404);return new Response(media.body,{headers:{'Content-Type':o.mediaType||media.httpMetadata?.contentType||'video/webm','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});}
    if(req.method==='POST'&&observationRoute[2]==='/appeal'){if(o.status!=='rejected')throw Error('只有被拒絕的觀察可提出覆核');o.status='appealed';await saveProfile();return json(publicProfile(profile));}
   }
   if(route==='/matches'&&req.method==='POST'){

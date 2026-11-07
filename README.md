@@ -4,9 +4,9 @@ A playable Traditional Chinese web demo implementing the confirmed core of the a
 
 ## Run
 
-Requires Node 24. Install with `npm ci`, then run `npm run dev`. The dev server uses a local SQLite database and private video files under ignored `.sites-runtime/`. A fresh browser session gets its own HttpOnly session cookie. `npm test` runs engine and server integration tests; `npm run build` type-checks, builds React, and bundles a self-contained Cloudflare Worker into `dist/server/index.js`. `npm run check` runs the type checker.
+Requires Node 24. Install with `npm ci`, then run `npm run dev`. The dev server uses a local SQLite database and private observation media under ignored `.sites-runtime/`. A fresh browser session gets its own HttpOnly session cookie. `npm test` runs engine and server integration tests; `npm run build` type-checks, builds React, and bundles a self-contained Cloudflare Worker into `dist/server/index.js`. `npm run check` runs the type checker.
 
-Managed preview: `sites-preview start /workspace/sites/earthdex`. Ordinary local preview: `npm run dev`, then open the printed URL. Use HTTPS or localhost for camera access. No microphone is requested. No album input is accepted as field evidence.
+Managed preview: `sites-preview start /workspace/sites/earthdex`. Ordinary local preview: `npm run dev`, then open the printed URL. Use HTTPS or localhost for camera access. The built-in camera captures one JPEG photo with preview and retake. No microphone is requested. No album input is accepted as field evidence.
 
 ## Implemented
 
@@ -16,7 +16,7 @@ Managed preview: `sites-preview start /workspace/sites/earthdex`. Ordinary local
 - Server-driven themed AI at three reproducible strategy levels. PVP rooms with server-side turn validation, compare-and-swap revisions, durable state, two-second polling, session reconnect, and resignation.
 - Server-validated quizzes for unknown enemy-origin species still controlled at complete match end. Wrong answers show learning content and rotate questions. Settlement and unlock retries are idempotent. Battle never mints or transfers cards.
 - Twelve initial animal taxa, source-linked knowledge, Wikimedia portrait author/license records, search, filters, overlapping collections, and cosmetic collection completion badges.
-- Camera-only continuous video recording, randomized safe camera prompts, optional GPS accuracy, private review submission, playback, and observation/video deletion. Exact coordinates are not sent or stored. All submissions remain unverified in a manual-review queue.
+- Camera-only single-photo capture, JPEG preview and retake, optional GPS accuracy, private photo storage, viewing, and observation/photo deletion. Previously saved videos remain viewable. Exact coordinates are not sent or stored. New photos remain unverified; saving a photo never automatically grants a card or a dex unlock.
 - Distinct **demo explorer** and **fresh real profile**. Demo includes seven preconstructed fixture cards and observations for testing. This is not a production starter deck or a bypass of field collection rules. Real profiles start empty and cannot battle.
 
 ## Decisions deliberately pending
@@ -27,7 +27,7 @@ See [implementation notes](docs/IMPLEMENTATION.md) for the draft-to-implementati
 
 Cloudflare Worker uses the `DB` D1 binding and `BUCKET` R2 binding. Hosted migrations are generated with `npm run db:generate` into the standard `drizzle/` directory. The same generated SQL is used by the local runtime and integration tests. For local use the same migration is applied once to SQLite automatically. All access is scoped to the server-derived platform identity, with separate `:demo` and `:real` namespaces. Local fallback sessions exist only in the dev adapter; production requires the platform's authenticated user header. Keep the Site owner-private unless its owner explicitly changes access. Another PVP player must have Site access; use separate browser sessions locally to test two people.
 
-The static React build is embedded into the Worker for a self-contained deployment without asset bindings. The hosting manifest declares Site identity and storage. No secrets, videos or local runtime files belong in source control or the artifact. Videos are private, not public assets.
+The static React build is embedded into the Worker for a self-contained deployment without asset bindings. The hosting manifest declares Site identity and storage. No secrets, observation media or local runtime files belong in source control or the artifact. Observation photos and legacy videos are private, not public assets.
 
 ## Reproducible balance exploration
 
