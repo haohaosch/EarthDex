@@ -3,21 +3,21 @@
     "label": "forest",
     "status": "uncertain",
     "speciesId": null,
-    "similarity": 0.40705733774381503,
-    "margin": 0.06833546086391307,
-    "modelVersion": "earthdex-taiwan-bioclip-1",
+    "similarity": 0.4188878217859993,
+    "margin": 0.06529695711877431,
+    "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
     "candidates": [
       {
         "speciesId": "deer",
-        "similarity": 0.40705733774381503
+        "similarity": 0.4188878217859993
       },
       {
-        "speciesId": "sparrow",
-        "similarity": 0.33872187687990196
+        "speciesId": "bear",
+        "similarity": 0.353590864667225
       },
       {
         "speciesId": "boar",
-        "similarity": 0.33237239323426016
+        "similarity": 0.3456492765508667
       }
     ]
   },
@@ -25,21 +25,21 @@
     "label": "blank",
     "status": "uncertain",
     "speciesId": null,
-    "similarity": 0.32465098377097923,
-    "margin": 0.013966575205410448,
-    "modelVersion": "earthdex-taiwan-bioclip-1",
+    "similarity": 0.3260432654788195,
+    "margin": 0.021189375926168874,
+    "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
     "candidates": [
       {
         "speciesId": "ladybird",
-        "similarity": 0.32465098377097923
+        "similarity": 0.3260432654788195
       },
       {
-        "speciesId": "plain-tiger",
-        "similarity": 0.3106844085655688
+        "speciesId": "swallow",
+        "similarity": 0.30485388955265064
       },
       {
-        "speciesId": "white-butterfly",
-        "similarity": 0.3083984730115359
+        "speciesId": "oriental-magpie",
+        "similarity": 0.2963369744180337
       }
     ]
   }

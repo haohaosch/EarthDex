@@ -11,13 +11,13 @@ Node 24：`npm ci` → `npm run dev`，開啟終端顯示的網址。相機需�
 ## 拍照 → 辨識 → 收集
 
 1. 內建相機拍下單張 JPEG，預覽、重拍；不接受相簿輸入。
-2. 裝置端 BioCLIP ViT-B/16 int8 視覺編碼器擷取 512 維影像特徵。伺服器以臺灣動物的影像參考庫與物種名稱特徵比對，回傳物種、相似度及候選。分數不是校準過的正確率。
+2. 裝置端 BioCLIP ViT-B/16（FP16 權重、FP32 運算） 視覺編碼器擷取 512 維影像特徵。伺服器以臺灣動物的影像參考庫與物種名稱特徵比對，回傳物種、相似度及候選。分數不是校準過的正確率。
 3. 不明確或低於門檻的結果直接提示重新拍攝，不進入人工等待佇列，也不發卡。
 4. 明確結果立即顯示物種介紹與一題知識問答。答錯可學習後換題，毋須重拍。
 5. 答對才由伺服器產生新隨機種子，生成卡牌方向值、技能與版本，保存為該實例的快照，再以翻牌動畫揭曉。重載不會重抽；同種可有不同配置。
 6. 同一觀察重送只領一次；相同照片 SHA-256 在同一玩家檔案內不重複建立觀察。所有權、圖鑑與戰場控制者保持分離。
 
-首次辨識需要下載約 83 MiB 的公開 MIT 模型，瀏覽器會嘗試快取。模型在使用者裝置運算，照片不送至 Hugging Face 或第三方推論 API；下載程式與權重需要可連線至 jsDelivr 與 Hugging Face。模型推論與首次載入時間依裝置、網路而異。辨識照片只存入該玩家的私人觀察空間，可查看與刪除。
+首次辨識需要下載約 165 MiB 的公開 MIT 模型，瀏覽器會嘗試快取。新版更換為 WebAssembly 可執行的模型匯出，會自動移除舊版模型快取。模型在使用者裝置運算，照片不送至 Hugging Face 或第三方推論 API；下載程式與權重需要可連線至 jsDelivr 與 Hugging Face。模型推論與首次載入時間依裝置、網路而異。辨識照片只存入該玩家的私人觀察空間，可查看與刪除。
 
 ## 物種與辨識範圍
 
@@ -27,7 +27,7 @@ Node 24：`npm ci` → `npm run dev`，開啟終端顯示的網址。相機需�
 
 ## 模型建立與誠實限制
 
-這是自己建立的臺灣物種比對分類器，搭配現成 BioCLIP 編碼器，**不是從零訓練通用視覺基礎模型**。BioCLIP 出自 Imageomics Institute（Stevens 等，CVPR 2024，MIT）。影像 ONNX int8 轉換由 NaturDex 提供，文字 ONNX 轉換由 Trail Bingo 提供；權重固定到特定 Hugging Face commit。模型與程式來源、方法與評估細節見 [模型說明](docs/MODEL.md)。
+這是自己建立的臺灣物種比對分類器，搭配現成 BioCLIP 編碼器，**不是從零訓練通用視覺基礎模型**。BioCLIP 出自 Imageomics Institute（Stevens 等，CVPR 2024，MIT）。影像與文字的相容 ONNX 轉換由 Trail Bingo 提供（FP16 權重、FP32 運算）；權重固定到特定 Hugging Face commit。模型與程式來源、方法與評估細節見 [模型說明](docs/MODEL.md)。
 
 `build-reference-library.py` 蒐集有授權的公有圖片，`build-text-prototypes.py` 產生名稱向量，`train-recognizer.py` 建立參考庫並執行小型留出測試。測試照片不是使用者真實野外樣本，不能將結果宣稱為一般使用準確率。相似種、幼體、遮擋、拍攝角度及背景都可能影響辨識。
 
@@ -40,3 +40,5 @@ Node 24：`npm ci` → `npm run dev`，開啟終端顯示的網址。相機需�
 對戰仍只授予圖鑑問答資格，不授予／轉移卡牌。重播保存當時實例定義。`capture-0.2` 採 28 點總預算、各方向 1–10，技能成本與方向共用預算。技能條件仍以有來源的特徵標籤過濾，缺少特徵時使用中性技能。
 
 舊版卡牌若未保存能力，維持原 v0.1 物種能力；新收集的卡牌一律使用獨立隨機快照，不會破壞歷史對局內已存的卡牌定義。
+
+瀏覽器推論相容性檢查：先準備固定版本模型（`python scripts/download-vision-model.py`）及 Python Pillow/NumPy，再執行 `npm run test:wasm`。此檢查使用與網站同版的 ONNX Runtime Web 1.22.0 WASM provider，實際將公開海龜照片轉成特徵並確認辨識為綠蠵龜；不是以 Python CPU provider 代替。報告見 `docs/wasm-recognition-check.json`。

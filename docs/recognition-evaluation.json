@@ -1,11 +1,11 @@
 {
-  "model": "BioCLIP ViT-B/16 int8 reference retrieval + taxon-name prototypes",
+  "model": "BioCLIP ViT-B/16 fp16 weights / fp32 math reference retrieval + taxon-name prototypes",
   "referenceImages": 179,
   "taxa": 78,
   "heldOutImages": 66,
-  "heldOutTop1Correct": 61,
-  "heldOutAccepted": 37,
-  "heldOutAcceptedCorrect": 37,
+  "heldOutTop1Correct": 64,
+  "heldOutAccepted": 42,
+  "heldOutAcceptedCorrect": 42,
   "minSimilarity": 0.65,
   "minMargin": 0.035,
   "method": "Last reference per multi-image taxon held out; no user photographs. Small Wikimedia calibration set, not a field accuracy estimate. Thresholds selected using this set; no independent field test.",
@@ -13,528 +13,528 @@
     {
       "actual": "deer",
       "predicted": "deer",
-      "similarity": 0.5708288846466033,
-      "margin": 0.114916363906444,
+      "similarity": 0.5948835528238967,
+      "margin": 0.15295200588749935,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "magpie",
       "predicted": "magpie",
-      "similarity": 0.7036168229457984,
-      "margin": 0.1840486491364095,
+      "similarity": 0.7340959676447982,
+      "margin": 0.1683626880036928,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "bear",
       "predicted": "bear",
-      "similarity": 0.7730657243907386,
-      "margin": 0.18494126475954065,
+      "similarity": 0.7744475059756761,
+      "margin": 0.1747333929575492,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "sparrow",
       "predicted": "sparrow",
-      "similarity": 0.8058594797765865,
-      "margin": 0.2687485199772689,
+      "similarity": 0.8031690917444648,
+      "margin": 0.2657339095102289,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "kingfisher",
       "predicted": "kingfisher",
-      "similarity": 0.7026713197581858,
-      "margin": 0.22673872725902933,
+      "similarity": 0.6986201993026706,
+      "margin": 0.20597826901900573,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "butterfly",
       "predicted": "butterfly",
-      "similarity": 0.6887707649168613,
-      "margin": 0.1297272741039487,
+      "similarity": 0.710122384800963,
+      "margin": 0.17504173473429985,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "turtle",
       "predicted": "turtle",
-      "similarity": 0.5731138397191402,
-      "margin": 0.1811341009457227,
+      "similarity": 0.6533731005620593,
+      "margin": 0.2379141329194544,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "cat",
       "predicted": "cat",
-      "similarity": 0.7063258515207147,
-      "margin": 0.2207852894033438,
+      "similarity": 0.7309252348544042,
+      "margin": 0.23699496457008784,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "macaque",
       "predicted": "macaque",
-      "similarity": 0.5202886883374462,
-      "margin": 0.10319070251767393,
+      "similarity": 0.5603399788194331,
+      "margin": 0.09018349933567338,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "egret",
       "predicted": "egret",
-      "similarity": 0.6780186354933067,
-      "margin": 0.1640232540338762,
+      "similarity": 0.6912853066153382,
+      "margin": 0.17520170368163068,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "bulbul",
       "predicted": "spotted-dove",
-      "similarity": 0.5626135314554769,
-      "margin": 0.04727495181522878,
+      "similarity": 0.5766193930412767,
+      "margin": 0.04252862385421141,
       "correct": false,
       "unsupportedPreferred": false
     },
     {
       "actual": "spotted-dove",
       "predicted": "spotted-dove",
-      "similarity": 0.6425799676193749,
-      "margin": 0.2062332021350617,
+      "similarity": 0.6634163664157461,
+      "margin": 0.19817104235990812,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "red-dove",
       "predicted": "red-dove",
-      "similarity": 0.827172425788107,
-      "margin": 0.27157184168908965,
+      "similarity": 0.8252412768674786,
+      "margin": 0.2611470689469688,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "pigeon",
       "predicted": "egret",
-      "similarity": 0.4187544712128479,
-      "margin": 0.02097516086228013,
+      "similarity": 0.43692677400266844,
+      "margin": 0.03943386167438684,
       "correct": false,
       "unsupportedPreferred": false
     },
     {
       "actual": "drongo",
       "predicted": "drongo",
-      "similarity": 0.5956813094264226,
-      "margin": 0.07878983600343437,
+      "similarity": 0.6145089954311427,
+      "margin": 0.07553688378337164,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "treepie",
       "predicted": "treepie",
-      "similarity": 0.7219343261562645,
-      "margin": 0.17754390003270615,
+      "similarity": 0.7338462860606783,
+      "margin": 0.18673374005685883,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "black-bulbul",
       "predicted": "black-bulbul",
-      "similarity": 0.6121932638114851,
-      "margin": 0.05955960948595851,
+      "similarity": 0.6797190608343808,
+      "margin": 0.03354857600186678,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "crested-myna",
       "predicted": "crested-myna",
-      "similarity": 0.7303510692391602,
-      "margin": 0.015068356495716584,
+      "similarity": 0.7804204336141418,
+      "margin": 0.05092974856668753,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "javan-myna",
       "predicted": "javan-myna",
-      "similarity": 0.6943873235629427,
-      "margin": 0.0901048037344343,
+      "similarity": 0.7360256418301769,
+      "margin": 0.10094330804372831,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "swallow",
       "predicted": "swallow",
-      "similarity": 0.7977356782986823,
-      "margin": 0.22854179847114553,
+      "similarity": 0.7993969950629072,
+      "margin": 0.2439068847246989,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "shrike",
       "predicted": "shrike",
-      "similarity": 0.7319685069471932,
-      "margin": 0.23166784569125864,
+      "similarity": 0.72434326745177,
+      "margin": 0.25145373758295364,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "night-heron",
       "predicted": "night-heron",
-      "similarity": 0.8079287437818844,
-      "margin": 0.2200185967066357,
+      "similarity": 0.8209622797235876,
+      "margin": 0.22266181613146085,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "cattle-egret",
       "predicted": "cattle-egret",
-      "similarity": 0.7531094713973623,
-      "margin": 0.2436706713016792,
+      "similarity": 0.7499456325300442,
+      "margin": 0.24989805286568156,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "great-egret",
-      "predicted": "cattle-egret",
-      "similarity": 0.49548103283368594,
-      "margin": 0.05775125816095983,
-      "correct": false,
+      "predicted": "great-egret",
+      "similarity": 0.44175750758727894,
+      "margin": 0.017715293499995732,
+      "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "grey-heron",
       "predicted": "grey-heron",
-      "similarity": 0.7063649271623887,
-      "margin": 0.04136722229365519,
+      "similarity": 0.7027628216927038,
+      "margin": 0.003221881408214111,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "spotbill",
       "predicted": "spotbill",
-      "similarity": 0.6335889359523827,
-      "margin": 0.16593756337780802,
+      "similarity": 0.6858482584030052,
+      "margin": 0.2239398315044674,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "moorhen",
       "predicted": "moorhen",
-      "similarity": 0.765405909917642,
-      "margin": 0.17938142079444508,
+      "similarity": 0.7809730630213756,
+      "margin": 0.16865291437243224,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "waterhen",
       "predicted": "waterhen",
-      "similarity": 0.772174685484893,
-      "margin": 0.22679693079500485,
+      "similarity": 0.7846316664785637,
+      "margin": 0.24392700823360725,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "kite",
       "predicted": "kite",
-      "similarity": 0.7092323189847807,
-      "margin": 0.26225529090088046,
+      "similarity": 0.7353987474701766,
+      "margin": 0.3094493051131104,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "eagle",
       "predicted": "eagle",
-      "similarity": 0.7559529995342158,
-      "margin": 0.22899978230644058,
+      "similarity": 0.7470645108605809,
+      "margin": 0.23219235431819163,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "owl",
       "predicted": "owl",
-      "similarity": 0.5457804018557728,
-      "margin": 0.08699773878374562,
+      "similarity": 0.5864658225430304,
+      "margin": 0.1327938000884279,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "squirrel",
       "predicted": "squirrel",
-      "similarity": 0.5526597485490994,
-      "margin": 0.132787558789633,
+      "similarity": 0.58315811513972,
+      "margin": 0.15014206862050344,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "civet",
       "predicted": "civet",
-      "similarity": 0.5365112709256395,
-      "margin": 0.07907863973206497,
+      "similarity": 0.6133954790007128,
+      "margin": 0.13818656386002653,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "muntjac",
       "predicted": "muntjac",
-      "similarity": 0.6988655443312943,
-      "margin": 0.22390046809403175,
+      "similarity": 0.7545197987058027,
+      "margin": 0.24426167927600284,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "boar",
       "predicted": "boar",
-      "similarity": 0.5060033843397475,
-      "margin": 0.1257026012526241,
+      "similarity": 0.5353815558213275,
+      "margin": 0.14132095109987886,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "shrew",
       "predicted": "shrew",
-      "similarity": 0.5716218883410832,
-      "margin": 0.12688820768030484,
+      "similarity": 0.6129838211548804,
+      "margin": 0.20321220283000352,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "rat",
-      "predicted": "boar",
-      "similarity": 0.5076160425854988,
-      "margin": 0.025927103601572243,
-      "correct": false,
+      "predicted": "rat",
+      "similarity": 0.5462451881730863,
+      "margin": 0.033910234894852676,
+      "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "domestic-cat",
       "predicted": "domestic-cat",
-      "similarity": 0.6783723650930058,
-      "margin": 0.1109407804143181,
+      "similarity": 0.6739519311451663,
+      "margin": 0.046336114391288596,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "slider",
       "predicted": "slider",
-      "similarity": 0.6180573617996725,
-      "margin": 0.055243142208982854,
+      "similarity": 0.6069993212175857,
+      "margin": 0.039281909620394684,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "softshell",
       "predicted": "softshell",
-      "similarity": 0.6042710716536105,
-      "margin": 0.10993018232056778,
+      "similarity": 0.6058274680041577,
+      "margin": 0.12038425534235103,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "green-snake",
       "predicted": "green-snake",
-      "similarity": 0.7469221650974298,
-      "margin": 0.3479330569352108,
+      "similarity": 0.7395608455113543,
+      "margin": 0.33298381364863494,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "cobra",
       "predicted": "cobra",
-      "similarity": 0.588768346260039,
-      "margin": 0.21439015888454727,
+      "similarity": 0.6090930746114682,
+      "margin": 0.22326072556187837,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "xuthus",
       "predicted": "xuthus",
-      "similarity": 0.6887494402291896,
-      "margin": 0.16353987435564332,
+      "similarity": 0.7377237577050353,
+      "margin": 0.17888437733935725,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "lime-butterfly",
       "predicted": "lime-butterfly",
-      "similarity": 0.7486861005934711,
-      "margin": 0.14737619578118877,
+      "similarity": 0.7725687682817282,
+      "margin": 0.1587574730395218,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "white-butterfly",
       "predicted": "white-butterfly",
-      "similarity": 0.39126098414923827,
-      "margin": 0.009696457070905828,
+      "similarity": 0.34705800787173724,
+      "margin": 0.006679459792407583,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "tiger-butterfly",
       "predicted": "tiger-butterfly",
-      "similarity": 0.7489427909465125,
-      "margin": 0.19321121920038808,
+      "similarity": 0.7694752260453435,
+      "margin": 0.19838345479988784,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "plain-tiger",
       "predicted": "plain-tiger",
-      "similarity": 0.783098029192066,
-      "margin": 0.14822833890783227,
+      "similarity": 0.7865934868474707,
+      "margin": 0.16871515462414655,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "blue-crow",
       "predicted": "blue-crow",
-      "similarity": 0.6753731824540345,
-      "margin": 0.1619837695983053,
+      "similarity": 0.6887307830077134,
+      "margin": 0.19642142293362164,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "paper-kite",
       "predicted": "paper-kite",
-      "similarity": 0.7980596094391702,
-      "margin": 0.1317210722229395,
+      "similarity": 0.8064977451788595,
+      "margin": 0.16088746846665491,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "emigrant",
       "predicted": "emigrant",
-      "similarity": 0.45932384830413153,
-      "margin": 0.09428790044595581,
+      "similarity": 0.4793752028851154,
+      "margin": 0.08935985502677896,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "ladybird",
       "predicted": "ladybird",
-      "similarity": 0.597498610904076,
-      "margin": 0.14154837897348949,
+      "similarity": 0.5734615681219151,
+      "margin": 0.1703604341732698,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "beetle",
       "predicted": "beetle",
-      "similarity": 0.6911766209649676,
-      "margin": 0.2915628622366718,
+      "similarity": 0.6897311050808682,
+      "margin": 0.286416120111313,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "lizard",
       "predicted": "lizard",
-      "similarity": 0.648521273709904,
-      "margin": 0.24507980299690485,
+      "similarity": 0.6633504105710146,
+      "margin": 0.27944392154434156,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "toad",
-      "predicted": "turtle",
-      "similarity": 0.4765578882404867,
-      "margin": 0.033825051821270824,
-      "correct": false,
+      "predicted": "toad",
+      "similarity": 0.5009250896352188,
+      "margin": 0.007860813323681604,
+      "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "tree-frog",
       "predicted": "tree-frog",
-      "similarity": 0.6794469008634838,
-      "margin": 0.2096719776150735,
+      "similarity": 0.7161071405802291,
+      "margin": 0.2614904450490678,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "polytes",
       "predicted": "polytes",
-      "similarity": 0.7721906466664109,
-      "margin": 0.20386970798512738,
+      "similarity": 0.7833323605551836,
+      "margin": 0.22339695596932474,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "golden-spider",
       "predicted": "golden-spider",
-      "similarity": 0.7520282451233502,
-      "margin": 0.3331215203745142,
+      "similarity": 0.7324563335638925,
+      "margin": 0.3133605503838921,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "jumping-spider",
       "predicted": "jumping-spider",
-      "similarity": 0.6311590364095717,
-      "margin": 0.28145516784583363,
+      "similarity": 0.6531897332426592,
+      "margin": 0.31436492584202974,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "dragonfly",
       "predicted": "dragonfly",
-      "similarity": 0.7756787974885174,
-      "margin": 0.32312493536845227,
+      "similarity": 0.7873650245994197,
+      "margin": 0.341366908463244,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "skimmer",
       "predicted": "skimmer",
-      "similarity": 0.7549691862194821,
-      "margin": 0.3054137088448412,
+      "similarity": 0.7795844263822101,
+      "margin": 0.332859567566374,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "mantis",
       "predicted": "mantis",
-      "similarity": 0.6924453372842199,
-      "margin": 0.3227695743846676,
+      "similarity": 0.7203968635588124,
+      "margin": 0.34848750806566337,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "cockroach",
       "predicted": "cockroach",
-      "similarity": 0.6599149510851186,
-      "margin": 0.34062315756567446,
+      "similarity": 0.6658711277119227,
+      "margin": 0.32789888184391336,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "tilapia",
       "predicted": "tilapia",
-      "similarity": 0.5952740099242123,
-      "margin": 0.17582140539896152,
+      "similarity": 0.6030472100061804,
+      "margin": 0.16408898554028806,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "guppy",
       "predicted": "guppy",
-      "similarity": 0.6999307401216999,
-      "margin": 0.31846197967246714,
+      "similarity": 0.7290765432733466,
+      "margin": 0.344545010633054,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "snail",
       "predicted": "snail",
-      "similarity": 0.5629779504284429,
-      "margin": 0.1871746428467208,
+      "similarity": 0.5696467845582139,
+      "margin": 0.19294924915975586,
       "correct": true,
       "unsupportedPreferred": false
     },
     {
       "actual": "apple-snail",
       "predicted": "apple-snail",
-      "similarity": 0.5121040617090035,
-      "margin": 0.08957506560479911,
+      "similarity": 0.5514706693173197,
+      "margin": 0.14141309010123226,
       "correct": true,
       "unsupportedPreferred": false
     }

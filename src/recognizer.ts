@@ -1,9 +1,9 @@
 // BioCLIP runs on-device. Photos are never sent to an external inference provider.
 const RUNTIME='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.wasm.min.mjs';
 let ready:Promise<{ort:any;session:any;config:any}>|null=null;
-async function modelBytes(url:string,onProgress:(label:string,progress:number|null)=>void):Promise<Uint8Array>{
- const cacheName='earthdex-bioclip-v1';let cache:Cache|undefined;
- try{cache=await caches.open(cacheName);const stored=await cache.match(url);if(stored)return new Uint8Array(await stored.arrayBuffer());}catch{}
+async function modelBytes(url:string,cacheName:string,onProgress:(label:string,progress:number|null)=>void):Promise<Uint8Array>{
+ let cache:Cache|undefined;
+ try{await caches.delete('earthdex-bioclip-v1');cache=await caches.open(cacheName);const stored=await cache.match(url);if(stored)return new Uint8Array(await stored.arrayBuffer());}catch{}
  const response=await fetch(url);if(!response.ok)throw Error('視覺模型下載失敗，請檢查網路後重試');
  const length=Number(response.headers.get('content-length')),reader=response.body?.getReader();
  if(!reader){const body=new Uint8Array(await response.arrayBuffer());return body;}
@@ -17,11 +17,11 @@ export async function imageFeatures(photo:Blob,onProgress:(label:string,progress
   onProgress('正在啟動生物視覺辨識模型…',null);
   const ort=await import(/* @vite-ignore */ RUNTIME);
   ort.env.wasm.numThreads=1;ort.env.wasm.wasmPaths='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/';
-  const config=await fetch('/recognition-config.json').then(r=>{if(!r.ok)throw Error('辨識模型設定載入失敗');return r.json();});
-  const bytes=await modelBytes(`https://huggingface.co/${config.id}/resolve/${config.revision}/${config.file}`,onProgress);
+  const config=await fetch('/recognition-config.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('辨識模型設定載入失敗');return r.json();});
+  const bytes=await modelBytes(`https://huggingface.co/${config.id}/resolve/${config.revision}/${config.file}`,config.cacheName||'earthdex-bioclip-fp16-v2',onProgress);
   onProgress('正在準備模型，首次啟動需要一些時間…',null);
   const session=await ort.InferenceSession.create(bytes,{executionProviders:['wasm'],graphOptimizationLevel:'all'});return{ort,session,config};
- })().catch(e=>{ready=null;throw e;});
+ })().catch(e=>{ready=null;console.error('EarthDex model initialization failed',e);const detail=e instanceof Error?e.message:String(e);if(/ConvInteger|MatMulInteger|Could not find an implementation/.test(detail))throw Error('辨識模型需要更新，請重新整理頁面後重試。');if(/memory|allocation|out of bounds/i.test(detail))throw Error('裝置記憶體不足，請關閉其他分頁後重試。');throw Error('辨識引擎啟動失敗，請檢查網路並重新整理後重試。');});
  const {ort,session,config}=await ready;onProgress('正在分析生物特徵與比對物種…',null);
  const url=URL.createObjectURL(photo);
  try{

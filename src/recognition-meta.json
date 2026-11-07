@@ -1,5 +1,6 @@
 {
   "taxa": 78,
   "referenceImages": 179,
-  "version": "earthdex-taiwan-bioclip-1"
+  "version": "earthdex-taiwan-bioclip-fp16-2",
+  "downloadMiB": 165
 }

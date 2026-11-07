@@ -15,13 +15,13 @@ for row in raw:
 texts=json.load(open('.sites-runtime/models/text-prototypes.json'));textmap={r['speciesId']:np.array(r['vector']) for r in texts}
 imageweight=.55;textweight=.45;textscale=2.0
 options=ort.SessionOptions();options.intra_op_num_threads=2;options.inter_op_num_threads=1
-session=ort.InferenceSession('.sites-runtime/models/bioclip-image-int8.onnx',sess_options=options,providers=['CPUExecutionProvider'])
+session=ort.InferenceSession('.sites-runtime/models/image_encoder_fp16.onnx',sess_options=options,providers=['CPUExecutionProvider'])
 mean=np.array([.48145466,.4578275,.40821073],dtype=np.float32);std=np.array([.26862954,.26130258,.27577711],dtype=np.float32)
 def extract(path):
- im=ImageOps.exif_transpose(Image.open(path)).convert('RGB');w,h=im.size;scale=224/min(w,h);im=im.resize((int(w*scale),int(h*scale)),Image.Resampling.BICUBIC);w,h=im.size;im=im.crop(((w-224)//2,(h-224)//2,(w+224)//2,(h+224)//2));x=np.asarray(im,dtype=np.float32)/255;x=((x-mean)/std).transpose(2,0,1)[None,...];v=session.run(None,{'pixels':x})[0][0];return v/np.linalg.norm(v)
+ im=ImageOps.exif_transpose(Image.open(path)).convert('RGB');w,h=im.size;scale=224/min(w,h);im=im.resize((int(w*scale),int(h*scale)),Image.Resampling.BICUBIC);w,h=im.size;im=im.crop(((w-224)//2,(h-224)//2,(w+224)//2,(h+224)//2));x=np.asarray(im,dtype=np.float32)/255;x=((x-mean)/std).transpose(2,0,1)[None,...];v=session.run(None,{'pixel_values':x})[0][0];return v/np.linalg.norm(v)
 features=[];start=time.time()
 for i,row in enumerate(manifest):
- cache=row['path']+'.bioclip.npy'
+ cache=row['path']+'.bioclip-fp16.npy'
  if os.path.exists(cache):v=np.load(cache)
  else:v=extract(row['path']);np.save(cache,v)
  features.append({**row,'vector':np.round(v,7).tolist()})
@@ -42,12 +42,12 @@ for ref in holdout:
 # are reported rather than represented as calibrated species probabilities.
 threshold=.65;margin=.035
 accepted=[r for r in results if r['similarity']>=threshold and r['margin']>=margin and not r['unsupportedPreferred']]
-report={'model':'BioCLIP ViT-B/16 int8 reference retrieval + taxon-name prototypes','referenceImages':len(features),'taxa':len(grouped),'heldOutImages':len(results),'heldOutTop1Correct':sum(r['correct']for r in results),'heldOutAccepted':len(accepted),'heldOutAcceptedCorrect':sum(r['correct']for r in accepted),'minSimilarity':threshold,'minMargin':margin,'method':'Last reference per multi-image taxon held out; no user photographs. Small Wikimedia calibration set, not a field accuracy estimate. Thresholds selected using this set; no independent field test.','results':results}
+report={'model':'BioCLIP ViT-B/16 fp16 weights / fp32 math reference retrieval + taxon-name prototypes','referenceImages':len(features),'taxa':len(grouped),'heldOutImages':len(results),'heldOutTop1Correct':sum(r['correct']for r in results),'heldOutAccepted':len(accepted),'heldOutAcceptedCorrect':sum(r['correct']for r in accepted),'minSimilarity':threshold,'minMargin':margin,'method':'Last reference per multi-image taxon held out; no user photographs. Small Wikimedia calibration set, not a field accuracy estimate. Thresholds selected using this set; no independent field test.','results':results}
 json.dump(report,open('docs/recognition-evaluation.json','w'),indent=2)
 # Production bank may use all licensed reference images. Metrics above are explicitly
 # based on a disjoint split, not self-matches of the production bank.
 public=[{k:r[k]for k in ['speciesId','vector','source','artist','license']}for r in features]
 info=json.load(open('.sites-runtime/models/model-info.json'))
-bank={'version':'earthdex-taiwan-bioclip-1','model':info,'dimensions':512,'minSimilarity':threshold,'minMargin':margin,'references':public,'textPrototypes':texts,'imageWeight':imageweight,'textWeight':textweight,'textScale':textscale,'generatedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
-os.makedirs('engine/recognition',exist_ok=True);json.dump(bank,open('engine/recognition/reference-bank.json','w'),ensure_ascii=False,separators=(',',':'));json.dump({**info,'taxa':len(grouped),'referenceImages':len(features)},open('public/recognition-config.json','w'),indent=2);json.dump({'taxa':len(grouped),'referenceImages':len(features),'version':bank['version']},open('src/recognition-meta.json','w'),indent=2)
+bank={'version':'earthdex-taiwan-bioclip-fp16-2','model':info,'dimensions':512,'minSimilarity':threshold,'minMargin':margin,'references':public,'textPrototypes':texts,'imageWeight':imageweight,'textWeight':textweight,'textScale':textscale,'generatedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
+os.makedirs('engine/recognition',exist_ok=True);json.dump(bank,open('engine/recognition/reference-bank.json','w'),ensure_ascii=False,separators=(',',':'));json.dump({**info,'taxa':len(grouped),'referenceImages':len(features)},open('public/recognition-config.json','w'),indent=2);json.dump({'taxa':len(grouped),'referenceImages':len(features),'version':bank['version'],'downloadMiB':round(info.get('downloadBytes',0)/1048576)},open('src/recognition-meta.json','w'),indent=2)
 print(json.dumps({k:v for k,v in report.items()if k!='results'},indent=2),flush=True)

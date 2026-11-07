@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "provider": "onnxruntime-web 1.22.0 / wasm",
+  "host": "Node.js running the browser WASM provider; not full browser UI",
+  "model": "jsteinshouer/trail-bingo-bioclip-onnx",
+  "revision": "25d50dd481d6a748ce78c8bc513a420bf7d3d279",
+  "file": "image_encoder_fp16.onnx",
+  "dimensions": 512,
+  "norm": 0.99999966833588,
+  "photo": "public/media/turtle.jpg",
+  "recognition": {
+    "status": "identified",
+    "speciesId": "turtle",
+    "similarity": 0.8408959576534614,
+    "margin": 0.4113446326980925,
+    "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
+    "candidates": [
+      {
+        "speciesId": "turtle",
+        "similarity": 0.8408959576534614
+      },
+      {
+        "speciesId": "softshell",
+        "similarity": 0.42955132495536885
+      },
+      {
+        "speciesId": "slider",
+        "similarity": 0.37653097412443637
+      }
+    ]
+  }
+}
