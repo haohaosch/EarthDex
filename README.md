@@ -25,7 +25,7 @@ See [implementation notes](docs/IMPLEMENTATION.md) for the draft-to-implementati
 
 ## Persistence and hosting
 
-Cloudflare Worker uses the `DB` D1 binding and `BUCKET` R2 binding. Apply the schema-only `migrations/0000_initial.sql` once before serving the Worker. For local use the same migration is applied once to SQLite automatically. All access is scoped to the server-derived platform identity, with separate `:demo` and `:real` namespaces. Local fallback sessions exist only in the dev adapter; production requires the platform's authenticated user header. Keep the Site owner-private unless its owner explicitly changes access. Another PVP player must have Site access; use separate browser sessions locally to test two people.
+Cloudflare Worker uses the `DB` D1 binding and `BUCKET` R2 binding. Hosted migrations are generated with `npm run db:generate` into the standard `drizzle/` directory. The local compatibility SQL is `migrations/0000_initial.sql`. For local use the same migration is applied once to SQLite automatically. All access is scoped to the server-derived platform identity, with separate `:demo` and `:real` namespaces. Local fallback sessions exist only in the dev adapter; production requires the platform's authenticated user header. Keep the Site owner-private unless its owner explicitly changes access. Another PVP player must have Site access; use separate browser sessions locally to test two people.
 
 The static React build is embedded into the Worker for a self-contained deployment without asset bindings. The hosting manifest declares Site identity and storage. No secrets, videos or local runtime files belong in source control or the artifact. Videos are private, not public assets.
 

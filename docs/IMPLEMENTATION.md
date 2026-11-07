@@ -42,3 +42,5 @@ Data is persisted as versioned JSON aggregates in a D1/SQLite profile table and 
 ## Verification
 
 `npm test`: engine invariants, 500 generated-card checks, 20 seeded complete games/replays, server-owned deck validation, quiz retries/no card minting, blocked formal rewards, idempotent settlement, two-user PVP and reconnect, cross-origin rejection, private video ownership and deletion. `npm run build` includes strict TypeScript checking. The shared browser initialization failed with “the gaas-browser node_repl sandbox cannot be disabled”; the managed preview relay also timed out. No replacement browser path was used, so visual, device-camera and browser-interaction QA remain unverified in this environment.
+
+The hosted D1 schema is declared in `server/schema.ts` and generated with Drizzle into `drizzle/` (including migration journal/snapshot). `migrations/0000_initial.sql` is the equivalent local bootstrap schema. Neither is executed during hosted request handling.
