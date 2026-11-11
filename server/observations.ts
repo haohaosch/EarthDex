@@ -22,5 +22,5 @@ export function ecologyStats(observations:Observation[],unlocks:string[]=[],demo
 }
 export function publicCampusStats(profiles:Profile[]){
  const observations=profiles.filter(p=>!p.demo).flatMap(p=>p.observations.filter(o=>o.privacy?.visibility==='public'&&o.verification?.campusConfirmed&&['verified','collected'].includes(o.status)));
- const stats=ecologyStats(observations);return {...stats,confirmedSpeciesIds:[...new Set(observations.map(o=>o.speciesId))],completion:undefined,note:'只計入玩家主動公開且審核確認在校內的正式觀察；私人/好友/示範資料不計入。紀錄數不代表族群數量。'};
+ const stats=ecologyStats(observations);return {...stats,confirmedSpeciesIds:[...new Set(observations.map(o=>o.speciesId))],completion:undefined,note:'只計入玩家主動公開且有來源證據確認在校內的正式觀察；私人/好友/示範資料不計入。紀錄數不代表族群數量。'};
 }
