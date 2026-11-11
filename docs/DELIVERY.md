@@ -40,3 +40,14 @@
 最終本機檢查：`npm test` **83/83**；`npm run build` 成功；`git diff --check` 成功。既有Sites source HEAD經帶權限的fetch確認與GitHub基準同為2008db9，沒有覆蓋其他來源變更。Sites source helper未隨此executor提供，使用專案既有隱藏stdin憑證推送程式與檢查後的dist封裝；憑證不寫入source或archive。部署狀態另於完成後記錄。
 
 最新指示變更：2026-11-12使用者要求先不加入人工審核，改由AI自行判斷物種並直接呈現收集問題。最終程式已移除審核UI/API/帳號需求，保留舊資料歷史相容；其餘外部資料、GPS隱私、固定卡牌與對戰修改照常保留。
+
+## 已部署
+
+2026-11-12（Asia/Taipei）既有公開Sites第**13版**部署成功，保留原網址與存取權限：
+https://earthdex-field-journal.dan154210.chatgpt.site
+
+部署程式來源commit：`8987e2ec3feaa5eb8c8acf414029871f63730c86`。原生Sites回傳status=succeeded，deployment ID `appgdep_6af495775e5c8191a6b306d47ae7eaf1`；沒有將預覽失敗當成部署失敗，也沒有將部署成功當成手機QA通過。
+
+前一版同一功能程式已用公開HTTP驗證 session、展示profile（7張official-1卡）、campus/stats、species/sparrow（三來源均matched），證據見 `evidence/deployment-smoke.json`。第13版另外修正統計說明，避免暗示需要人工審核；遊戲政策不變。所有玩家照片/位置仍私人預設，沒有執行正式玩家資料的批次改寫。
+
+功能分支與草稿PR：https://github.com/haohaosch/EarthDex/pull/1 。GitHub main未合併；本報告的後續文件提交不改變已部署程式的來源commit。
