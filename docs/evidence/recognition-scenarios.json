@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-11T16:02:21.305Z",
+  "checkedAt": "2026-11-11T16:13:19.438Z",
   "provider": "onnxruntime-web 1.22.0 / wasm",
   "host": "Node, not actual browser UI",
   "scenarios": [
@@ -29,9 +29,10 @@
           }
         ],
         "lowConfidence": true,
-        "selectionPolicy": "review-required"
+        "selectionPolicy": "highest"
       },
-      "cardWithheld": true
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
     },
     {
       "name": "blank",
@@ -59,9 +60,10 @@
           }
         ],
         "lowConfidence": true,
-        "selectionPolicy": "review-required"
+        "selectionPolicy": "highest"
       },
-      "cardWithheld": true
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
     },
     {
       "name": "blurred-turtle",
@@ -89,9 +91,10 @@
           }
         ],
         "lowConfidence": true,
-        "selectionPolicy": "review-required"
+        "selectionPolicy": "highest"
       },
-      "cardWithheld": true
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
     },
     {
       "name": "multiple-animals",
@@ -119,9 +122,10 @@
           }
         ],
         "lowConfidence": false,
-        "selectionPolicy": "review-required"
+        "selectionPolicy": "highest"
       },
-      "cardWithheld": true
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
     },
     {
       "name": "unknown-elephant",
@@ -149,10 +153,11 @@
           }
         ],
         "lowConfidence": true,
-        "selectionPolicy": "review-required"
+        "selectionPolicy": "highest"
       },
-      "cardWithheld": true
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
     }
   ],
-  "note": "Safety-gate checks only. Blur/multi-animal/unknown detection is not claimed; even high similarity remains a candidate pending human confirmation."
+  "note": "Latest user policy: highest AI candidate leads directly to quiz, even when uncertain. Blur/multi-animal/unknown detection is not claimed. These scenarios can yield game cards after a correct answer and are never scientific verification."
 }

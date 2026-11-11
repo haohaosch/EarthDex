@@ -4,6 +4,7 @@ import * as ort from 'onnxruntime-web/wasm';
 import{readFileSync,writeFileSync}from'node:fs';
 import assert from 'node:assert/strict';
 import {collectObservation} from '../server/field.ts';
+import {speciesById} from '../engine/species.ts';
 import {newProfile} from '../server/model.ts';
 import {rankSpecies} from '../engine/recognition/rank.ts';
 assert.equal(JSON.parse(readFileSync('node_modules/onnxruntime-web/package.json','utf8')).version,'1.22.0');
@@ -25,10 +26,12 @@ try{
   const buffer=readFileSync('.sites-runtime/models/'+scenario.file),pixels=new Float32Array(buffer.buffer,buffer.byteOffset,buffer.byteLength/4);
   const output=await session.run({[config.input]:new ort.Tensor('float32',pixels,[1,3,224,224])});
   const recognition=rankSpecies(output[config.output].data,JSON.parse(readFileSync('engine/recognition/reference-bank.json','utf8')));
-  const p=newProfile(false);p.observations.push({id:scenario.name,speciesId:recognition.speciesId,at:new Date().toISOString(),status:'manual_review',region:'unknown',accuracy:null,recognition,reason:'candidate only'});
-  assert.throws(()=>collectObservation(p,scenario.name,0,0),/尚未經審核/);assert.equal(p.instances.length,0);
-  scenarios.push({...scenario,recognition,cardWithheld:true});
+  const p=newProfile(false);p.observations.push({id:scenario.name,speciesId:recognition.speciesId,at:new Date().toISOString(),status:'identified',region:'unknown',accuracy:null,recognition,reason:'candidate only'});
+  const species=speciesById(recognition.speciesId);const wrong=(species.questions[0].answer+1)%species.questions[0].options.length;
+  assert.equal(collectObservation(p,scenario.name,wrong,0).card,null);assert.equal(p.instances.length,0);
+  const correct=species.questions[1%species.questions.length].answer;assert.ok(collectObservation(p,scenario.name,correct,1).card);assert.equal(p.instances.length,1);assert.equal(p.observations[0].verification,undefined);
+  scenarios.push({...scenario,recognition,mintedOnlyAfterCorrectQuiz:true,scientificVerification:false});
  }
- writeFileSync('docs/evidence/recognition-scenarios.json',JSON.stringify({checkedAt:new Date().toISOString(),provider:'onnxruntime-web 1.22.0 / wasm',host:'Node, not actual browser UI',scenarios,note:'Safety-gate checks only. Blur/multi-animal/unknown detection is not claimed; even high similarity remains a candidate pending human confirmation.'},null,2)+'\n');
+ writeFileSync('docs/evidence/recognition-scenarios.json',JSON.stringify({checkedAt:new Date().toISOString(),provider:'onnxruntime-web 1.22.0 / wasm',host:'Node, not actual browser UI',scenarios,note:'Latest user policy: highest AI candidate leads directly to quiz, even when uncertain. Blur/multi-animal/unknown detection is not claimed. These scenarios can yield game cards after a correct answer and are never scientific verification.'},null,2)+'\n');
  await session.release();
 }catch(e){if(process.argv.includes('--expect-unsupported')){console.log(JSON.stringify({status:'reproduced',provider:'onnxruntime-web 1.22.0 / wasm',error:String(e)}));}else{throw e;}}

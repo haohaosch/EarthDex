@@ -1,14 +1,13 @@
-# 辨識與人工確認
+# AI比對與收集問答
 
-BioCLIP/參考影像與文字向量保留，排序仍回前三名；低於既有校準閾值、前兩名過近、或文字偏好不受支援時 status=uncertain。分數不是正確率，閾值不是經野外驗證的真偽分類器。為避免模糊、多動物、非動物與庫外照片發卡，**所有新觀察先保留為模型候選**，需審核員確認才能取問答。這個保守展示流程不宣稱已完成自動辨識可靠性驗證。
+依使用者2026-11-12（Asia/Taipei）最新指示：**先不加入人工審核，讓AI自行判斷像哪個物種，直接呈現該物種的收集卡牌問答**。此設定取代最初需求中的人工申請/審核門檻，無需設定管理員帳號。
 
-- `GET /api/review-config` 回 configured/reviewer，不列出管理員識別碼。
-- `POST /api/observations/:id/review` `{note}`：玩家自己的申請。已送出不重建；退回可 `/appeal` 重新送出，保留歷史。沒有審核員配置回503，UI明示無法送出，不假裝正在審核。
-- `GET /api/reviews`：只有 `REVIEWER_IDS` 中的可信平台帳號，最多50個含待審核項目的 profile。
-- `GET /api/reviews/media?owner=…&observation=…`：僅授權審核員、僅待審申請，可看申請者同意的私人影像。
-- `POST /api/reviews/decide`：`owner, revision, observationId, reviewId, decision, speciesId, basis, campusConfirmed, zone`。只能處理 pending，審核結果以 profile CAS 一次寫回；approved 仍不發卡，答對問答後才發；rejected 可補件覆核。
-- 網站頂部選單對已配置審核員顯示工作台，可看照片、改正候選、填依據、確認/退回。校內位置確認是獨立核對，不能只看探索矩形。審核員不能藉此直接建立卡牌。
+保留BioCLIP、參考庫與前三候選。伺服器重新排序後選最高分物種，同分固定物種ID排序。低於既有校準閾值、前兩名過近或文字偏好不受支援時，recognition.status仍標uncertain，UI提示重拍或依目前候選繼續問答；低分不阻擋遊戲問答。分數不是正確率，問答不證明照片物種正確。
 
-部署時設定 `REVIEWER_IDS` 為逗號分隔的 Sites 可信帳號 ID；本機以 `EARTHDEX_REVIEWER_IDS` 傳給 local runtime。不要使用客戶端提交的角色。Sites 必須由可信入口覆寫 `oai-authenticated-user-id`（沿用既有身份架構）；獨立 Worker 部署前必須補上真實身分驗證，不可直接相信外部同名 header。
+新觀察status=identified（AI遊戲辨識），立即可用 `/api/field-quiz`。`POST /api/collect` 必須傳自己的observationId、有效choice與目前attempt；題目/物種由伺服器儲存的比對決定，客戶端speciesId不能發卡或更換題目。答錯無卡，先學習再換題；答對一次CAS保存卡牌、解鎖、徽章、觀察collected；重送只回同張卡。官方能力固定同版，不恢復舊的隨機能力政策。
 
-本機自動化覆蓋申請/權限/私人影像/退回/覆核/改判/寫回/舊候選不自動發卡/過期revision/重複決定/問答重試/同觀察僅一張。非動物真實特徵 fixture 必須 uncertain。模糊、多目標與未知分類的真人識別能力仍須現場資料評估，保守審核門檻不能被當作已測得的模型準確率。
+不建立人工審核工作台/權限/申請或管理者配置；舊 `/review`/`appeal` 回410說明新流程，其餘管理端點不存在。歷史review欄位保留但不作遊戲門檻；有伺服器recognition的舊pending觀察可直接續答，不批次覆寫歷史。沒有recognition的舊影片仍需重新拍照。
+
+AI遊戲收集不建立 `verification`，不計入經專業確認的校內成果。私人地圖與AI遊戲收集統計會反映玩家紀錄；正式確認物種/觀察仍需獨立有來源證據，不能將AI結果或單純位於周邊矩形當成校內確認。
+
+自動化覆蓋最高分/同分/低分提示、立即出題、答錯重學、過期題目、越權、偽造物種ID、同照片重領、舊pending相容、固定能力及科學統計隔離。真實WASM的森林/灰圖/模糊/多動物/庫外象情境顯示模型仍可能指派錯誤最高分；依此次遊戲政策答對問答可以領遊戲卡，報告明確記為未經科學確認，不宣稱模型能可靠排除這些照片。

@@ -17,21 +17,21 @@ npm run build
 
 真實外部來源檢查：`NODE_USE_ENV_PROXY=1 node --import tsx scripts/check-sources.ts`（Cloud Node需環境proxy；一般本機可省略前綴），證據在 `docs/evidence/live-sources.json`。獨立離線單元測試用錄製資料/明確標Mock，沒有冒充即時API。
 
-真實 WASM：準備 Python Pillow/NumPy，`python scripts/download-vision-model.py` 後執行 `npm run test:wasm`。固定 MIT BioCLIP 模型約165MiB，權重與工作照片在忽略版控的 `.sites-runtime/models/`。此測試實際執行 ONNX Runtime Web 1.22.0 的 WASM provider，包含正常海龜、森林、灰圖、合成模糊/多動物、庫外象照片及不發卡門檻；是 Node 執行瀏覽器WASM，**不是手機或瀏覽器UI驗收**。
+真實 WASM：準備 Python Pillow/NumPy，`python scripts/download-vision-model.py` 後執行 `npm run test:wasm`。固定 MIT BioCLIP 模型約165MiB，權重與工作照片在忽略版控的 `.sites-runtime/models/`。此測試實際執行 ONNX Runtime Web 1.22.0 的 WASM provider，包含正常海龜、森林、灰圖、合成模糊/多動物、庫外象照片及答題後收集流程；是 Node 執行瀏覽器WASM，**不是手機或瀏覽器UI驗收**。
 
 ## 目前流程
 
 1. 內建相機拍單張JPEG、預覽、重拍；可選擇授權GPS，也可略過。照片不送往第三方公民科學平台或推論服務。
 2. 裝置端BioCLIP擷取512維特徵，伺服器排序前三候選。分數是相似度，不是正確率；低分/接近候選標不確定。目前只支援參考庫內的有限臺灣動物，不宣稱全球辨識。
-3. 所有新照片先保存為**待確認候選**；申請後，授權審核員可核對照片/位置、改正物種或退回補件。**物種確認前不發卡**。
-4. 審核確認後，答對一題才原子儲存卡牌與解鎖；答錯可先學習再換題，重送不重複領卡。玩家送的物種ID/答案不能跳過確認。刪除觀察不會刪卡或重置已領照片指紋。
+3. 依最新指示**先不加入人工審核**。伺服器採用AI最高分物種，直接呈現該物種的收集問答；低分或相似候選提示不確定，可重拍或繼續目前問答。
+4. 答對一題才原子儲存卡牌與解鎖；答錯可先學習再換題，重送不重複領卡。玩家送的物種ID不能改變伺服器已選物種或直接發卡。刪除觀察不會刪卡或重置已領照片指紋。
 5. 同物種同 `official-1` 版能力完全一致，28點含方向及技能成本；只有已核對來源的生態標籤可選技能，資料不足中性。既有取得快照/ID保留，收藏可查看歷史能力；新對戰統一官方版，舊對局/重播保留當時快照。
 
 ## 校園、地圖與統計
 
-頂部選單新增逢甲校園、觀察地圖與統計。12種校園候選由可維護JSON管理，無虛構校內調查證據；自己的經審核校內紀錄及正式公開紀錄另有確認狀態。一次解鎖會更新逢甲、臺灣、鳥類等重疊系列及徽章。物種詳情保留本地文字/照片授權，另從後端查GBIF、iNaturalist、TaiCOL的分類/英文名/對照/來源時間；未知保育資訊明示未知。
+頂部選單新增逢甲校園、觀察地圖與統計。12種校園候選由可維護JSON管理，無虛構校內調查證據；有來源確認的校內紀錄與AI遊戲解鎖分開呈現。一次解鎖會更新逢甲、臺灣、鳥類等重疊系列及徽章。物種詳情保留本地文字/照片授權，另從後端查GBIF、iNaturalist、TaiCOL的分類/英文名/對照/來源時間；未知保育資訊明示未知。
 
-私人地圖用 Leaflet/OpenStreetMap，支援日期、物種、地區篩選及定位精度顯示。公開/指定好友投影只含約略位置；敏感物種無座標，照片仍私人。校園公開統計只計正式、主動公開、人工確認且位置另經確認的校內觀察，排除示範資料。觀察筆數不是動物個體或族群數量。
+私人地圖用 Leaflet/OpenStreetMap，支援日期、物種、地區篩選及定位精度顯示。公開/指定好友投影只含約略位置；敏感物種無座標，照片仍私人。校園公開統計只計正式、主動公開、有來源確認且位置核對過的校內觀察；AI遊戲收集另有類群/日期/月統計，排除示範資料。觀察筆數不是動物個體或族群數量。
 
 1km/7天的矛盾仍待規則決定；獨立模組可比較三種語義，**沒有啟用正式距離/時間領卡限制**。GPS不等於真實性證明。
 
@@ -43,7 +43,7 @@ npm run build
 
 ## 部署與身份
 
-沿用既有 Sites 身份與公開展示。匿名訪客使用 Secure/HttpOnly Cookie 隔離示範資料，正式檔案需登入；本機資料在 `.sites-runtime/`。正式部署需 DB/BUCKET 綁定。`REVIEWER_IDS` 是審核員可信Sites身份ID清單（逗號分隔），在 Sites runtime 設定；本機使用 `EARTHDEX_REVIEWER_IDS`。未配置時UI明示無法送出審核申請，照片仍保存，示範對戰可用。不要將審核權限交由前端控制，也不要把私密runtime資料提交Git。獨立部署到非Sites Worker時，需自行接可信身分驗證，不能相信使用者自行送的身份header。
+沿用既有 Sites 身份與公開展示。匿名訪客使用 Secure/HttpOnly Cookie 隔離示範資料，正式檔案需登入；本機資料在 `.sites-runtime/`。正式部署需 DB/BUCKET 綁定。目前沒有人工審核或管理員設定需求；不要把私密runtime資料提交Git。獨立部署到非Sites Worker時，需自行接可信身分驗證，不能相信使用者自行送的身份header。
 
 無SQL結構遷移，新增欄位為向後相容JSON；不直接批次覆寫正式玩家資料。部署前備份D1與R2，回復流程見下方文件。
 
@@ -51,7 +51,7 @@ npm run build
 
 - [修改前稽核](docs/CURRENT_STATUS.md)、[交付狀態與TODO](docs/DELIVERY.md)
 - [資料模型與API](docs/API_AND_DATA.md)、[外部來源](docs/BIODIVERSITY.md)
-- [校園候選](docs/CAMPUS.md)、[辨識與審核](docs/REVIEW.md)、[模型來源](docs/MODEL.md)
+- [校園候選](docs/CAMPUS.md)、[AI辨識與問答政策](docs/REVIEW.md)、[模型來源](docs/MODEL.md)
 - [GPS/分享/未決重複規則](docs/OBSERVATIONS.md)、[卡牌與對戰](docs/CARDS_AND_BATTLE.md)
 - [相容/備份/回復](docs/MIGRATION.md)、[實作摘要](docs/IMPLEMENTATION.md)
 

@@ -9,20 +9,16 @@
 |POST /api/deck|5張自己持有的不同實例、每種至多2|
 |GET /api/species/:id|本地穩定ID的三來源整合資料，保守分類對照|
 |GET /api/species/:id/occurrences|固定逢甲周邊探索區的外部公開觀察；不算玩家紀錄|
-|POST /api/observations|相機照片；x-earthdex-features=2048byte Float32 base64；可選x-earthdex-location JSON。伺服器重排候選/驗檔案/指紋，初始manual_review|
+|POST /api/observations|相機照片；x-earthdex-features=2048byte Float32 base64；可選x-earthdex-location JSON。伺服器重排候選/驗檔案/指紋，初始identified（AI遊戲候選）|
 |GET /api/observations/:id/media|自己的私人照片/舊影片|
 |DELETE /api/observations/:id|刪自己的觀察、GPS與影像，保留卡牌/取得快照/照片領取指紋|
-|POST /api/observations/:id/review或appeal|自己的人工確認申請；無審核員503，不虛構送出|
-|GET /api/review-config|是否配置審核員、自己是否有權限|
-|GET /api/reviews|審核allowlist限定的待審項目，最多50個profile|
-|GET /api/reviews/media|僅審核員、僅已申請pending影像|
-|POST /api/reviews/decide|審核員、reviewId/revision/CAS、確認/退回與依據|
-|GET /api/field-quiz?observation=…|必須已有人工作為物種確認；不回正確答案|
-|POST /api/collect|observationId/choice/attempt；確認與題目版本驗證；同profile一次CAS寫 observation+card+unlock+badges；冪等|
+|POST /api/observations/:id/review或appeal|已停用人工流程，回410；無管理員API|
+|GET /api/field-quiz?observation=…|伺服器AI已選物種，直接出題；不回正確答案|
+|POST /api/collect|observationId/choice/attempt；伺服器比對紀錄與題目版本驗證；同profile一次CAS寫 observation+card+unlock+badges；冪等|
 |POST /api/observations/:id/privacy|自己的private/public/friends與明確身份allowlist|
 |GET /api/observation-map|自己的精確位置；from/to/species/region篩選及個人統計|
 |GET /api/shared?owner=…|僅公開或授權好友投影；一般物種約略座標、敏感物種null、無私照|
-|GET /api/campus/stats|正式+public+人工確認+校內複核才聚合；不包括示範/私人/好友|
+|GET /api/campus/stats|正式+public+有來源確認+校內位置核對才聚合；不包括示範/私人/好友|
 |POST /api/matches|合法持有牌組、新AI/PVP官方一致能力；存initial/state快照|
 |POST /api/matches/:id/join|另一身份、房間未滿、官方平衡版本相符|
 |POST /api/matches/:id/move|自己身份/回合/revision/手牌ID/空格，server applyMove；AI同引擎|
@@ -38,8 +34,8 @@ Profile保留：demo、instances、unlocks、observations、deck、pending、att
 
 - Observation.location?：lat/lng/accuracy/measuredAt（私人）；locationFlags?：低精度/舊定位/異常速度；privacy?：visibility/shareWith，缺省private。
 - Observation.recognition：候選speciesId/similarity/margin/modelVersion，加可選candidates/lowConfidence，非確認。
-- Observation.review?：id/status/requestedAt/note/history[]；history含審核者/時間/決定/依據，覆核不覆寫歷史。
-- Observation.verification?：method=human、confirmed speciesId、時間、依據、campusConfirmed與粗區域zone；只有授權審核流程可建立。舊verified字串本身不算新制度的確認。
+- Observation.review?：只保留舊版欄位與history，不建立新審核工作台或申請。
+- Observation.verification?：method=human、confirmed speciesId、時間、依據、campusConfirmed與粗區域zone；僅相容原有有來源確認資料，新AI收集不建立此欄位。舊verified字串本身不算科學確認。
 - CardInstance.definition?：取得快照不改寫；photoHash?：已領照片指紋，刪觀察仍保留；API的definition為目前官方投影，acquiredDefinition是取得時能力。
 - BattleState.balanceVersion?：新對局能力版；ruleVersion保留。initial/state/卡牌controller/spent/events/moves均為可重播快照。
 
