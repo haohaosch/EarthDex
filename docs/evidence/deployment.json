@@ -1,12 +1,19 @@
 {
- "version":13,
- "status":"succeeded",
- "url":"https://earthdex-field-journal.dan154210.chatgpt.site",
- "sourceCommit":"8987e2ec3feaa5eb8c8acf414029871f63730c86",
- "deploymentId":"appgdep_6af495775e5c8191a6b306d47ae7eaf1",
- "updatedAt":"2026-11-11T16:19:25.942019+00:00",
- "access":"public (unchanged)",
- "environmentRevision":0,
- "browserUIVerified":false,
- "manualReviewEnabled":false
+  "version": 14,
+  "status": "succeeded",
+  "url": "https://earthdex-field-journal.dan154210.chatgpt.site",
+  "sourceCommit": "80460dee0b6cf15f19d48292203dd2ef6adb5035",
+  "deploymentId": "appgdep_6af49aee7b0c819193dcb1de9f13b45f",
+  "updatedAt": "2026-11-11T16:42:40.030770+00:00",
+  "httpCheckedAt": "2026-11-11T16:43:10.455073+00:00",
+  "access": "public (unchanged)",
+  "environmentRevision": 0,
+  "browserUIVerified": false,
+  "manualReviewEnabled": false,
+  "stylesheetChecks": {
+    "campusLockedTheme": true,
+    "cardLandingAnimation": true,
+    "skillBonusNumbers": true,
+    "reducedMotion": true
+  }
 }
