@@ -29,6 +29,6 @@
       }
     ],
     "lowConfidence": false,
-    "selectionPolicy": "highest"
+    "selectionPolicy": "review-required"
   }
 }

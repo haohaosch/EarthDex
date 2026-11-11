@@ -1,3 +1,6 @@
+import {validateLocation,locationFlags} from '../engine/observation-policy';
+import {inCampusView,sharedObservation,setPrivacy,filterObservations,ecologyStats,publicCampusStats} from './observations';
+import {requestReview,decideReview,reviewers} from './review';
 import {SourceClient,integrateSpecies,externalOccurrences} from './biodiversity';
 import {applyMove,chooseAI,createBattle,dexCandidates,hash,score,generateCard} from '../engine/engine';
 import {definition,SPECIES,speciesById,SERIES} from '../engine/species';
@@ -9,7 +12,7 @@ import {fieldQuestion,collectObservation} from './field';
 export interface Statement {bind(...args:unknown[]):Statement;first<T=any>():Promise<T|null>;all():Promise<any>;run():Promise<any>}
 export interface Database {prepare(sql:string):Statement;batch(statements:Statement[]):Promise<any>}
 export interface Bucket {put(key:string,value:ArrayBuffer|Uint8Array,options?:any):Promise<any>;get(key:string):Promise<any>;delete(key:string):Promise<any>}
-export interface Env {DB:Database;BUCKET?:Bucket}
+export interface Env {DB:Database;BUCKET?:Bucket;REVIEWER_IDS?:string}
 interface Match {mode:'ai'|'pvp';state:BattleState|null;initial:BattleState|null;difficulty:string;theme:string;settled:string[];createdAt:string;finishedBy?:Side}
 interface MatchRow {id:string;revision:number;p0:string;p1:string|null;data:string;updated_at:string}
 const json=(data:unknown,status=200,headers:Record<string,string>={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers}});
@@ -29,23 +32,50 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   const url=new URL(req.url),route=url.pathname.slice(4),demo=url.searchParams.get('profile')!=='real',player=identity+(demo?':demo':':real');
   // Reject cross-origin writes. The platform strips/splices authenticated identity headers.
   if(req.method!=='GET'&&req.headers.get('origin')&&req.headers.get('origin')!==url.origin)return error('來源驗證失敗',403);
+  if(route==='/review-config'&&req.method==='GET')return json({configured:reviewers(env.REVIEWER_IDS).length>0,reviewer:reviewers(env.REVIEWER_IDS).includes(identity)});
+  if(route.startsWith('/reviews')){
+   if(!reviewers(env.REVIEWER_IDS).includes(identity))return error('需要審核員權限',403);
+   if(route==='/reviews'&&req.method==='GET'){
+    const rows=await env.DB.prepare("SELECT id,data,revision FROM profiles WHERE EXISTS (SELECT 1 FROM json_each(profiles.data,'$.observations') o WHERE json_extract(o.value,'$.review.status')='pending') ORDER BY id LIMIT 50").all();
+    return json({requests:rows.results.flatMap((r:any)=>{const p=JSON.parse(r.data) as Profile;return p.observations.filter(o=>o.review?.status==='pending').map(({mediaKey,...o})=>({owner:r.id,revision:r.revision,demo:p.demo,observation:o}));}),limit:50});
+   }
+   const body=req.method==='POST'?await readBody(req):null,owner=body?.owner||url.searchParams.get('owner');
+   if(typeof owner!=='string')throw Error('缺少目標檔案');
+   const r=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(owner).first<{data:string;revision:number}>();if(!r)return error('申請不存在',404);const p=JSON.parse(r.data) as Profile;
+   if(route==='/reviews/media'&&req.method==='GET'){
+    const o=p.observations.find(o=>o.id===url.searchParams.get('observation')&&o.review?.status==='pending');if(!o?.mediaKey||!env.BUCKET)return error('申請影像不存在',404);const media=await env.BUCKET.get(o.mediaKey);if(!media)return error('影像不存在',404);return new Response(media.body,{headers:{'Content-Type':o.mediaType||'application/octet-stream','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
+   }
+   if(route==='/reviews/decide'&&req.method==='POST'){
+    if(body.revision!==r.revision)return error('申請已更新，請重新載入',409);decideReview(p,body,identity);
+    const result=await env.DB.prepare('UPDATE profiles SET data=?,revision=revision+1 WHERE id=? AND revision=?').bind(JSON.stringify(p),owner,r.revision).run();if(!(result.meta?.changes??result.changes))return error('申請已更新，請重試',409);return json({ok:true});
+   }
+   return error('找不到審核 API',404);
+  }
   if(route.startsWith('/species/')&&req.method==='GET'){
    const m=route.match(/^\/species\/([a-z0-9-]+)(\/occurrences)?$/);if(!m)return error('物種不存在',404);speciesById(m[1]);
    let client=sourceClients.get(env.DB);if(!client){client=new SourceClient({bucket:env.BUCKET});sourceClients.set(env.DB,client);}
    return json(m[2]?await externalOccurrences(m[1],{south:24.174,west:120.64,north:24.185,east:120.653},client):await integrateSpecies(m[1],client));
+  }
+  if(route==='/campus/stats'&&req.method==='GET'){
+   const rows=await env.DB.prepare("SELECT data FROM profiles WHERE json_extract(data,'$.demo')=0").all();return json(publicCampusStats(rows.results.map((r:any)=>JSON.parse(r.data))));
+  }
+  if(route==='/shared'&&req.method==='GET'){
+   const owner=url.searchParams.get('owner');if(!owner)return error('缺少分享檔案',400);const row=await env.DB.prepare('SELECT data FROM profiles WHERE id=?').bind(owner).first<{data:string}>();if(!row)return error('沒有可存取的分享',404);
+   const p=JSON.parse(row.data) as Profile;const observations=p.observations.filter(o=>o.privacy?.visibility==='public'||o.privacy?.visibility==='friends'&&o.privacy.shareWith.includes(identity)).map(sharedObservation);if(!observations.length)return error('沒有可存取的分享',404);return json({observations});
   }
   let row=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(player).first<{data:string;revision:number}>();
   if(!row){const p=newProfile(demo);await env.DB.prepare('INSERT OR IGNORE INTO profiles(id,revision,data) VALUES(?,0,?)').bind(player,JSON.stringify(p)).run();row=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(player).first();}
   let profile:Profile=JSON.parse(row!.data);profile.revision=row!.revision;
   const saveProfile=async()=>{const result=await env.DB.prepare('UPDATE profiles SET data=?,revision=revision+1 WHERE id=? AND revision=?').bind(JSON.stringify(profile),player,profile.revision).run();if(!(result.meta?.changes??result.changes))throw Error('資料已更新，請重新載入後再試');profile.revision++;};
   for(let attempt=0;normalizeFlatCards(profile);attempt++){try{await saveProfile();break;}catch(e){if(attempt>=2)throw e;const latest=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(player).first<{data:string;revision:number}>();if(!latest)throw e;profile=JSON.parse(latest.data);profile.revision=latest.revision;}}
-  if(route==='/profile'&&req.method==='GET')return json(publicProfile(profile));
-  if(route==='/deck'&&req.method==='POST'){const body=await readBody(req);if(!Array.isArray(body.ids))throw Error('牌組格式錯誤');ownedDeck(profile,body.ids);profile.deck=body.ids;await saveProfile();return json(publicProfile(profile));}
+  if(route==='/observation-map'&&req.method==='GET'){const observations=filterObservations(profile.observations,url.searchParams);return json({observations,stats:ecologyStats(observations,profile.unlocks.map(u=>u.speciesId),profile.demo),repeatPolicyEnforced:false});}
+  if(route==='/profile'&&req.method==='GET')return json(publicProfile(profile,player));
+  if(route==='/deck'&&req.method==='POST'){const body=await readBody(req);if(!Array.isArray(body.ids))throw Error('牌組格式錯誤');ownedDeck(profile,body.ids);profile.deck=body.ids;await saveProfile();return json(publicProfile(profile,player));}
   if(route==='/quiz'&&req.method==='GET'){const pending=profile.pending.find(p=>p.speciesId===url.searchParams.get('species'));if(!pending)throw Error('沒有問答資格');const s=speciesById(pending.speciesId),q=s.questions[pending.attempt%s.questions.length];return json({speciesId:s.id,q:q.q,options:q.options,attempt:pending.attempt});}
-  if(route==='/quiz'&&req.method==='POST'){const body=await readBody(req);const result=answerQuiz(profile,body.speciesId,body.choice);for(const series of SERIES){if(series.ids.every(id=>profile.unlocks.some(u=>u.speciesId===id))&&!profile.badges.includes(series.id))profile.badges.push(series.id);}await saveProfile();return json({...result,profile:publicProfile(profile)});}
+  if(route==='/quiz'&&req.method==='POST'){const body=await readBody(req);const result=answerQuiz(profile,body.speciesId,body.choice);for(const series of SERIES){if(series.ids.every(id=>profile.unlocks.some(u=>u.speciesId===id))&&!profile.badges.includes(series.id))profile.badges.push(series.id);}await saveProfile();return json({...result,profile:publicProfile(profile,player)});}
   if(route==='/grant'&&req.method==='POST')return error('選擇最高分物種後，答對觀察問答才會收入卡牌。',409);
   if(route==='/field-quiz'&&req.method==='GET')return json(fieldQuestion(profile,url.searchParams.get('observation')||''));
-  if(route==='/collect'&&req.method==='POST'){const body=await readBody(req);const result=collectObservation(profile,body.observationId,body.choice,body.attempt);if(!result.alreadyCollected)await saveProfile();return json({...result,profile:publicProfile(profile)});}
+  if(route==='/collect'&&req.method==='POST'){const body=await readBody(req);const result=collectObservation(profile,body.observationId,body.choice,body.attempt);if(!result.alreadyCollected)await saveProfile();return json({...result,profile:publicProfile(profile,player)});}
   if(route==='/observations'&&req.method==='POST'){
    if(!env.BUCKET)return error('照片儲存尚未配置',503);
    const encoded=req.headers.get('x-earthdex-features')||'';let vector:Float32Array;try{const binary=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));if(binary.byteLength!==2048)throw Error();vector=new Float32Array(binary.buffer);}catch{throw Error('影像辨識特徵缺失，請重新辨識');}
@@ -57,20 +87,22 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
    if(!isPhoto(new Uint8Array(bytes),type))throw Error('照片格式不正確，請重新拍攝');
    const imageHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(b=>b.toString(16).padStart(2,'0')).join('');
    const duplicate=profile.observations.find(o=>o.imageHash===imageHash);
-   if(duplicate){const existing=profile.instances.find(c=>c.observationId===duplicate.id);return json({recognition:duplicate.recognition?{...recognition,...duplicate.recognition,speciesId:duplicate.speciesId}:recognition,profile:publicProfile(profile),observationId:duplicate.id,alreadyCollected:!!existing,card:existing?publicProfile(profile).instances.find(c=>c.id===existing.id):null});}
+   if(duplicate){const existing=profile.instances.find(c=>c.observationId===duplicate.id);return json({recognition:duplicate.recognition?{...recognition,...duplicate.recognition,speciesId:duplicate.speciesId}:recognition,profile:publicProfile(profile,player),observationId:duplicate.id,alreadyCollected:!!existing,card:existing?publicProfile(profile,player).instances.find(c=>c.id===existing.id):null});}
    if(profile.observations.length>=100)throw Error('展示版最多保存 100 筆觀察，請先刪除舊紀錄');
+   const locationHeader=req.headers.get('x-earthdex-location');if(locationHeader&&locationHeader.length>1000)throw Error('GPS 資料過大');
+   const location=locationHeader?validateLocation(JSON.parse(locationHeader)):undefined;const flags=location?locationFlags(location,profile.observations.map(o=>({speciesId:o.speciesId,at:o.at,location:o.location}))):[];
    const id=crypto.randomUUID(),key='observations/'+player+'/'+id;
    await env.BUCKET.put(key,bytes,{httpMetadata:{contentType:type}});
-   const accuracy=Number(url.searchParams.get('accuracy'));
-   const o:Observation={id,speciesId,at:new Date().toISOString(),status:'identified',region:'私人觀察・精確位置不保留',accuracy:Number.isFinite(accuracy)&&accuracy>0?accuracy:null,mediaKey:key,mediaType:type,imageHash,recognition:{speciesId,similarity:recognition.similarity,margin:recognition.margin,modelVersion:recognition.modelVersion},quizAttempt:0,reason:'影像比對已辨識物種；完成知識問答即可收集卡牌。'};
-   profile.observations.push(o);try{await saveProfile();return json({recognition,profile:publicProfile(profile),observationId:id,alreadyCollected:false,card:null},201);}catch(e){await env.BUCKET.delete(key);throw e;}
+   const o:Observation={id,speciesId,at:new Date().toISOString(),status:'manual_review',review:{id:crypto.randomUUID(),status:'unrequested',history:[]},region:location?(inCampusView(location)?'fcu-vicinity':'outside-campus'):'unknown',accuracy:location?.accuracy||null,location,locationFlags:flags,privacy:{visibility:'private',shareWith:[]},mediaKey:key,mediaType:type,imageHash,recognition:{speciesId,similarity:recognition.similarity,margin:recognition.margin,modelVersion:recognition.modelVersion,candidates:recognition.candidates,lowConfidence:recognition.lowConfidence},quizAttempt:0,reason:'影像結果僅為候選，需人工確認後才可回答問答並收集卡牌。'};
+   profile.observations.push(o);try{await saveProfile();return json({recognition,profile:publicProfile(profile,player),observationId:id,alreadyCollected:false,card:null},201);}catch(e){await env.BUCKET.delete(key);throw e;}
   }
-  const observationRoute=route.match(/^\/observations\/([^/]+)(\/media|\/video|\/appeal)?$/);
+  const observationRoute=route.match(/^\/observations\/([^/]+)(\/media|\/video|\/appeal|\/review|\/privacy)?$/);
   if(observationRoute){
    const o=profile.observations.find(o=>o.id===observationRoute[1]);if(!o)return error('觀察不存在',404);
-   if(req.method==='DELETE'&&!observationRoute[2]){if(o.mediaKey&&env.BUCKET)await env.BUCKET.delete(o.mediaKey);profile.observations=profile.observations.filter(x=>x.id!==o.id);await saveProfile();return json(publicProfile(profile));}
+   if(req.method==='POST'&&observationRoute[2]==='/privacy'){setPrivacy(o,await readBody(req));await saveProfile();return json(publicProfile(profile,player));}
+   if(req.method==='DELETE'&&!observationRoute[2]){profile.observations=profile.observations.filter(x=>x.id!==o.id);await saveProfile();if(o.mediaKey&&env.BUCKET)await env.BUCKET.delete(o.mediaKey);return json(publicProfile(profile,player));}
    if(req.method==='GET'&&['/media','/video'].includes(observationRoute[2])){if(!o.mediaKey||!env.BUCKET)return error('此觀察沒有影像',404);if(observationRoute[2]==='/video'&&o.mediaType?.startsWith('image/'))return error('此觀察為照片',404);const media=await env.BUCKET.get(o.mediaKey);if(!media)return error('觀察影像不存在',404);return new Response(media.body,{headers:{'Content-Type':o.mediaType||media.httpMetadata?.contentType||'video/webm','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});}
-   if(req.method==='POST'&&observationRoute[2]==='/appeal'){if(o.status!=='rejected')throw Error('只有被拒絕的觀察可提出覆核');o.status='appealed';await saveProfile();return json(publicProfile(profile));}
+   if(req.method==='POST'&&['/review','/appeal'].includes(observationRoute[2])){if(!reviewers(env.REVIEWER_IDS).length)return error('尚未配置審核員，申請未送出；觀察已安全保存，請聯絡專案管理者設定 REVIEWER_IDS。',503);const body=await readBody(req);requestReview(o,body.note||'');await saveProfile();return json(publicProfile(profile,player));}
   }
   if(route==='/matches'&&req.method==='POST'){
    const body=await readBody(req);const mode=body.mode==='pvp'?'pvp':'ai',difficulty=['easy','normal','hard'].includes(body.difficulty)?body.difficulty:'normal',theme=body.theme==='global'?'global':'taiwan';const deck=ownedDeck(profile).map(c=>({...c,id:'p0:'+c.id}));
@@ -111,7 +143,7 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
      if(match.finishedBy===undefined)for(const speciesId of dexCandidates(match.state,side,profile.unlocks.map(u=>u.speciesId)))if(!profile.pending.some(q=>q.speciesId===speciesId))profile.pending.push({speciesId,matchId:mrow.id,attempt:0,source:'battle'});
      profile.badges.push(marker);await saveProfile();
     }
-    return json({profile:publicProfile(profile),score:score(match.state)});
+    return json({profile:publicProfile(profile,player),score:score(match.state)});
    }
   }
   return error('找不到此 API',404);

@@ -1,9 +1,12 @@
+import type {GeoPoint} from '../engine/observation-policy';
+import type {ObservationPrivacy} from './observations';
+import type {ReviewRequest} from './review';
 import type {CardInstance} from '../engine/types';
 import {definition,SPECIES,speciesById} from '../engine/species';
 import {validateDeck,generateCard,hash,redistributeDirections} from '../engine/engine';
 import type {CardDefinition} from '../engine/types';
 export type ObservationStatus='submitted'|'manual_review'|'verified'|'rejected'|'appealed'|'identified'|'collected'|'saved';
-export interface Observation {id:string;speciesId:string;at:string;status:ObservationStatus;region:string;accuracy:number|null;mediaKey?:string;mediaType?:string;reason:string;challenge?:string;imageHash?:string;recognition?:{speciesId:string;similarity:number;margin:number;modelVersion:string};quizAttempt?:number}
+export interface Observation {id:string;speciesId:string;at:string;status:ObservationStatus;region:string;accuracy:number|null;mediaKey?:string;mediaType?:string;reason:string;challenge?:string;imageHash?:string;recognition?:{speciesId:string;similarity:number;margin:number;modelVersion:string;candidates?:{speciesId:string;similarity:number}[];lowConfidence?:boolean};quizAttempt?:number;location?:GeoPoint;locationFlags?:string[];privacy?:ObservationPrivacy;review?:ReviewRequest;verification?:{method:'human';at:string;speciesId:string;basis:string;campusConfirmed:boolean;zone:string}}
 export interface Unlock {speciesId:string;method:'field'|'battle';at:string}
 export interface PendingQuiz {speciesId:string;matchId:string;attempt:number;source:'battle'}
 export interface Profile {demo:boolean;instances:CardInstance[];unlocks:Unlock[];observations:Observation[];deck:string[];pending:PendingQuiz[];attempts:{speciesId:string;question:number;correct:boolean;at:string}[];badges:string[];stats:{matches:number;wins:number}; revision:number}
@@ -28,6 +31,6 @@ export function answerQuiz(p:Profile,speciesId:string,choice:number){
  // Answering battle questions can never mint owned card instances.
  return {correct,explanation:q.explanation};
 }
-export function publicProfile(p:Profile){return {...p,instances:p.instances.map(c=>({...c,definition:instanceDefinition(c)})),observations:p.observations.map(({mediaKey,...o})=>{const mediaType=mediaKey?(o.mediaType||'video/webm'):undefined;return {...o,...(['manual_review','appealed'].includes(o.status)?{status:'saved' as const,reason:'舊版觀察紀錄；可重新拍照進行即時辨識與收集。'}:{}),mediaType,hasPhoto:!!mediaKey&&mediaType!.startsWith('image/'),hasVideo:!!mediaKey&&mediaType!.startsWith('video/')};})};}
+export function publicProfile(p:Profile,sharingCode?:string){return {...p,sharingCode,instances:p.instances.map(c=>({...c,definition:instanceDefinition(c)})),observations:p.observations.map(({mediaKey,...o})=>{const mediaType=mediaKey?(o.mediaType||'video/webm'):undefined;return {...o,mediaType,hasPhoto:!!mediaKey&&mediaType!.startsWith('image/'),hasVideo:!!mediaKey&&mediaType!.startsWith('video/')};})};}
 export type PublicProfile=ReturnType<typeof publicProfile>;
 export function safeCatalog(){return SPECIES.map(s=>({...s,questions:undefined}));}
