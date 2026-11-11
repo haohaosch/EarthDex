@@ -1,3 +1,4 @@
+import {CAMPUS} from './campus';
 import {generateCard} from './engine';
 import taiwanData from './taiwan-data.json';
 export interface Species {id:string;name:string;latin:string;group:string;habitat:string;region:string;tags:string[];sensitive:boolean;description:string;fact:string;questions:{q:string;options:string[];answer:number;explanation:string}[]}
@@ -19,4 +20,4 @@ export const SPECIES:Species[]=[
 ];
 export const speciesById=(id:string)=>{const s=SPECIES.find(s=>s.id===id);if(!s)throw Error('未知物種');return s;};
 export const definition=(id:string)=>generateCard(id,speciesById(id).tags);
-export const SERIES=[{id:'taiwan',name:'島嶼的鄰居',subtitle:'TAIWAN COLLECTION',description:'從城市到山林，重新認識這座島上的生命。',ids:SPECIES.filter(s=>s.region==='臺灣').map(s=>s.id),color:'#e5ecdf',icon:'island'}, {id:'birds',name:'聽見羽翼的聲音',subtitle:'BIRDS OF TAIWAN',description:'抬頭看看，那些陪伴我們的自由身影。',ids:SPECIES.filter(s=>s.group==='鳥類').map(s=>s.id),color:'#e4edf0',icon:'bird'}, {id:'forest',name:'走進綠色深處',subtitle:'FOREST EXPLORERS',description:'沿著林間小徑，遇見森林的守護者。',ids:['deer','magpie','bear','cat','macaque','barbet','squirrel','civet','muntjac','owl'],color:'#eee8dd',icon:'tree'}];
+export const SERIES=[{id:'fcu',name:CAMPUS.name,subtitle:'FENG CHIA CAMPUS',description:CAMPUS.note,ids:CAMPUS.candidates.map(c=>c.speciesId),color:'#dcebdc',icon:'tree'},{id:'taiwan',name:'島嶼的鄰居',subtitle:'TAIWAN COLLECTION',description:'從城市到山林，重新認識這座島上的生命。',ids:SPECIES.filter(s=>s.region==='臺灣').map(s=>s.id),color:'#e5ecdf',icon:'island'}, {id:'birds',name:'聽見羽翼的聲音',subtitle:'BIRDS OF TAIWAN',description:'抬頭看看，那些陪伴我們的自由身影。',ids:SPECIES.filter(s=>s.group==='鳥類').map(s=>s.id),color:'#e4edf0',icon:'bird'}, {id:'forest',name:'走進綠色深處',subtitle:'FOREST EXPLORERS',description:'沿著林間小徑，遇見森林的守護者。',ids:['deer','magpie','bear','cat','macaque','barbet','squirrel','civet','muntjac','owl'],color:'#eee8dd',icon:'tree'}];
