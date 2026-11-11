@@ -8,7 +8,7 @@ export async function handleVisitorApi(request:Request,env:Env,authenticatedId=r
  const token=supplied&&UUID.test(supplied)?supplied:crypto.randomUUID();
  const identity=authenticatedId||'guest:'+token;
  let response:Response;
- if(url.pathname==='/api/session')response=new Response(JSON.stringify({authenticated:!guest,guest}),{status:request.method==='GET'?200:405,headers:{'Content-Type':'application/json; charset=utf-8'}});
+ if(url.pathname==='/api/session')response=new Response(JSON.stringify({authenticated:!guest,guest,userId:guest?null:authenticatedId}),{status:request.method==='GET'?200:405,headers:{'Content-Type':'application/json; charset=utf-8'}});
  else if(guest&&url.searchParams.get('profile')==='real')response=new Response(JSON.stringify({error:'正式檔案需要登入；你可以免登入體驗公開展示版。'}),{status:401,headers:{'Content-Type':'application/json; charset=utf-8'}});
  else response=await handleApi(request,env,identity);
  response.headers.set('Cache-Control','private, no-store');response.headers.set('Vary','Cookie');

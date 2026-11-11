@@ -6,9 +6,9 @@ import {SourceClient,integrateSpecies,externalOccurrences} from './biodiversity'
 import {applyMove,chooseAI,createBattle,dexCandidates,hash,score,generateCard} from '../engine/engine';
 import {definition,SPECIES,speciesById,SERIES} from '../engine/species';
 import type {BattleState,Move,Side} from '../engine/types';
-import {answerQuiz,newProfile,ownedDeck,publicProfile,normalizeFlatCards,type Profile,type Observation} from './model';
+import {answerQuiz,newProfile,ownedDeck,publicProfile,type Profile,type Observation} from './model';
 import referenceBank from '../engine/recognition/reference-bank.json';
-import {rankSpecies,normalizedVector,type ReferenceBank} from '../engine/recognition/rank';
+import {rankSpecies,type ReferenceBank} from '../engine/recognition/rank';
 import {fieldQuestion,collectObservation} from './field';
 export interface Statement {bind(...args:unknown[]):Statement;first<T=any>():Promise<T|null>;all():Promise<any>;run():Promise<any>}
 export interface Database {prepare(sql:string):Statement;batch(statements:Statement[]):Promise<any>}
@@ -73,8 +73,8 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   if(route==='/profile'&&req.method==='GET')return json(publicProfile(profile,player));
   if(route==='/deck'&&req.method==='POST'){const body=await readBody(req);if(!Array.isArray(body.ids))throw Error('牌組格式錯誤');ownedDeck(profile,body.ids);profile.deck=body.ids;await saveProfile();return json(publicProfile(profile,player));}
   if(route==='/quiz'&&req.method==='GET'){const pending=profile.pending.find(p=>p.speciesId===url.searchParams.get('species'));if(!pending)throw Error('沒有問答資格');const s=speciesById(pending.speciesId),q=s.questions[pending.attempt%s.questions.length];return json({speciesId:s.id,q:q.q,options:q.options,attempt:pending.attempt});}
-  if(route==='/quiz'&&req.method==='POST'){const body=await readBody(req);const result=answerQuiz(profile,body.speciesId,body.choice);for(const series of SERIES){if(series.ids.every(id=>profile.unlocks.some(u=>u.speciesId===id))&&!profile.badges.includes(series.id))profile.badges.push(series.id);}await saveProfile();const publicData=publicProfile(profile,player);return json({...result,profile:publicData});}
-  if(route==='/grant'&&req.method==='POST')return error('選擇最高分物種後，答對觀察問答才會收入卡牌。',409);
+  if(route==='/quiz'&&req.method==='POST'){const body=await readBody(req);if(body.attempt!==profile.pending.find(q=>q.speciesId===body.speciesId)?.attempt)return error('題目版本已更新，請重新載入',409);const result=answerQuiz(profile,body.speciesId,body.choice);for(const series of SERIES){if(series.ids.every(id=>profile.unlocks.some(u=>u.speciesId===id))&&!profile.badges.includes(series.id))profile.badges.push(series.id);}await saveProfile();const publicData=publicProfile(profile,player);return json({...result,profile:publicData});}
+  if(route==='/grant'&&req.method==='POST')return error('需經授權審核確認物種，再答對觀察問答才會收入卡牌。',409);
   if(route==='/field-quiz'&&req.method==='GET')return json(fieldQuestion(profile,url.searchParams.get('observation')||''));
   if(route==='/collect'&&req.method==='POST'){const body=await readBody(req);const result=collectObservation(profile,body.observationId,body.choice,body.attempt);if(!result.alreadyCollected)await saveProfile();const publicData=publicProfile(profile,player);return json({...result,...('card' in result?{card:result.card?publicData.instances.find(c=>c.id===result.card!.id):null}:{}),profile:publicData});}
   if(route==='/observations'&&req.method==='POST'){
@@ -89,7 +89,7 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
    const imageHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(b=>b.toString(16).padStart(2,'0')).join('');
    const duplicate=profile.observations.find(o=>o.imageHash===imageHash);
    if(!duplicate&&profile.instances.some(c=>c.photoHash===imageHash))return error('這張照片已領過卡牌；刪除觀察不會重置領取紀錄。',409);
-   if(duplicate){const existing=profile.instances.find(c=>c.observationId===duplicate.id);return json({recognition:duplicate.recognition?{...recognition,...duplicate.recognition,speciesId:duplicate.speciesId}:recognition,profile:publicProfile(profile,player),observationId:duplicate.id,alreadyCollected:!!existing,card:existing?publicProfile(profile,player).instances.find(c=>c.id===existing.id):null});}
+   if(duplicate){const existing=profile.instances.find(c=>c.observationId===duplicate.id);return json({recognition:duplicate.recognition?{...recognition,...duplicate.recognition,speciesId:duplicate.recognition.speciesId}:recognition,profile:publicProfile(profile,player),observationId:duplicate.id,alreadyCollected:!!existing,card:existing?publicProfile(profile,player).instances.find(c=>c.id===existing.id):null});}
    if(profile.observations.length>=100)throw Error('展示版最多保存 100 筆觀察，請先刪除舊紀錄');
    const locationHeader=req.headers.get('x-earthdex-location');if(locationHeader&&locationHeader.length>1000)throw Error('GPS 資料過大');
    const location=locationHeader?validateLocation(JSON.parse(locationHeader)):undefined;const flags=location?locationFlags(location,profile.observations.map(o=>({speciesId:o.speciesId,at:o.at,location:o.location}))):[];
@@ -102,7 +102,7 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   if(observationRoute){
    const o=profile.observations.find(o=>o.id===observationRoute[1]);if(!o)return error('觀察不存在',404);
    if(req.method==='POST'&&observationRoute[2]==='/privacy'){setPrivacy(o,await readBody(req));await saveProfile();return json(publicProfile(profile,player));}
-   if(req.method==='DELETE'&&!observationRoute[2]){profile.observations=profile.observations.filter(x=>x.id!==o.id);await saveProfile();if(o.mediaKey&&env.BUCKET)await env.BUCKET.delete(o.mediaKey);return json(publicProfile(profile,player));}
+   if(req.method==='DELETE'&&!observationRoute[2]){const granted=profile.instances.find(c=>c.observationId===o.id);if(granted&&o.imageHash)granted.photoHash=o.imageHash;profile.observations=profile.observations.filter(x=>x.id!==o.id);await saveProfile();if(o.mediaKey&&env.BUCKET)await env.BUCKET.delete(o.mediaKey);return json(publicProfile(profile,player));}
    if(req.method==='GET'&&['/media','/video'].includes(observationRoute[2])){if(!o.mediaKey||!env.BUCKET)return error('此觀察沒有影像',404);if(observationRoute[2]==='/video'&&o.mediaType?.startsWith('image/'))return error('此觀察為照片',404);const media=await env.BUCKET.get(o.mediaKey);if(!media)return error('觀察影像不存在',404);return new Response(media.body,{headers:{'Content-Type':o.mediaType||media.httpMetadata?.contentType||'video/webm','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});}
    if(req.method==='POST'&&['/review','/appeal'].includes(observationRoute[2])){if(!reviewers(env.REVIEWER_IDS).length)return error('尚未配置審核員，申請未送出；觀察已安全保存，請聯絡專案管理者設定 REVIEWER_IDS。',503);const body=await readBody(req);requestReview(o,body.note||'');await saveProfile();return json(publicProfile(profile,player));}
   }
