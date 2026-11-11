@@ -1,3 +1,4 @@
+import {officialDefinition} from '../engine/official-cards';
 import type {GeoPoint} from '../engine/observation-policy';
 import type {ObservationPrivacy} from './observations';
 import type {ReviewRequest} from './review';
@@ -12,7 +13,7 @@ export interface PendingQuiz {speciesId:string;matchId:string;attempt:number;sou
 export interface Profile {demo:boolean;instances:CardInstance[];unlocks:Unlock[];observations:Observation[];deck:string[];pending:PendingQuiz[];attempts:{speciesId:string;question:number;correct:boolean;at:string}[];badges:string[];stats:{matches:number;wins:number}; revision:number}
 export function instanceDefinition(c:CardInstance):CardDefinition {return c.definition||definition(c.speciesId);}
 export function normalizeFlatCards(profile:Profile):boolean {let changed=false;for(const card of profile.instances){const before=instanceDefinition(card);if(new Set(before.values).size!==1)continue;card.balanceHistory=[...(card.balanceHistory||[]),structuredClone(before)];card.definition=redistributeDirections(before,hash(card.id+':varied-0.3'));changed=true;}return changed;}
-export function mintCard(speciesId:string,observationId:string):CardInstance {const id=crypto.randomUUID(),seed=crypto.getRandomValues(new Uint32Array(1))[0];return {id,speciesId,observationId,grantId:crypto.randomUUID(),issuedAt:new Date().toISOString(),definition:generateCard(speciesId,speciesById(speciesId).tags,'capture-0.3',seed)};}
+export function mintCard(speciesId:string,observationId:string):CardInstance {return {id:crypto.randomUUID(),speciesId,observationId,grantId:crypto.randomUUID(),issuedAt:new Date().toISOString(),definition:officialDefinition(speciesId)};}
 export function newProfile(demo:boolean):Profile{
  const profile:Profile={demo,instances:[],unlocks:[],observations:[],deck:[],pending:[],attempts:[],badges:[],stats:{matches:0,wins:0},revision:0};
  if(demo){
@@ -22,7 +23,7 @@ export function newProfile(demo:boolean):Profile{
  }
  return profile;
 }
-export function ownedDeck(p:Profile,ids:string[]=p.deck){const cards=ids.map(id=>{const c=p.instances.find(c=>c.id===id);if(!c)throw Error('卡牌不屬於目前玩家');return c;});const errors=validateDeck(cards);if(errors.length)throw Error(errors.join('；'));return cards.map(c=>({id:c.id,definition:instanceDefinition(c)}));}
+export function ownedDeck(p:Profile,ids:string[]=p.deck){const cards=ids.map(id=>{const c=p.instances.find(c=>c.id===id);if(!c)throw Error('卡牌不屬於目前玩家');return c;});const errors=validateDeck(cards);if(errors.length)throw Error(errors.join('；'));return cards.map(c=>({id:c.id,definition:officialDefinition(c.speciesId)}));}
 export function answerQuiz(p:Profile,speciesId:string,choice:number){
  const pending=p.pending.find(q=>q.speciesId===speciesId);if(!pending)throw Error('沒有此物種的問答資格');
  const species=speciesById(speciesId),index=pending.attempt%species.questions.length,q=species.questions[index];if(!Number.isInteger(choice)||choice<0||choice>=q.options.length)throw Error('答案格式不正確');
@@ -31,6 +32,6 @@ export function answerQuiz(p:Profile,speciesId:string,choice:number){
  // Answering battle questions can never mint owned card instances.
  return {correct,explanation:q.explanation};
 }
-export function publicProfile(p:Profile,sharingCode?:string){return {...p,sharingCode,instances:p.instances.map(c=>({...c,definition:instanceDefinition(c)})),observations:p.observations.map(({mediaKey,...o})=>{const mediaType=mediaKey?(o.mediaType||'video/webm'):undefined;return {...o,mediaType,hasPhoto:!!mediaKey&&mediaType!.startsWith('image/'),hasVideo:!!mediaKey&&mediaType!.startsWith('video/')};})};}
+export function publicProfile(p:Profile,sharingCode?:string){return {...p,sharingCode,instances:p.instances.map(c=>({...c,acquiredDefinition:instanceDefinition(c),definition:officialDefinition(c.speciesId)})),observations:p.observations.map(({mediaKey,...o})=>{const mediaType=mediaKey?(o.mediaType||'video/webm'):undefined;return {...o,mediaType,hasPhoto:!!mediaKey&&mediaType!.startsWith('image/'),hasVideo:!!mediaKey&&mediaType!.startsWith('video/')};})};}
 export type PublicProfile=ReturnType<typeof publicProfile>;
 export function safeCatalog(){return SPECIES.map(s=>({...s,questions:undefined}));}

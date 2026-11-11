@@ -40,16 +40,19 @@ export function validateDeck(cards:{speciesId:string;id?:string}[]):string[] {
 }
 export function createBattle(decks:[{id:string;definition:CardDefinition}[],{id:string;definition:CardDefinition}[]],seed=1,first:Side=(hash(String(seed))%2) as Side):BattleState {
  for(const deck of decks){const e=validateDeck(deck.map(c=>({id:c.id,speciesId:c.definition.speciesId})));if(e.length)throw Error(e.join('；'));}
+ for(const {definition:d} of decks.flat())if(!d||d.values.length!==4||!d.values.every(n=>Number.isInteger(n)&&n>=1&&n<=10)||!SKILLS[d.skill])throw Error('卡牌定義無效');
+ const versions=new Set(decks.flat().map(c=>c.definition.version));if([...versions].some(v=>v.startsWith('official-'))&&versions.size!==1)throw Error('對戰卡牌平衡版本必須一致');
  if(new Set(decks.flat().map(c=>c.id)).size!==10)throw Error('對局卡牌 ID 必須唯一');
- return {ruleVersion:RULE_VERSION,seed,first,turn:first,board:Array(9).fill(null),hands:decks.map((d,i)=>d.map(c=>({...structuredClone(c),originalOwner:i as Side,controller:i as Side,spent:0}))) as [BattleCard[],BattleCard[]],events:[],moves:[],status:'playing',winner:null};
+ return {ruleVersion:RULE_VERSION,...(versions.size===1?{balanceVersion:[...versions][0]}:{}),seed,first,turn:first,board:Array(9).fill(null),hands:decks.map((d,i)=>d.map(c=>({...structuredClone(c),originalOwner:i as Side,controller:i as Side,spent:0}))) as [BattleCard[],BattleCard[]],events:[],moves:[],status:'playing',winner:null};
 }
 export function neighbors(cell:number):[number,number,number][] {
  const a:[number,number,number][]=[];if(cell>=3)a.push([cell-3,0,2]);if(cell%3<2)a.push([cell+1,1,3]);if(cell<6)a.push([cell+3,2,0]);if(cell%3>0)a.push([cell-1,3,1]);return a;
 }
 function modifier(s:BattleState,cell:number,attacking:boolean):number {
- const c=s.board[cell]!;switch(c.definition.skill){case 'cooperate': return Math.min(2,neighbors(cell).filter(([i])=>s.board[i]?.controller===c.controller).length);case 'ambush': return attacking&&[0,2,6,8].includes(cell)?2:0;case 'camouflage':return attacking?0:1;default:return 0;}
+ const c=s.board[cell]!;switch(c.definition.skill){case 'cooperate': return Math.min(SKILLS.cooperate.stackCap,neighbors(cell).filter(([i])=>s.board[i]?.controller===c.controller).length);case 'ambush': return attacking&&[0,2,6,8].includes(cell)?SKILLS.ambush.stackCap:0;case 'camouflage':return attacking?0:SKILLS.camouflage.stackCap;default:return 0;}
 }
 export function applyMove(input:BattleState,move:Move):BattleState {
+ if(input.ruleVersion!==RULE_VERSION)throw Error('不支援的戰鬥規則版本');
  if(input.status!=='playing')throw Error('對局已結束');
  if(move.side!==input.turn)throw Error('尚未輪到你');
  if(!Number.isInteger(move.cell)||move.cell<0||move.cell>8||input.board[move.cell])throw Error('請選擇未佔據的格子');

@@ -78,11 +78,12 @@ test('previously identified observations require a question and are collected on
  assert.equal((await call('/collect','alice',{observationId:'older-discovery'},'real')).status,400);
  await approve('older-discovery');const collected=await call('/collect','alice',{observationId:'older-discovery',choice:speciesById('sparrow').questions[0].answer,attempt:0},'real');assert.equal(collected.status,200);assert.equal(collected.data.profile.instances.length,1);assert.equal(collected.data.profile.attempts.length,1);assert.equal(collected.data.profile.observations[0].status,'collected');const retry=await call('/collect','alice',{observationId:'older-discovery'},'real');assert.deepEqual(retry.data.card,collected.data.card);
 });
-test('flat legacy cards are repaired once with their original configuration preserved',async()=>{
+test('legacy acquired snapshots are retained without read-time writes while official abilities are projected',async()=>{
  await call('/profile');const row=await env.DB.prepare('SELECT data FROM profiles WHERE id=?').bind('alice:demo').first();const p=JSON.parse(row!.data);p.instances[0].definition={...definition(p.instances[0].speciesId),skill:'neutral',values:[7,7,7,7]};
  await env.DB.prepare('UPDATE profiles SET data=? WHERE id=?').bind(JSON.stringify(p),'alice:demo').run();
- const first=(await call('/profile')).data;assert.ok(new Set(first.instances[0].definition.values).size>1);const second=(await call('/profile')).data;assert.deepEqual(second.instances[0],first.instances[0]);assert.equal(second.revision,first.revision);
- const stored=JSON.parse((await env.DB.prepare('SELECT data FROM profiles WHERE id=?').bind('alice:demo').first())!.data);assert.deepEqual(stored.instances[0].balanceHistory[0].values,[7,7,7,7]);assert.equal(stored.instances[0].balanceHistory.length,1);
+ const before=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind('alice:demo').first();const first=(await call('/profile')).data;assert.equal(first.instances[0].definition.version,'official-1');assert.deepEqual(first.instances[0].acquiredDefinition,p.instances[0].definition);
+ const second=(await call('/profile')).data;assert.deepEqual(second.instances[0],first.instances[0]);assert.equal(second.revision,first.revision);
+ assert.deepEqual(await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind('alice:demo').first(),before);
 });
 test('manual species claims, missing feature vectors and forged observation IDs cannot mint a card',async()=>{
  const r=await handleApi(new Request('https://earthdex.test/api/observations?species=cat&profile=real',{method:'POST',headers:{'Content-Type':'image/jpeg'},body:readFileSync('public/media/cat.jpg')}),env,'alice');assert.equal(r.status,400);
@@ -147,4 +148,10 @@ test('GPS is private, invalid GPS creates no observation, and friend/public proj
  assert.equal((await call('/observation-map?region=fcu-vicinity','alice',undefined,'real')).data.observations.length,1);
  assert.equal((await call('/observations/'+id+'/privacy','alice',{visibility:'private',shareWith:[]},'real')).status,200);
  assert.equal((await call('/shared?owner=alice%3Areal','bob')).status,404);
+});
+test('deleting an observation retains grant identity and its duplicate-photo fingerprint',async()=>{
+ const photo=readFileSync('public/media/egret.jpg'),request=()=>new Request('https://earthdex.test/api/observations?profile=real',{method:'POST',headers:{'Content-Type':'image/jpeg','X-Earthdex-Features':features},body:photo});
+ const first:any=await (await handleApi(request(),env,'alice')).json();await approve(first.observationId);const q=(await call('/field-quiz?observation='+first.observationId,'alice',undefined,'real')).data;
+ const species=speciesById(q.speciesId);const collected=await call('/collect','alice',{observationId:first.observationId,attempt:q.attempt,choice:species.questions[q.attempt%species.questions.length].answer},'real');assert.equal(collected.status,200);
+ assert.equal((await call('/observations/'+first.observationId,'alice',undefined,'real','DELETE')).status,200);assert.equal((await handleApi(request(),env,'alice')).status,409);assert.equal((await call('/profile','alice',undefined,'real')).data.instances.length,1);
 });

@@ -1,0 +1,11 @@
+{
+ "version":"reviewed-traits-1",
+ "checkedAt":"2026-11-11",
+ "note":"遊戲技能是抽象機制，不是生物能力量化。未列入者的既有標籤尚未於本次核對，正式版本採中性。",
+ "traits":[
+  {"speciesId":"sparrow","tag":"SOCIAL","source":"https://www.allaboutbirds.org/guide/Eurasian_Tree_Sparrow/lifehistory","publisher":"Cornell Lab of Ornithology","basis":"非繁殖期可集群覓食與棲息；本次實際讀取頁面核對。"},
+  {"speciesId":"macaque","tag":"SOCIAL","source":"https://animaldiversity.org/accounts/Macaca_cyclopis/","publisher":"University of Michigan Animal Diversity Web","basis":"記載臺灣獼猴的多雄多雌群體社會系統；本次實際讀取頁面核對。"},
+  {"speciesId":"kingfisher","tag":"AMBUSH","source":"https://animaldiversity.org/accounts/Alcedo_atthis/","publisher":"University of Michigan Animal Diversity Web","basis":"在水上方棲枝等待並俯衝捕獵；本次實際讀取頁面核對。技能為此行為的遊戲抽象。"},
+  {"speciesId":"turtle","tag":"ARMOR","source":"https://www.fisheries.noaa.gov/species/green-turtle","publisher":"NOAA Fisheries","basis":"記載綠蠵龜為硬殼海龜；本次實際讀取頁面核對。抵抗翻牌不是自然界效能數據。"}
+ ]
+}

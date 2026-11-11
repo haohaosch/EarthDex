@@ -1,6 +1,6 @@
-import {createBattle,applyMove,chooseAI} from '../engine/engine';import {definition} from '../engine/species';
-const n=Number(process.argv[2]||100),difficulty=process.argv[3]||'normal';if(!Number.isInteger(n)||n<1||n>10000)throw Error('Sample size must be 1–10000');
-const decks:[any[],any[]]=[['deer','magpie','sparrow','butterfly','egret'],['macaque','barbet','kingfisher','bear','cat']].map((ids,p)=>ids.map((id,i)=>({id:`${p}:${i}`,definition:definition(id)})))as any;
-let firstWins=0;for(let seed=0;seed<n;seed++){let s=createBattle(decks,seed);while(s.status==='playing')s=applyMove(s,chooseAI(s,difficulty));if(s.winner===s.first)firstWins++;}
-const z=1.96,p=firstWins/n,den=1+z*z/n,center=(p+z*z/(2*n))/den,half=z*Math.sqrt((p*(1-p)+z*z/(4*n))/n)/den;
-console.log(JSON.stringify({ruleVersion:'experimental-0.1',seeds:`0..${n-1}`,strategy:difficulty,deckSpecies:decks.map(d=>d.map(c=>c.definition.speciesId)),n,firstWins,firstWinRate:p,wilson95:[center-half,center+half],note:'Fixed demo deck matchup only. This is not evidence of population-wide balance.'},null,2));
+import {createBattle,applyMove,chooseAI,RULE_VERSION} from '../engine/engine';import {officialDefinition,OFFICIAL_CARD_VERSION} from '../engine/official-cards';
+const n=Number(process.argv[2]||200),difficulty=process.argv[3]||'normal';if(!Number.isInteger(n)||n<1||n>10000)throw Error('Sample size must be 1–10000');
+const species=[['deer','magpie','sparrow','butterfly','egret'],['macaque','barbet','kingfisher','bear','cat']];
+let firstWins=0;for(let seed=0;seed<n;seed++)for(const swap of [false,true]){const decks=(swap?species.slice().reverse():species).map((ids,p)=>ids.map((id,i)=>({id:`${p}:${i}`,definition:officialDefinition(id)}))) as Parameters<typeof createBattle>[0];let s=createBattle(decks,seed);while(s.status==='playing')s=applyMove(s,chooseAI(s,difficulty));if(s.winner===s.first)firstWins++;}
+const games=n*2,z=1.96,p=firstWins/games,den=1+z*z/games,center=(p+z*z/(2*games))/den,half=z*Math.sqrt((p*(1-p)+z*z/(4*games))/games)/den;
+console.log(JSON.stringify({checkedAt:new Date().toISOString(),ruleVersion:RULE_VERSION,balanceVersion:OFFICIAL_CARD_VERSION,seeds:`0..${n-1}`,pairedDeckSwap:true,strategy:difficulty,deckSpecies:species,games,firstWins,firstWinRate:p,wilson95:[center-half,center+half],note:'Fixed deck matchup with paired side swap only; samples are correlated, Wilson interval descriptive. This does not establish population-wide balance. First 5 / second 4 is unchanged.'},null,2));

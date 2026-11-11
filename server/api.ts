@@ -1,3 +1,4 @@
+import {officialDefinition,OFFICIAL_CARD_VERSION} from '../engine/official-cards';
 import {validateLocation,locationFlags} from '../engine/observation-policy';
 import {inCampusView,sharedObservation,setPrivacy,filterObservations,ecologyStats,publicCampusStats} from './observations';
 import {requestReview,decideReview,reviewers} from './review';
@@ -67,15 +68,15 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   if(!row){const p=newProfile(demo);await env.DB.prepare('INSERT OR IGNORE INTO profiles(id,revision,data) VALUES(?,0,?)').bind(player,JSON.stringify(p)).run();row=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(player).first();}
   let profile:Profile=JSON.parse(row!.data);profile.revision=row!.revision;
   const saveProfile=async()=>{const result=await env.DB.prepare('UPDATE profiles SET data=?,revision=revision+1 WHERE id=? AND revision=?').bind(JSON.stringify(profile),player,profile.revision).run();if(!(result.meta?.changes??result.changes))throw Error('資料已更新，請重新載入後再試');profile.revision++;};
-  for(let attempt=0;normalizeFlatCards(profile);attempt++){try{await saveProfile();break;}catch(e){if(attempt>=2)throw e;const latest=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(player).first<{data:string;revision:number}>();if(!latest)throw e;profile=JSON.parse(latest.data);profile.revision=latest.revision;}}
+
   if(route==='/observation-map'&&req.method==='GET'){const observations=filterObservations(profile.observations,url.searchParams);return json({observations,stats:ecologyStats(observations,profile.unlocks.map(u=>u.speciesId),profile.demo),repeatPolicyEnforced:false});}
   if(route==='/profile'&&req.method==='GET')return json(publicProfile(profile,player));
   if(route==='/deck'&&req.method==='POST'){const body=await readBody(req);if(!Array.isArray(body.ids))throw Error('牌組格式錯誤');ownedDeck(profile,body.ids);profile.deck=body.ids;await saveProfile();return json(publicProfile(profile,player));}
   if(route==='/quiz'&&req.method==='GET'){const pending=profile.pending.find(p=>p.speciesId===url.searchParams.get('species'));if(!pending)throw Error('沒有問答資格');const s=speciesById(pending.speciesId),q=s.questions[pending.attempt%s.questions.length];return json({speciesId:s.id,q:q.q,options:q.options,attempt:pending.attempt});}
-  if(route==='/quiz'&&req.method==='POST'){const body=await readBody(req);const result=answerQuiz(profile,body.speciesId,body.choice);for(const series of SERIES){if(series.ids.every(id=>profile.unlocks.some(u=>u.speciesId===id))&&!profile.badges.includes(series.id))profile.badges.push(series.id);}await saveProfile();return json({...result,profile:publicProfile(profile,player)});}
+  if(route==='/quiz'&&req.method==='POST'){const body=await readBody(req);const result=answerQuiz(profile,body.speciesId,body.choice);for(const series of SERIES){if(series.ids.every(id=>profile.unlocks.some(u=>u.speciesId===id))&&!profile.badges.includes(series.id))profile.badges.push(series.id);}await saveProfile();const publicData=publicProfile(profile,player);return json({...result,profile:publicData});}
   if(route==='/grant'&&req.method==='POST')return error('選擇最高分物種後，答對觀察問答才會收入卡牌。',409);
   if(route==='/field-quiz'&&req.method==='GET')return json(fieldQuestion(profile,url.searchParams.get('observation')||''));
-  if(route==='/collect'&&req.method==='POST'){const body=await readBody(req);const result=collectObservation(profile,body.observationId,body.choice,body.attempt);if(!result.alreadyCollected)await saveProfile();return json({...result,profile:publicProfile(profile,player)});}
+  if(route==='/collect'&&req.method==='POST'){const body=await readBody(req);const result=collectObservation(profile,body.observationId,body.choice,body.attempt);if(!result.alreadyCollected)await saveProfile();const publicData=publicProfile(profile,player);return json({...result,...('card' in result?{card:result.card?publicData.instances.find(c=>c.id===result.card!.id):null}:{}),profile:publicData});}
   if(route==='/observations'&&req.method==='POST'){
    if(!env.BUCKET)return error('照片儲存尚未配置',503);
    const encoded=req.headers.get('x-earthdex-features')||'';let vector:Float32Array;try{const binary=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));if(binary.byteLength!==2048)throw Error();vector=new Float32Array(binary.buffer);}catch{throw Error('影像辨識特徵缺失，請重新辨識');}
@@ -87,6 +88,7 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
    if(!isPhoto(new Uint8Array(bytes),type))throw Error('照片格式不正確，請重新拍攝');
    const imageHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(b=>b.toString(16).padStart(2,'0')).join('');
    const duplicate=profile.observations.find(o=>o.imageHash===imageHash);
+   if(!duplicate&&profile.instances.some(c=>c.photoHash===imageHash))return error('這張照片已領過卡牌；刪除觀察不會重置領取紀錄。',409);
    if(duplicate){const existing=profile.instances.find(c=>c.observationId===duplicate.id);return json({recognition:duplicate.recognition?{...recognition,...duplicate.recognition,speciesId:duplicate.speciesId}:recognition,profile:publicProfile(profile,player),observationId:duplicate.id,alreadyCollected:!!existing,card:existing?publicProfile(profile,player).instances.find(c=>c.id===existing.id):null});}
    if(profile.observations.length>=100)throw Error('展示版最多保存 100 筆觀察，請先刪除舊紀錄');
    const locationHeader=req.headers.get('x-earthdex-location');if(locationHeader&&locationHeader.length>1000)throw Error('GPS 資料過大');
@@ -107,23 +109,23 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   if(route==='/matches'&&req.method==='POST'){
    const body=await readBody(req);const mode=body.mode==='pvp'?'pvp':'ai',difficulty=['easy','normal','hard'].includes(body.difficulty)?body.difficulty:'normal',theme=body.theme==='global'?'global':'taiwan';const deck=ownedDeck(profile).map(c=>({...c,id:'p0:'+c.id}));
    const seed=crypto.getRandomValues(new Uint32Array(1))[0],aiIds=theme==='global'?['turtle','egret','spotbill','moorhen','mudskipper']:['macaque','barbet','kingfisher','bear','cat'];
-   let state=mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:generateCard(id,speciesById(id).tags,'capture-0.3',hash(`${seed}:${id}:${i}`))}))],seed):null;
+   let state=mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:officialDefinition(id)}))],seed):null;
    if(state?.turn===1)state=applyMove(state,chooseAI(state,difficulty));
-   const match:Match={mode,state,initial:mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:generateCard(id,speciesById(id).tags,'capture-0.3',hash(`${seed}:${id}:${i}`))}))],seed):null,difficulty,theme,settled:[],createdAt:new Date().toISOString()};
+   const match:Match={mode,state,initial:mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:officialDefinition(id)}))],seed):null,difficulty,theme,settled:[],createdAt:new Date().toISOString()};
    // Waiting rooms retain their validated deck snapshot, not an untrusted client deck.
-   const data=mode==='pvp'?{...match,waitingDeck:deck,seed}:match;
+   const data=mode==='pvp'?{...match,waitingDeck:deck,seed,balanceVersion:OFFICIAL_CARD_VERSION}:match;
    const id=mode==='pvp'?crypto.randomUUID().replaceAll('-','').slice(0,10).toUpperCase():crypto.randomUUID();
    await env.DB.prepare('INSERT INTO matches(id,revision,p0,p1,data,updated_at) VALUES(?,0,?,?,?,?)').bind(id,player,mode==='ai'?'AI':null,JSON.stringify(data),new Date().toISOString()).run();return json({id,side:0,state,mode,revision:0},201);
   }
   const matchRoute=route.match(/^\/matches\/([^/]+)(\/join|\/move|\/resign|\/settle|\/replay)?$/);
   if(matchRoute){
    const id=matchRoute[1].toUpperCase();let mrow=await env.DB.prepare('SELECT * FROM matches WHERE UPPER(id)=?').bind(id).first<MatchRow>();if(!mrow)return error('找不到房間，請檢查代碼',404);
-   const match=JSON.parse(mrow.data) as Match & {waitingDeck?:any[];seed?:number};
+   const match=JSON.parse(mrow.data) as Match & {waitingDeck?:any[];seed?:number;balanceVersion?:string};
    let side:Side=mrow.p0===player?0:1;
    const saveMatch=async(p1=mrow!.p1)=>{const result=await env.DB.prepare('UPDATE matches SET data=?,p1=?,revision=revision+1,updated_at=? WHERE id=? AND revision=?').bind(JSON.stringify(match),p1,new Date().toISOString(),mrow!.id,mrow!.revision).run();if(!(result.meta?.changes??result.changes))throw Error('回合已更新，請重試');mrow!.revision++;};
    if(matchRoute[2]==='/join'&&req.method==='POST'){
     if(match.mode!=='pvp')throw Error('此房間不是 PVP');if(mrow.p0===player)return error('請由另一位玩家加入此房間',409);if(mrow.p1&&mrow.p1!==player)return error('房間已滿',409);
-    if(!mrow.p1){const deck=ownedDeck(profile).map(c=>({...c,id:'p1:'+c.id}));match.state=createBattle([match.waitingDeck!,deck],match.seed!);match.initial=structuredClone(match.state);delete match.waitingDeck;await saveMatch(player);}return json({id:mrow.id,side:1,state:match.state,mode:match.mode,revision:mrow.revision});
+    if(!mrow.p1){if(match.balanceVersion!==OFFICIAL_CARD_VERSION)return error('等待房間的平衡版本已更新，請重新建立房間；舊戰報保留。',409);const deck=ownedDeck(profile).map(c=>({...c,id:'p1:'+c.id}));match.state=createBattle([match.waitingDeck!,deck],match.seed!);match.initial=structuredClone(match.state);delete match.waitingDeck;await saveMatch(player);}return json({id:mrow.id,side:1,state:match.state,mode:match.mode,revision:mrow.revision});
    }
    if(mrow.p0!==player&&mrow.p1!==player)return error('沒有此對局的存取權限',403);
    if(req.method==='GET')return json(matchRoute[2]==='/replay'?{initial:match.initial,moves:match.state?.moves||[]}:{id:mrow.id,side,state:match.state,mode:match.mode,revision:mrow.revision});

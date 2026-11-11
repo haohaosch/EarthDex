@@ -1,0 +1,992 @@
+{
+  "version": "official-1",
+  "fixedSeed": "traits-1",
+  "traitVersion": "reviewed-traits-1",
+  "budget": 28,
+  "cards": {
+    "deer": {
+      "speciesId": "deer",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2980667979
+    },
+    "magpie": {
+      "speciesId": "magpie",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2038370864
+    },
+    "sparrow": {
+      "speciesId": "sparrow",
+      "version": "official-1",
+      "values": [
+        4,
+        7,
+        6,
+        7
+      ],
+      "skill": "cooperate",
+      "seed": 3478610537
+    },
+    "butterfly": {
+      "speciesId": "butterfly",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2541283302
+    },
+    "egret": {
+      "speciesId": "egret",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3705354910
+    },
+    "kingfisher": {
+      "speciesId": "kingfisher",
+      "version": "official-1",
+      "values": [
+        7,
+        6,
+        6,
+        5
+      ],
+      "skill": "ambush",
+      "seed": 1759353349
+    },
+    "bear": {
+      "speciesId": "bear",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1179706769
+    },
+    "turtle": {
+      "speciesId": "turtle",
+      "version": "official-1",
+      "values": [
+        4,
+        3,
+        7,
+        8
+      ],
+      "skill": "armor",
+      "seed": 957447661
+    },
+    "cat": {
+      "speciesId": "cat",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2238159205
+    },
+    "macaque": {
+      "speciesId": "macaque",
+      "version": "official-1",
+      "values": [
+        5,
+        5,
+        5,
+        9
+      ],
+      "skill": "cooperate",
+      "seed": 2763769118
+    },
+    "barbet": {
+      "speciesId": "barbet",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2324792351
+    },
+    "panda": {
+      "speciesId": "panda",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3241873129
+    },
+    "bulbul": {
+      "speciesId": "bulbul",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1141774121
+    },
+    "spotted-dove": {
+      "speciesId": "spotted-dove",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1561957503
+    },
+    "red-dove": {
+      "speciesId": "red-dove",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3239156101
+    },
+    "pigeon": {
+      "speciesId": "pigeon",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 494699541
+    },
+    "oriental-magpie": {
+      "speciesId": "oriental-magpie",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1796566461
+    },
+    "drongo": {
+      "speciesId": "drongo",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 435965310
+    },
+    "treepie": {
+      "speciesId": "treepie",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 343798011
+    },
+    "black-bulbul": {
+      "speciesId": "black-bulbul",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 672046431
+    },
+    "crested-myna": {
+      "speciesId": "crested-myna",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4129746057
+    },
+    "javan-myna": {
+      "speciesId": "javan-myna",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2427118153
+    },
+    "white-eye": {
+      "speciesId": "white-eye",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4131218800
+    },
+    "swallow": {
+      "speciesId": "swallow",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 255156634
+    },
+    "shrike": {
+      "speciesId": "shrike",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1341628161
+    },
+    "night-heron": {
+      "speciesId": "night-heron",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1585805840
+    },
+    "cattle-egret": {
+      "speciesId": "cattle-egret",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1036980602
+    },
+    "great-egret": {
+      "speciesId": "great-egret",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3242765818
+    },
+    "grey-heron": {
+      "speciesId": "grey-heron",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1453129815
+    },
+    "spotbill": {
+      "speciesId": "spotbill",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1966601158
+    },
+    "moorhen": {
+      "speciesId": "moorhen",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 481255349
+    },
+    "waterhen": {
+      "speciesId": "waterhen",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2978818121
+    },
+    "kite": {
+      "speciesId": "kite",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3180135304
+    },
+    "eagle": {
+      "speciesId": "eagle",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2899024957
+    },
+    "owl": {
+      "speciesId": "owl",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2044439387
+    },
+    "squirrel": {
+      "speciesId": "squirrel",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1918110368
+    },
+    "civet": {
+      "speciesId": "civet",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4185948158
+    },
+    "mongoose": {
+      "speciesId": "mongoose",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 965090254
+    },
+    "muntjac": {
+      "speciesId": "muntjac",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 442149267
+    },
+    "boar": {
+      "speciesId": "boar",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1372370291
+    },
+    "shrew": {
+      "speciesId": "shrew",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1614623358
+    },
+    "rat": {
+      "speciesId": "rat",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1352216586
+    },
+    "bat": {
+      "speciesId": "bat",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2084338362
+    },
+    "domestic-cat": {
+      "speciesId": "domestic-cat",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1630294886
+    },
+    "dog": {
+      "speciesId": "dog",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2492420719
+    },
+    "gecko": {
+      "speciesId": "gecko",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2954104178
+    },
+    "lizard": {
+      "speciesId": "lizard",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3367654271
+    },
+    "skink": {
+      "speciesId": "skink",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2637629199
+    },
+    "slider": {
+      "speciesId": "slider",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4189316654
+    },
+    "stripe-turtle": {
+      "speciesId": "stripe-turtle",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4086004663
+    },
+    "softshell": {
+      "speciesId": "softshell",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 999282535
+    },
+    "green-snake": {
+      "speciesId": "green-snake",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3692144567
+    },
+    "cobra": {
+      "speciesId": "cobra",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2738109540
+    },
+    "toad": {
+      "speciesId": "toad",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1329148823
+    },
+    "bankor-toad": {
+      "speciesId": "bankor-toad",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 695437443
+    },
+    "tree-frog": {
+      "speciesId": "tree-frog",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3456396088
+    },
+    "paddy-frog": {
+      "speciesId": "paddy-frog",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4041033476
+    },
+    "micro-frog": {
+      "speciesId": "micro-frog",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3404675178
+    },
+    "polytes": {
+      "speciesId": "polytes",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2744314699
+    },
+    "xuthus": {
+      "speciesId": "xuthus",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1774253580
+    },
+    "lime-butterfly": {
+      "speciesId": "lime-butterfly",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4067536292
+    },
+    "white-butterfly": {
+      "speciesId": "white-butterfly",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3156477050
+    },
+    "tiger-butterfly": {
+      "speciesId": "tiger-butterfly",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1225206744
+    },
+    "plain-tiger": {
+      "speciesId": "plain-tiger",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1053772375
+    },
+    "blue-crow": {
+      "speciesId": "blue-crow",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4197878773
+    },
+    "paper-kite": {
+      "speciesId": "paper-kite",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3910977581
+    },
+    "emigrant": {
+      "speciesId": "emigrant",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1213994874
+    },
+    "ladybird": {
+      "speciesId": "ladybird",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1438984420
+    },
+    "beetle": {
+      "speciesId": "beetle",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 1091116728
+    },
+    "golden-spider": {
+      "speciesId": "golden-spider",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2425591640
+    },
+    "jumping-spider": {
+      "speciesId": "jumping-spider",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3633132129
+    },
+    "dragonfly": {
+      "speciesId": "dragonfly",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4086119229
+    },
+    "skimmer": {
+      "speciesId": "skimmer",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3716926209
+    },
+    "mantis": {
+      "speciesId": "mantis",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4264011847
+    },
+    "cockroach": {
+      "speciesId": "cockroach",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 650744584
+    },
+    "tilapia": {
+      "speciesId": "tilapia",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3721433183
+    },
+    "guppy": {
+      "speciesId": "guppy",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 2594207690
+    },
+    "mudskipper": {
+      "speciesId": "mudskipper",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3723638459
+    },
+    "fiddler": {
+      "speciesId": "fiddler",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3356270889
+    },
+    "hermit": {
+      "speciesId": "hermit",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 999160240
+    },
+    "snail": {
+      "speciesId": "snail",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 3310634012
+    },
+    "apple-snail": {
+      "speciesId": "apple-snail",
+      "version": "official-1",
+      "values": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "skill": "neutral",
+      "seed": 4126487041
+    }
+  }
+}
