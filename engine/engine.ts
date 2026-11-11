@@ -48,7 +48,7 @@ export function createBattle(decks:[{id:string;definition:CardDefinition}[],{id:
 export function neighbors(cell:number):[number,number,number][] {
  const a:[number,number,number][]=[];if(cell>=3)a.push([cell-3,0,2]);if(cell%3<2)a.push([cell+1,1,3]);if(cell<6)a.push([cell+3,2,0]);if(cell%3>0)a.push([cell-1,3,1]);return a;
 }
-function modifier(s:BattleState,cell:number,attacking:boolean):number {
+export function comparisonModifier(s:BattleState,cell:number,attacking:boolean):number {
  const c=s.board[cell]!;switch(c.definition.skill){case 'cooperate': return Math.min(SKILLS.cooperate.stackCap,neighbors(cell).filter(([i])=>s.board[i]?.controller===c.controller).length);case 'ambush': return attacking&&[0,2,6,8].includes(cell)?SKILLS.ambush.stackCap:0;case 'camouflage':return attacking?0:SKILLS.camouflage.stackCap;default:return 0;}
 }
 export function applyMove(input:BattleState,move:Move):BattleState {
@@ -67,7 +67,7 @@ export function applyMove(input:BattleState,move:Move):BattleState {
    const a=snapshot.board[source]!;
    for(const [target,dir,opposite] of neighbors(source)){
     const b=snapshot.board[target];if(!b||a.controller===b.controller)continue;
-    const av=a.definition.values[dir]+modifier(snapshot,source,true),bv=b.definition.values[opposite]+modifier(snapshot,target,false);
+    const av=a.definition.values[dir]+comparisonModifier(snapshot,source,true),bv=b.definition.values[opposite]+comparisonModifier(snapshot,target,false);
     event('compared',target,layer,`${av} ${av>bv?'>':'≤'} ${bv}`,source);
     if(av>bv)targets.set(target,source);
    }

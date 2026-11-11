@@ -1,0 +1,34 @@
+/* Presentation uses recorded comparisons; the printed definition never changes. */
+.battle-motion-status{min-height:24px;margin:2px 0 10px;text-align:center;color:#b9dacb;font-size:11px;line-height:1.7}
+.battle-board.is-presenting{border-color:#dfcd81;box-shadow:inset 0 0 0 4px #13333b,0 0 24px #cbbd5422,0 8px 25px #0004}
+.board-cell{perspective:800px;isolation:isolate}
+.board-cell.is-placing{z-index:5;--entry-y:65px}.board-cell.is-placing.from-opponent{--entry-y:-65px}
+.board-cell.is-placing .game-card{animation:card-land .3s cubic-bezier(.16,.82,.3,1) both}
+.board-cell.is-flip-out{z-index:4}.board-cell.is-flip-in{z-index:4}
+.board-cell.is-flip-out .game-card{animation:card-turn-away .16s ease-in both}
+.board-cell.is-flip-in .game-card{animation:card-turn-in .26s ease-out both}
+.board-cell.is-flip-in:after{content:'';position:absolute;inset:-4px;pointer-events:none;border:2px solid #f4da8d;border-radius:9px;animation:control-ring .45s ease-out both}
+.board-cell.is-comparing{z-index:3;outline:2px solid #efdb8b;outline-offset:2px}
+.board-cell.is-resisting{z-index:4}.board-cell.is-resisting .game-card{animation:armor-pulse .5s ease-out both}
+.direction-number{display:block}
+.direction.has-skill-bonus,.game-card.compact .direction.has-skill-bonus{background:linear-gradient(#e2ffe1,#8ce7b3);color:#073f39;border-color:#3aa878;box-shadow:0 0 0 1px #76e6ac88,0 0 12px #40f6b53b}
+.direction.has-skill-bonus .direction-number{animation:skill-value-pop .32s ease-out both}
+.direction.is-compared-value{outline:2px solid #ffe994;outline-offset:2px}
+.direction-bonus{position:absolute;top:-8px;right:-7px;min-width:17px;border:1px solid #adefc8;border-radius:7px;padding:1px 3px;background:#0e674b;color:#edffcf;font-size:9px;font-weight:800;line-height:1.1;text-shadow:none;box-shadow:0 2px 5px #001c2b99}
+.board-effect-label{position:absolute;top:31%;left:50%;transform:translateX(-50%);z-index:6;pointer-events:none;white-space:nowrap;border-radius:14px;padding:5px 9px;background:#0b4b3af0;border:1px solid #8dffc1;color:#e5ffc4;font-size:10px;font-weight:800;box-shadow:0 3px 13px #00121e99;animation:skill-callout .4s ease-out both}
+.board-effect-label.shield{background:#52461cf5;border-color:#ffe09b;color:#fff1c4}
+.battle-resolution{background:linear-gradient(130deg,#163d43,#17372f);border:1px solid #477368;border-radius:12px;margin-top:18px;padding:15px 17px;color:#c1d8cb;min-width:0}
+.resolution-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.resolution-heading strong,.battle-resolution>strong{color:#f1e5b2;font-size:13px}.resolution-heading>span{color:#91baa4;font-size:10px;white-space:nowrap}
+.battle-resolution p{font-size:11px;line-height:1.9;margin:8px 0 0}
+.resolution-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.resolution-skills>span{background:#2b5c42;color:#d4f7b7;border:1px solid #638d5c;border-radius:12px;padding:4px 9px;font-size:10px;font-weight:700}
+.resolution-comparisons{margin-top:10px}.resolution-comparisons summary{cursor:pointer;color:#8fe1bb;font-size:11px;padding:4px 0}.resolution-comparisons p{padding:8px 0;border-top:1px solid #3e625744}.resolution-shield{color:#ffe19c}
+@keyframes card-land{0%{opacity:0;transform:translate3d(0,var(--entry-y),70px) scale(.72) rotateX(15deg);filter:brightness(1.35)}70%{opacity:1;transform:translate3d(0,-4px,0) scale(1.035)}100%{opacity:1;transform:translate3d(0,0,0) scale(1);filter:brightness(1)}}
+@keyframes card-turn-away{from{transform:rotateY(0)}to{transform:rotateY(90deg);filter:brightness(.65)}}
+@keyframes card-turn-in{from{transform:rotateY(-90deg);filter:brightness(1.5)}to{transform:rotateY(0);filter:brightness(1)}}
+@keyframes control-ring{0%{opacity:1;transform:scale(.96)}100%{opacity:0;transform:scale(1.13)}}
+@keyframes armor-pulse{0%,100%{filter:brightness(1);transform:scale(1)}35%{filter:brightness(1.65) drop-shadow(0 0 12px #ffdc79);transform:scale(.96)}65%{transform:scale(1.025)}}
+@keyframes skill-value-pop{0%{transform:scale(.7);opacity:.5}65%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes skill-callout{0%{opacity:0;translate:0 8px;scale:.9}100%{opacity:1;translate:0 0;scale:1}}
+@media(max-width:700px){.battle-motion-status{font-size:10px}.battle-resolution{padding:13px;margin-top:14px}.direction-bonus{font-size:8px;min-width:15px;top:-7px;right:-5px}.board-effect-label{font-size:9px;padding:4px 6px}}
+@media(prefers-reduced-motion:reduce){.board-cell .game-card,.board-cell:after,.board-effect-label,.direction-number{animation:none!important;transition:none!important}.board-cell.is-flip-out .game-card,.board-cell.is-flip-in .game-card{transform:none!important}}

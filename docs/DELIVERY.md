@@ -51,3 +51,9 @@ https://earthdex-field-journal.dan154210.chatgpt.site
 前一版同一功能程式已用公開HTTP驗證 session、展示profile（7張official-1卡）、campus/stats、species/sparrow（三來源均matched），證據見 `evidence/deployment-smoke.json`。第13版另外修正統計說明，避免暗示需要人工審核；遊戲政策不變。所有玩家照片/位置仍私人預設，沒有執行正式玩家資料的批次改寫。
 
 功能分支與草稿PR：https://github.com/haohaosch/EarthDex/pull/1 。GitHub main未合併；本報告的後續文件提交不改變已部署程式的來源commit。
+
+## 追加：校園對比與戰鬥動效
+
+依後續要求，逢甲候選卡片改用深藍綠底與清楚的鎖定/解鎖標記；修正白底繼承淺色文字的對比問題。戰場加入即時技能方向值、加成小標/提示、出牌落地、比點亮框、堅甲抵抗、控制權翻面與結算明細。AI雙步與PVP更新依序播放、期間鎖定出牌，並支援減少動態效果。
+
+此次 `npm test` **91/91**、`npm run build` 與差異空白檢查通過。新增測試覆蓋歷史總值/現在被動值分離、攻守條件、同波翻面、堅甲、3層連鎖、AI雙步、PVP排隊/舊輪詢、重連、減少動態、切換/卸載清理與快照校正。未修改辨識模型，未重跑模型測試。此次再次嘗試managed preview與瀏覽器，relay4173超時與CUA sandbox啟動失敗仍在，實際手機畫面/動畫流暢度尚待驗收。
