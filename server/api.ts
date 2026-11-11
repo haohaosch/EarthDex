@@ -1,3 +1,4 @@
+import {SourceClient,integrateSpecies,externalOccurrences} from './biodiversity';
 import {applyMove,chooseAI,createBattle,dexCandidates,hash,score,generateCard} from '../engine/engine';
 import {definition,SPECIES,speciesById,SERIES} from '../engine/species';
 import type {BattleState,Move,Side} from '../engine/types';
@@ -13,6 +14,7 @@ interface Match {mode:'ai'|'pvp';state:BattleState|null;initial:BattleState|null
 interface MatchRow {id:string;revision:number;p0:string;p1:string|null;data:string;updated_at:string}
 const json=(data:unknown,status=200,headers:Record<string,string>={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers}});
 const error=(msg:string,status=400)=>json({error:msg},status);
+const sourceClients=new WeakMap<Database,SourceClient>();
 const PHOTO_LIMIT=10*1024*1024;
 function isPhoto(bytes:Uint8Array,type:string):boolean {
  if(type==='image/jpeg')return bytes.length>=3&&bytes[0]===255&&bytes[1]===216&&bytes[2]===255;
@@ -27,6 +29,11 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   const url=new URL(req.url),route=url.pathname.slice(4),demo=url.searchParams.get('profile')!=='real',player=identity+(demo?':demo':':real');
   // Reject cross-origin writes. The platform strips/splices authenticated identity headers.
   if(req.method!=='GET'&&req.headers.get('origin')&&req.headers.get('origin')!==url.origin)return error('來源驗證失敗',403);
+  if(route.startsWith('/species/')&&req.method==='GET'){
+   const m=route.match(/^\/species\/([a-z0-9-]+)(\/occurrences)?$/);if(!m)return error('物種不存在',404);speciesById(m[1]);
+   let client=sourceClients.get(env.DB);if(!client){client=new SourceClient({bucket:env.BUCKET});sourceClients.set(env.DB,client);}
+   return json(m[2]?await externalOccurrences(m[1],{south:24.174,west:120.64,north:24.185,east:120.653},client):await integrateSpecies(m[1],client));
+  }
   let row=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(player).first<{data:string;revision:number}>();
   if(!row){const p=newProfile(demo);await env.DB.prepare('INSERT OR IGNORE INTO profiles(id,revision,data) VALUES(?,0,?)').bind(player,JSON.stringify(p)).run();row=await env.DB.prepare('SELECT data,revision FROM profiles WHERE id=?').bind(player).first();}
   let profile:Profile=JSON.parse(row!.data);profile.revision=row!.revision;

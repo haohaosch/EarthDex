@@ -1,0 +1,466 @@
+{
+  "checkedAt": "2026-11-11T15:41:30.458Z",
+  "mock": false,
+  "record": {
+    "id": "sparrow",
+    "names": {
+      "zh": "麻雀",
+      "en": null,
+      "scientific": "Passer montanus"
+    },
+    "kingdom": "Animalia",
+    "classification": {
+      "kingdom": "Animalia",
+      "phylum": "Chordata",
+      "class": "Aves",
+      "order": "Passeriformes",
+      "family": "Passeridae",
+      "genus": "Passer"
+    },
+    "distribution": [
+      "臺灣"
+    ],
+    "habitat": {
+      "text": "聚落與農地",
+      "source": "https://en.wikipedia.org/wiki/Eurasian_tree_sparrow"
+    },
+    "ecology": [
+      {
+        "text": "麻雀常在聚落與農地活動，臉頰上的黑斑是辨識線索之一。",
+        "source": "https://en.wikipedia.org/wiki/Eurasian_tree_sparrow"
+      }
+    ],
+    "conservation": null,
+    "images": [
+      {
+        "url": "/media/sparrow.jpg",
+        "author": "Laitche",
+        "license": "Public domain",
+        "source": "https://commons.wikimedia.org/wiki/File:Tree_Sparrow_August_2007_Osaka_Japan.jpg"
+      }
+    ],
+    "externalIds": {
+      "gbif": "5231198",
+      "inaturalist": "13851",
+      "taicol": "t0098364"
+    },
+    "matches": [
+      {
+        "provider": "gbif",
+        "status": "matched",
+        "id": "5231198",
+        "acceptedId": "5231198",
+        "scientificName": "Passer montanus",
+        "rank": "SPECIES",
+        "classification": {
+          "kingdom": "Animalia",
+          "phylum": "Chordata",
+          "class": "Aves",
+          "order": "Passeriformes",
+          "family": "Passeridae",
+          "genus": "Passer"
+        },
+        "source": {
+          "provider": "gbif",
+          "url": "https://api.gbif.org/v1/species/match?name=Passer%20montanus&strict=true",
+          "retrievedAt": "2026-11-11T15:41:26.152Z",
+          "version": "v1",
+          "stale": false
+        }
+      },
+      {
+        "provider": "inaturalist",
+        "status": "matched",
+        "id": "13851",
+        "acceptedId": "13851",
+        "scientificName": "Passer montanus",
+        "rank": "species",
+        "classification": {},
+        "source": {
+          "provider": "inaturalist",
+          "url": "https://api.inaturalist.org/v1/taxa?q=Passer%20montanus&per_page=30",
+          "retrievedAt": "2026-11-11T15:41:27.163Z",
+          "version": "v1",
+          "stale": false
+        }
+      },
+      {
+        "provider": "taicol",
+        "status": "matched",
+        "id": "t0098364",
+        "acceptedId": "t0098364",
+        "scientificName": "Passer montanus",
+        "rank": "Species",
+        "classification": {
+          "kingdom": "Animalia"
+        },
+        "source": {
+          "provider": "taicol",
+          "url": "https://api.taicol.tw/v2/taxon?scientific_name=Passer%20montanus",
+          "retrievedAt": "2026-11-11T15:41:28.469Z",
+          "version": "v2",
+          "stale": false
+        },
+        "nativeStatus": {
+          "value": "native",
+          "basis": "native: Bird Record Committee, 2026 (臺灣: 留、普, 馬祖: 留、普, 金門: 留、普, 東沙: 過、稀)|native: Ding et al., 2023 (臺灣: 留、普, 馬祖: 留、普, 金門: 留、普, 東沙: 過、稀)"
+        }
+      }
+    ],
+    "sources": [
+      {
+        "provider": "gbif",
+        "url": "https://api.gbif.org/v1/species/match?name=Passer%20montanus&strict=true",
+        "retrievedAt": "2026-11-11T15:41:26.152Z",
+        "version": "v1",
+        "stale": false
+      },
+      {
+        "provider": "inaturalist",
+        "url": "https://api.inaturalist.org/v1/taxa?q=Passer%20montanus&per_page=30",
+        "retrievedAt": "2026-11-11T15:41:27.163Z",
+        "version": "v1",
+        "stale": false
+      },
+      {
+        "provider": "taicol",
+        "url": "https://api.taicol.tw/v2/taxon?scientific_name=Passer%20montanus",
+        "retrievedAt": "2026-11-11T15:41:28.469Z",
+        "version": "v2",
+        "stale": false
+      }
+    ],
+    "updatedAt": "2026-11-11T15:41:28.469Z",
+    "warnings": [
+      "英文名與保育資訊未知；本地生態描述沿用原資料來源，尚待專業審訂"
+    ]
+  },
+  "occurrences": {
+    "speciesId": "sparrow",
+    "bounds": {
+      "south": 24.174,
+      "west": 120.64,
+      "north": 24.185,
+      "east": 120.653
+    },
+    "records": [
+      {
+        "provider": "inaturalist",
+        "id": "411347158",
+        "url": "https://www.inaturalist.org/observations/411347158",
+        "at": "2026-10-27",
+        "quality": "research",
+        "location": null,
+        "locationProtected": true,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "inaturalist",
+        "id": "350035679",
+        "url": "https://www.inaturalist.org/observations/350035679",
+        "at": "2026-04-14",
+        "quality": "research",
+        "location": null,
+        "locationProtected": true,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "inaturalist",
+        "id": "349462928",
+        "url": "https://www.inaturalist.org/observations/349462928",
+        "at": "2026-04-13",
+        "quality": "research",
+        "location": null,
+        "locationProtected": true,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "inaturalist",
+        "id": "348867802",
+        "url": "https://www.inaturalist.org/observations/348867802",
+        "at": "2026-04-11",
+        "quality": "research",
+        "location": null,
+        "locationProtected": true,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "inaturalist",
+        "id": "348717034",
+        "url": "https://www.inaturalist.org/observations/348717034",
+        "at": "2026-04-09",
+        "quality": "research",
+        "location": null,
+        "locationProtected": true,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "inaturalist",
+        "id": "348098497",
+        "url": "https://www.inaturalist.org/observations/348098497",
+        "at": "2026-03-31",
+        "quality": "research",
+        "location": null,
+        "locationProtected": true,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "inaturalist",
+        "id": "266029769",
+        "url": "https://www.inaturalist.org/observations/266029769",
+        "at": "2025-03-20",
+        "quality": "research",
+        "location": null,
+        "locationProtected": true,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6195302295",
+        "url": "https://www.gbif.org/occurrence/6195302295",
+        "at": "2026-03-31T00:52",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6234259512",
+        "url": "https://www.gbif.org/occurrence/6234259512",
+        "at": "2026-04-09T17:40:19",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6234738541",
+        "url": "https://www.gbif.org/occurrence/6234738541",
+        "at": "2026-04-13T14:32:42",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6235022055",
+        "url": "https://www.gbif.org/occurrence/6235022055",
+        "at": "2026-04-11T11:04:41",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6235356507",
+        "url": "https://www.gbif.org/occurrence/6235356507",
+        "at": "2026-04-14T17:07",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "5104489639",
+        "url": "https://www.gbif.org/occurrence/5104489639",
+        "at": "2025-03-20T07:24:56",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6739173991",
+        "url": "https://www.gbif.org/occurrence/6739173991",
+        "at": "2025-03-04",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6659760188",
+        "url": "https://www.gbif.org/occurrence/6659760188",
+        "at": "2025-08-19",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6853391197",
+        "url": "https://www.gbif.org/occurrence/6853391197",
+        "at": "2025-10-22",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6663723457",
+        "url": "https://www.gbif.org/occurrence/6663723457",
+        "at": "2025-12-31",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "5540005218",
+        "url": "https://www.gbif.org/occurrence/5540005218",
+        "at": "2024-02-16",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "5505595453",
+        "url": "https://www.gbif.org/occurrence/5505595453",
+        "at": "2024-03-17",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6664491650",
+        "url": "https://www.gbif.org/occurrence/6664491650",
+        "at": "2024-04-14",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6810833627",
+        "url": "https://www.gbif.org/occurrence/6810833627",
+        "at": "2024-04-06",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "5585598841",
+        "url": "https://www.gbif.org/occurrence/5585598841",
+        "at": "2024-06-09",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6857492822",
+        "url": "https://www.gbif.org/occurrence/6857492822",
+        "at": "2024-07-28",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6777708387",
+        "url": "https://www.gbif.org/occurrence/6777708387",
+        "at": "2024-10-12",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6724847211",
+        "url": "https://www.gbif.org/occurrence/6724847211",
+        "at": "2024-11-10",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "6790600973",
+        "url": "https://www.gbif.org/occurrence/6790600973",
+        "at": "2023-03-25",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      },
+      {
+        "provider": "gbif",
+        "id": "4759928688",
+        "url": "https://www.gbif.org/occurrence/4759928688",
+        "at": "2023-10-13",
+        "quality": "HUMAN_OBSERVATION",
+        "datasetKey": "4fa7b334-ce0d-4e88-aaae-2e0c138d049e",
+        "location": null,
+        "photos": [],
+        "ownership": "external-public-record"
+      }
+    ],
+    "sources": [
+      {
+        "provider": "inaturalist",
+        "url": "https://api.inaturalist.org/v1/observations?taxon_id=13851&quality_grade=research&swlat=24.174&swlng=120.64&nelat=24.185&nelng=120.653&per_page=20",
+        "retrievedAt": "2026-11-11T15:41:29.160Z",
+        "version": "v1",
+        "stale": false
+      },
+      {
+        "provider": "gbif",
+        "url": "https://api.gbif.org/v1/occurrence/search?taxon_key=5231198&decimalLatitude=24.174,24.185&decimalLongitude=120.64,120.653&has_coordinate=true&limit=20",
+        "retrievedAt": "2026-11-11T15:41:30.458Z",
+        "version": "v1",
+        "stale": false
+      }
+    ],
+    "warnings": [
+      "英文名與保育資訊未知；本地生態描述沿用原資料來源，尚待專業審訂"
+    ],
+    "note": "外部公開紀錄不是 EarthDex 玩家成果；不輸出上游精確或模糊化座標，也不推定為已確認的逢甲校園物種。"
+  }
+}
