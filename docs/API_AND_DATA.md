@@ -42,3 +42,11 @@ Profile保留：demo、instances、unlocks、observations、deck、pending、att
 統一物種記錄：id、names zh/en/scientific、kingdom/classification、distribution、habitat/ecology及來源、conservation（無可靠來源=null）、images作者/授權/source、三個externalIds、各TaxonMatch與provenance、updatedAt/warnings。Provenance.version是API版本，dataVersion取上游ETag/Last-Modified（無則null），TaiCOL的recordUpdatedAt另保留；不把API版本冒稱固定資料集版本。來源原始JSON存R2 cache，離線stale標示清楚。
 
 私人影像：R2 observations/<player namespace>/<observation id>；公開來源快取：R2 biodiversity/v1/<encoded request URL>。快取不含玩家照片。JSON可選欄位向後相容，不會在啟動時批次改寫正式資料。備份與回復見MIGRATION。
+
+## 生態技能版補充
+
+新`/matches`使用ecology-0.2 / official-2，舊對局按自己的ruleVersion結算。`/move`仍只接受cardId/cell/revision；遷徙可在我方控制的已占格出牌，其他卡與敵格拒絕。返手回originalOwner，並保留spent/skillDisabled；勝負支援winner=null平手及endReason。
+
+`publicBattleState`在create/join/get/move/resign全部回應中遮蔽對手hands及turnSnapshots.hands的species/values/skill/seed。handReveals只回本人且來源仍有效的情報；防禦機制保護的那張牌沒有definition。進行中`/replay`回409；結束後回initial/moves/final，final的turnSnapshots供返手/替換快速重播。沒有新的審核或管理員設定。
+
+完整欄位與事件順序見ECOLOGY_SKILLS。`BattleState.handReveals`是每局資訊，不是玩家正式收藏；`TurnSnapshot`只存回合末盤面/手牌/回合/結算與eventCount，不遞迴包含整份歷史。

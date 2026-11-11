@@ -1,0 +1,16 @@
+{
+ "version":"reviewed-traits-2",
+ "checkedAt":"2026-11-12",
+ "note":"只將有來源的生態行為作為遊戲技能資格；技能效果/成本是遊戲抽象，不代表自然界量化能力。大鳳蝶僅部分雌型有擬態，家燕各地族群遷徙情況不同。",
+ "traits":[
+  {"speciesId":"sparrow","tag":"COLLECTIVE","source":"https://www.allaboutbirds.org/guide/Eurasian_Tree_Sparrow/lifehistory","publisher":"Cornell Lab of Ornithology","basis":"非繁殖期集群覓食與棲息；沿用已讀取來源。"},
+  {"speciesId":"macaque","tag":"COLLECTIVE","source":"https://animaldiversity.org/accounts/Macaca_cyclopis/","publisher":"University of Michigan Animal Diversity Web","basis":"多雄多雌群體社會系統；沿用已讀取來源。"},
+  {"speciesId":"toad","tag":"ANTIPREDATOR","source":"https://animaldiversity.org/accounts/Duttaphrynus_melanostictus/","publisher":"University of Michigan Animal Diversity Web","basis":"記載毒性與反捕食者適應；本次成功讀取並核對。較小點數勝出是遊戲規則，並非生物能力測量。"},
+  {"speciesId":"magpie","tag":"DEFENSIVE_AGGRESSION","source":"https://en.wikipedia.org/wiki/Taiwan_blue_magpie","publisher":"Wikipedia（引用護巢行為資料，仍待專業審訂）","basis":"記載強烈護巢及驅離入侵者；本次成功讀取並核對。"},
+  {"speciesId":"turtle","tag":"DEFENSE_MECHANISM","source":"https://www.fisheries.noaa.gov/species/green-turtle","publisher":"NOAA Fisheries","basis":"硬殼海龜的構造；沿用已核對來源。抵抗技能是遊戲抽象。"},
+  {"speciesId":"gecko","tag":"ESCAPE","source":"https://animaldiversity.org/accounts/Hemidactylus_frenatus/","publisher":"University of Michigan Animal Diversity Web","basis":"記載尾自割分散捕食者注意而逃離；本次成功讀取並核對。"},
+  {"speciesId":"butterfly","tag":"MIMICRY","source":"https://en.wikipedia.org/wiki/Papilio_memnon","publisher":"Wikipedia（引用擬態研究，仍待專業審訂）","basis":"部分雌型擬態不適口蝴蝶，屬貝氏擬態；本次成功讀取並核對。不是所有個體均擬態。"},
+  {"speciesId":"swallow","tag":"MIGRATION","source":"https://animaldiversity.org/accounts/Hirundo_rustica/","publisher":"University of Michigan Animal Diversity Web","basis":"記載遷徙行為；本次成功讀取並核對。各地族群遷徙狀態不同，不能由遊戲技能推定個體行蹤。"},
+  {"speciesId":"kingfisher","tag":"PREDATOR","source":"https://animaldiversity.org/accounts/Alcedo_atthis/","publisher":"University of Michigan Animal Diversity Web","basis":"從水上方棲枝俯衝捕食；沿用已核對來源。查看手牌是遊戲抽象。"}
+ ]
+}

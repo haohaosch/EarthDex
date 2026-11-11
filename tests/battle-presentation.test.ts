@@ -33,7 +33,7 @@ test('ordinary simultaneous flips animate together and armor resists without a f
  const other=s.hands[1].shift()!;s.board[3]=other;
  const after=applyMove(s,{side:0,cardId:'own-0',cell:4}),frames=moveFrames(s,after),resist=frames.find(f=>f.phase==='resist')!;
  assert.deepEqual(resist.resisted,[1]);assert.equal(resist.state.board[1]!.controller,1);assert.equal(resist.state.board[1]!.spent,1);
- assert.ok(resist.comparisons.some(s=>s.includes('堅甲抵抗，本次未翻面')));
+ assert.ok(resist.comparisons.some(s=>s.includes('抵抗生效，本次未翻面')));
  assert.deepEqual(frames.find(f=>f.phase==='flip-in')!.flips,[3]);assert.ok(!frames.some(f=>f.flips.includes(1)));
  const noArmor=structuredClone(s);noArmor.board[1]!.definition.skill='neutral';const both=moveFrames(noArmor,applyMove(noArmor,{side:0,cardId:'own-0',cell:4}));assert.deepEqual(both.find(f=>f.phase==='flip-in')!.flips,[1,3]);
 });
@@ -64,3 +64,4 @@ test('corrections and resignations resync without guessing unsupported events',(
  assert.deepEqual(transitionFrames(before,corrected),[]);const t=setup();t.presenter.update('a',before);t.presenter.update('a',corrected);assert.equal(t.jobs.size,0);assert.deepEqual(t.seen.at(-1)!.state,corrected);
  const resigned:BattleState={...corrected,status:'finished',winner:1};t.presenter.update('a',resigned);assert.equal(t.seen.at(-1)!.state!.status,'finished');
 });
+test('large reconnect catch-up skips motion instead of allocating a long blocked animation queue',()=>{const before=game();let after=before;for(let i=0;i<7;i++){const side=after.turn,card=after.hands[side][0];after=applyMove(after,{side,cardId:card.id,cell:i});}assert.deepEqual(transitionFrames(before,after),[]);const t=setup();t.presenter.update('a',before);t.presenter.update('a',after);assert.equal(t.jobs.size,0);assert.deepEqual(t.seen.at(-1)!.state,after);});

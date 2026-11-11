@@ -1,12 +1,23 @@
+import {applyEcologyMove,ecologyLegalMoves,activeReveals} from './ecology-rules';
 import type { BattleState, BattleCard, CardDefinition, Move, Side, SkillId, Values } from './types';
-export const RULE_VERSION = 'experimental-0.1';
-export const SKILLS: Record<SkillId,{name:string; description:string; cost:number; tag?:string; priority:number; stackCap:number; resetOnFlip:boolean; trigger:string; limit:number}> = {
+import {LEGACY_RULE_VERSION,RULE_VERSION} from './versions';
+export {LEGACY_RULE_VERSION,RULE_VERSION} from './versions';
+export const SKILLS: Record<SkillId,{name:string; english?:string; description:string; cost:number; tag?:string; priority:number; stackCap:number; resetOnFlip:boolean; trigger:string; limit:number}> = {
  neutral:{name:'適應',description:'穩定的基礎能力，沒有額外觸發效果。',cost:0,priority:0,stackCap:0,resetOnFlip:false,trigger:'none',limit:0},
  armor:{name:'堅甲',description:'每局抵抗第一次原本成功的翻轉；翻面後不恢復次數。',cost:6,tag:'ARMOR',priority:10,stackCap:1,resetOnFlip:false,trigger:'BeforeFlip',limit:1},
  cooperate:{name:'群聚',description:'比較時，每張相鄰友軍使方向值 +1，最多 +2。',cost:4,tag:'SOCIAL',priority:20,stackCap:2,resetOnFlip:false,trigger:'Compare',limit:99},
  ambush:{name:'伏擊',description:'放在角落時，該次基本攻方比較值 +2。',cost:4,tag:'AMBUSH',priority:20,stackCap:2,resetOnFlip:false,trigger:'CompareAttack',limit:99},
  camouflage:{name:'隱蔽',description:'作為防守方時，該方向比較值 +1。',cost:3,tag:'CAMOUFLAGE',priority:20,stackCap:1,resetOnFlip:false,trigger:'CompareDefense',limit:99},
- ripple:{name:'漣漪',description:'被翻轉後，為新陣營再比較相鄰敵牌。每次放牌最多 3 波。',cost:6,tag:'DEMO_CHAIN',priority:30,stackCap:1,resetOnFlip:false,trigger:'OnFlipped',limit:99}
+ ripple:{name:'漣漪',description:'被翻轉後，為新陣營再比較相鄰敵牌。每次放牌最多 3 波。',cost:6,tag:'DEMO_CHAIN',priority:30,stackCap:1,resetOnFlip:false,trigger:'OnFlipped',limit:99},
+ collective:{name:'集體行為',english:'Collective behavior',description:'原同色相鄰卡翻面時，本卡跟著翻面；納入最多3層技能連鎖。',cost:0,tag:'COLLECTIVE',priority:30,stackCap:1,resetOnFlip:false,trigger:'NeighborFlipped',limit:99},
+ antipredator:{name:'反捕食者防禦',english:'Antipredator defense',description:'任一比較方有此技能時，較小點數翻轉較大者，包含防守反翻；相等不翻。',cost:5,tag:'ANTIPREDATOR',priority:20,stackCap:1,resetOnFlip:false,trigger:'Compare',limit:99},
+ defensive_aggression:{name:'防禦性攻擊',english:'Defensive aggression',description:'被翻面後，為新控制者額外比較全部相鄰敵牌；最多3層連鎖。',cost:6,tag:'DEFENSIVE_AGGRESSION',priority:30,stackCap:1,resetOnFlip:false,trigger:'OnFlipped',limit:99},
+ defense_mechanism:{name:'防禦機制',english:'Defense mechanism',description:'每局抵抗一次指向本卡的技能效果；不抵抗原本便成立的普通翻面。',cost:5,tag:'DEFENSE_MECHANISM',priority:5,stackCap:1,resetOnFlip:false,trigger:'BeforeSkillEffect',limit:1},
+ escape:{name:'逃避行為',english:'Escape behavior',description:'即將被翻面時，改退回原持有者手牌，不發生翻面。',cost:5,tag:'ESCAPE',priority:15,stackCap:1,resetOnFlip:false,trigger:'BeforeFlip',limit:99},
+ mimicry:{name:'擬態',english:'Mimicry',description:'每局抵抗一次翻面；翻面或返手不重置次數。',cost:6,tag:'MIMICRY',priority:10,stackCap:1,resetOnFlip:false,trigger:'BeforeFlip',limit:1},
+ migration:{name:'遷徙',english:'Migration',description:'可放空格或替換我方控制卡；舊卡退回原持有者，此次算一回合並重新比較四鄰。',cost:4,tag:'MIGRATION',priority:0,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:99},
+ predator:{name:'掠食者',english:'Predator',description:'每局一次，出牌後取得當下對手手牌情報；本卡翻面後技能永久失效，情報也關閉。',cost:3,tag:'PREDATOR',priority:0,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:1}
+
 };
 export function hash(s:string):number { let h=2166136261; for(const c of s) {h^=c.charCodeAt(0);h=Math.imul(h,16777619);} return h>>>0; }
 export function rng(seed:number) { let a=seed>>>0; return ()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}; }
@@ -18,7 +29,7 @@ export function randomDirections(budget:number,random:()=>number):Values {
  return [...options[Math.min(options.length-1,Math.floor(random()*options.length))]] as Values;
 }
 export function redistributeDirections(card:CardDefinition,seed:number):CardDefinition{return {...card,version:'capture-0.3',seed,values:randomDirections(28-SKILLS[card.skill].cost,rng(seed))};}
-export function generateCard(speciesId:string,tags:string[]=[],version=RULE_VERSION,instanceSeed?:number):CardDefinition {
+export function generateCard(speciesId:string,tags:string[]=[],version=LEGACY_RULE_VERSION,instanceSeed?:number):CardDefinition {
  const seed=instanceSeed===undefined?hash(`${speciesId}:${version}:traits-1`):instanceSeed>>>0,random=rng(seed);
  const eligible=(Object.keys(SKILLS) as SkillId[]).filter(k=>SKILLS[k].tag&&tags.includes(SKILLS[k].tag!)).sort();
  const pool=instanceSeed===undefined?eligible:[...eligible,'neutral' as SkillId].sort();
@@ -43,7 +54,7 @@ export function createBattle(decks:[{id:string;definition:CardDefinition}[],{id:
  for(const {definition:d} of decks.flat())if(!d||d.values.length!==4||!d.values.every(n=>Number.isInteger(n)&&n>=1&&n<=10)||!SKILLS[d.skill])throw Error('卡牌定義無效');
  const versions=new Set(decks.flat().map(c=>c.definition.version));if([...versions].some(v=>v.startsWith('official-'))&&versions.size!==1)throw Error('對戰卡牌平衡版本必須一致');
  if(new Set(decks.flat().map(c=>c.id)).size!==10)throw Error('對局卡牌 ID 必須唯一');
- return {ruleVersion:RULE_VERSION,...(versions.size===1?{balanceVersion:[...versions][0]}:{}),seed,first,turn:first,board:Array(9).fill(null),hands:decks.map((d,i)=>d.map(c=>({...structuredClone(c),originalOwner:i as Side,controller:i as Side,spent:0}))) as [BattleCard[],BattleCard[]],events:[],moves:[],status:'playing',winner:null};
+ return {ruleVersion:RULE_VERSION,...(versions.size===1?{balanceVersion:[...versions][0]}:{}),seed,first,turn:first,board:Array(9).fill(null),hands:decks.map((d,i)=>d.map(c=>({...structuredClone(c),originalOwner:i as Side,controller:i as Side,spent:0}))) as [BattleCard[],BattleCard[]],events:[],moves:[],status:'playing',winner:null,handReveals:[],turnSnapshots:[]};
 }
 export function neighbors(cell:number):[number,number,number][] {
  const a:[number,number,number][]=[];if(cell>=3)a.push([cell-3,0,2]);if(cell%3<2)a.push([cell+1,1,3]);if(cell<6)a.push([cell+3,2,0]);if(cell%3>0)a.push([cell-1,3,1]);return a;
@@ -51,8 +62,9 @@ export function neighbors(cell:number):[number,number,number][] {
 export function comparisonModifier(s:BattleState,cell:number,attacking:boolean):number {
  const c=s.board[cell]!;switch(c.definition.skill){case 'cooperate': return Math.min(SKILLS.cooperate.stackCap,neighbors(cell).filter(([i])=>s.board[i]?.controller===c.controller).length);case 'ambush': return attacking&&[0,2,6,8].includes(cell)?SKILLS.ambush.stackCap:0;case 'camouflage':return attacking?0:SKILLS.camouflage.stackCap;default:return 0;}
 }
-export function applyMove(input:BattleState,move:Move):BattleState {
- if(input.ruleVersion!==RULE_VERSION)throw Error('不支援的戰鬥規則版本');
+export function applyMove(input:BattleState,move:Move):BattleState {if(input.ruleVersion===RULE_VERSION)return applyEcologyMove(input,move);return applyLegacyMove(input,move);}
+function applyLegacyMove(input:BattleState,move:Move):BattleState {
+ if(input.ruleVersion!==LEGACY_RULE_VERSION)throw Error('不支援的戰鬥規則版本');
  if(input.status!=='playing')throw Error('對局已結束');
  if(move.side!==input.turn)throw Error('尚未輪到你');
  if(!Number.isInteger(move.cell)||move.cell<0||move.cell>8||input.board[move.cell])throw Error('請選擇未佔據的格子');
@@ -87,9 +99,18 @@ export function applyMove(input:BattleState,move:Move):BattleState {
  return s;
 }
 export function score(s:BattleState):[number,number]{return [s.board.filter(c=>c?.controller===0).length,s.board.filter(c=>c?.controller===1).length];}
-export function legalMoves(s:BattleState):Move[]{if(s.status!=='playing')return [];return s.hands[s.turn].flatMap(c=>s.board.flatMap((v,i)=>v?[]:[{side:s.turn,cardId:c.id,cell:i}]));}
+export function legalMoves(s:BattleState):Move[]{if(s.ruleVersion===RULE_VERSION)return ecologyLegalMoves(s);if(s.status!=='playing')return [];return s.hands[s.turn].flatMap(c=>s.board.flatMap((v,i)=>v?[]:[{side:s.turn,cardId:c.id,cell:i}]));}
+/** Hard AI may use public returned cards or its own active Predator snapshot, never hidden live definitions. */
+export function aiPerception(state:BattleState,side:Side):BattleState{
+ if(state.ruleVersion!==RULE_VERSION)return state;
+ const known=new Map<string,Partial<BattleCard>>();for(const e of state.events)if(e.card)known.set(e.card.id,e.card);
+ for(const reveal of activeReveals(state,side))for(const c of reveal.cards)if(c.definition&&!c.hidden)known.set(c.id,{...known.get(c.id),id:c.id,definition:c.definition});
+ const opponent=(1-side) as Side,hands=[...state.hands] as BattleState['hands'];
+ hands[opponent]=state.hands[opponent].map(c=>{const k=known.get(c.id);return {...c,definition:k?.definition||{speciesId:'unknown',version:'ai-unknown',values:[5,5,5,5],skill:'neutral',seed:0},spent:k?.spent||0,skillDisabled:k?.skillDisabled||false};});
+ return {...state,hands};
+}
 export function chooseAI(s:BattleState,difficulty='normal'):Move{
- const moves=legalMoves(s);if(!moves.length)throw Error('沒有合法操作');const side=s.turn;
+ if(difficulty==='hard')s=aiPerception(s,s.turn);s={...s,events:[],turnSnapshots:[]};const moves=legalMoves(s);if(!moves.length)throw Error('沒有合法操作');const side=s.turn;
  const random=rng(hash(`${s.seed}:${s.moves.length}:${difficulty}`));
  if(difficulty==='easy')return moves[Math.floor(random()*moves.length)];
  const ranked=moves.map(move=>{const next=applyMove(s,move);let value=score(next)[side]-score(next)[1-side];

@@ -1,3 +1,4 @@
+import {publicBattleState} from './battle-view';
 import {officialDefinition,OFFICIAL_CARD_VERSION} from '../engine/official-cards';
 import {validateLocation,locationFlags} from '../engine/observation-policy';
 import {inCampusView,sharedObservation,setPrivacy,filterObservations,ecologyStats,publicCampusStats} from './observations';
@@ -90,12 +91,12 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
    const body=await readBody(req);const mode=body.mode==='pvp'?'pvp':'ai',difficulty=['easy','normal','hard'].includes(body.difficulty)?body.difficulty:'normal',theme=body.theme==='global'?'global':'taiwan';const deck=ownedDeck(profile).map(c=>({...c,id:'p0:'+c.id}));
    const seed=crypto.getRandomValues(new Uint32Array(1))[0],aiIds=theme==='global'?['turtle','egret','spotbill','moorhen','mudskipper']:['macaque','barbet','kingfisher','bear','cat'];
    let state=mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:officialDefinition(id)}))],seed):null;
-   if(state?.turn===1)state=applyMove(state,chooseAI(state,difficulty));
+   while(state?.status==='playing'&&state.turn===1)state=applyMove(state,chooseAI(state,difficulty));
    const match:Match={mode,state,initial:mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:officialDefinition(id)}))],seed):null,difficulty,theme,settled:[],createdAt:new Date().toISOString()};
    // Waiting rooms retain their validated deck snapshot, not an untrusted client deck.
    const data=mode==='pvp'?{...match,waitingDeck:deck,seed,balanceVersion:OFFICIAL_CARD_VERSION}:match;
    const id=mode==='pvp'?crypto.randomUUID().replaceAll('-','').slice(0,10).toUpperCase():crypto.randomUUID();
-   await env.DB.prepare('INSERT INTO matches(id,revision,p0,p1,data,updated_at) VALUES(?,0,?,?,?,?)').bind(id,player,mode==='ai'?'AI':null,JSON.stringify(data),new Date().toISOString()).run();return json({id,side:0,state,mode,revision:0},201);
+   await env.DB.prepare('INSERT INTO matches(id,revision,p0,p1,data,updated_at) VALUES(?,0,?,?,?,?)').bind(id,player,mode==='ai'?'AI':null,JSON.stringify(data),new Date().toISOString()).run();return json({id,side:0,state:publicBattleState(state,0),mode,revision:0},201);
   }
   const matchRoute=route.match(/^\/matches\/([^/]+)(\/join|\/move|\/resign|\/settle|\/replay)?$/);
   if(matchRoute){
@@ -105,17 +106,18 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
    const saveMatch=async(p1=mrow!.p1)=>{const result=await env.DB.prepare('UPDATE matches SET data=?,p1=?,revision=revision+1,updated_at=? WHERE id=? AND revision=?').bind(JSON.stringify(match),p1,new Date().toISOString(),mrow!.id,mrow!.revision).run();if(!(result.meta?.changes??result.changes))throw Error('回合已更新，請重試');mrow!.revision++;};
    if(matchRoute[2]==='/join'&&req.method==='POST'){
     if(match.mode!=='pvp')throw Error('此房間不是 PVP');if(mrow.p0===player)return error('請由另一位玩家加入此房間',409);if(mrow.p1&&mrow.p1!==player)return error('房間已滿',409);
-    if(!mrow.p1){if(match.balanceVersion!==OFFICIAL_CARD_VERSION)return error('等待房間的平衡版本已更新，請重新建立房間；舊戰報保留。',409);const deck=ownedDeck(profile).map(c=>({...c,id:'p1:'+c.id}));match.state=createBattle([match.waitingDeck!,deck],match.seed!);match.initial=structuredClone(match.state);delete match.waitingDeck;await saveMatch(player);}return json({id:mrow.id,side:1,state:match.state,mode:match.mode,revision:mrow.revision});
+    if(!mrow.p1){if(match.balanceVersion!==OFFICIAL_CARD_VERSION)return error('等待房間的平衡版本已更新，請重新建立房間；舊戰報保留。',409);const deck=ownedDeck(profile).map(c=>({...c,id:'p1:'+c.id}));match.state=createBattle([match.waitingDeck!,deck],match.seed!);match.initial=structuredClone(match.state);delete match.waitingDeck;await saveMatch(player);}return json({id:mrow.id,side:1,state:publicBattleState(match.state,1),mode:match.mode,revision:mrow.revision});
    }
    if(mrow.p0!==player&&mrow.p1!==player)return error('沒有此對局的存取權限',403);
-   if(req.method==='GET')return json(matchRoute[2]==='/replay'?{initial:match.initial,moves:match.state?.moves||[]}:{id:mrow.id,side,state:match.state,mode:match.mode,revision:mrow.revision});
+   if(req.method==='GET'&&matchRoute[2]==='/replay'&&match.state?.status!=='finished')return error('對局結束後才開放完整重播，避免揭露對手手牌。',409);
+   if(req.method==='GET')return json(matchRoute[2]==='/replay'?{initial:match.initial,moves:match.state?.moves||[],final:match.state}:{id:mrow.id,side,state:publicBattleState(match.state,side),mode:match.mode,revision:mrow.revision});
    if(req.method==='POST'&&matchRoute[2]==='/move'){
     const body=await readBody(req);if(!match.state)throw Error('等待對手加入');if(body.revision!==mrow.revision)return error('回合已更新，請重試',409);
     match.state=applyMove(match.state,{side,cardId:body.cardId,cell:body.cell});
-    if(match.mode==='ai'&&match.state.status==='playing'&&match.state.turn===1)match.state=applyMove(match.state,chooseAI(match.state,match.difficulty));
-    await saveMatch();return json({id:mrow.id,side,state:match.state,mode:match.mode,revision:mrow.revision});
+    while(match.mode==='ai'&&match.state.status==='playing'&&match.state.turn===1)match.state=applyMove(match.state,chooseAI(match.state,match.difficulty));
+    await saveMatch();return json({id:mrow.id,side,state:publicBattleState(match.state,side),mode:match.mode,revision:mrow.revision});
    }
-   if(req.method==='POST'&&matchRoute[2]==='/resign'){if(!match.state||match.state.status!=='playing')throw Error('目前無法投降');match.state.status='finished';match.state.winner=(1-side) as Side;match.finishedBy=side;await saveMatch();return json({id:mrow.id,side,state:match.state,mode:match.mode,revision:mrow.revision});}
+   if(req.method==='POST'&&matchRoute[2]==='/resign'){if(!match.state||match.state.status!=='playing')throw Error('目前無法投降');match.state.status='finished';match.state.winner=(1-side) as Side;match.finishedBy=side;await saveMatch();return json({id:mrow.id,side,state:publicBattleState(match.state,side),mode:match.mode,revision:mrow.revision});}
    if(req.method==='POST'&&matchRoute[2]==='/settle'){
     if(match.state?.status!=='finished')throw Error('對局尚未結束');
     // Per-player idempotent settlement marker lives in the same CAS-protected profile.

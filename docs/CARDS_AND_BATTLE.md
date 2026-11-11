@@ -1,5 +1,7 @@
 # 官方卡牌與對戰
 
+目前新對局使用 ecology-0.2 / official-2 八項生態技能，完整規則見 [ECOLOGY_SKILLS](ECOLOGY_SKILLS.md)。下方 official-1 能力與規則記錄保留給舊卡/舊對局；不代表八項技能已被舊規則取代。
+
 `data/card-balance-v1.json` 發布 `official-1`，82個既有物種ID。`scripts/build-official-cards.ts` 以 speciesId/版本/固定 traits-1 種子重建；版本固定時 manifest 不得原地更新。`data/trait-evidence.json` 記錄本次實際取得並核對的 Cornell/ADW/NOAA 來源。只有麻雀/獼猴群聚、翠鳥伏擊、綠蠵龜硬殼等四筆通過本次核對；其他原有標籤仍保留作歷史資料，官方版本先中性。這是保守資料完整性選擇，技能/成本不是動物的科學能力數據。
 
 同物種同版值/技能完全一致；28點方向+技能共用預算，各方向1–10，只有一個主要技能；未知生態使用適應/7,7,7,7。新領卡的 ID/發卡ID可不同但能力相同。既有取得快照不改寫，API回 acquiredDefinition，圖鑑持有卡可展開歷史能力；新對戰一律投影官方版本，所有AI/PVP都從同一manifest讀取。不要用客戶端或舊隨機實例的能力建立新對局。

@@ -18,3 +18,9 @@
 官方 manifest 以版控發布（speciesId/能力/技能/seed/版本），有來源且本次核對的標籤才可用；缺資料中性。新版本必須新增 manifest/常數與測試，而非改寫既有 manifest。回復舊Worker會重新顯示既有取得快照；新生成official卡本身仍含完整定義，不會丟資料。備份與DB/R2回復流程同上。
 
 依最新指示不部署人工審核模組。既有review/verification歷史欄位不刪，舊pending有AI比對紀錄可直接續答；新AI收集不建立科學verification，也不將既有資料批次升級成已確認校園成果。
+
+## ecology-0.2 / official-2
+
+新增獨立的v2能力manifest與規則分流，舊v1檔案不改。`generateCard`未指定版本時仍使用原experimental-0.1種子，避免無快照舊卡重算出不同值。新對局才用新技能；舊active與initial.ruleVersion保留走legacy分支，舊等待房間版本不同須重建，沒有刪除原房間。
+
+新增match JSON欄位handReveals/turnSnapshots/endReason、卡牌skillDisabled與技能事件。均不執行DDL或批次覆寫；維運備份/回復流程同上。新遊戲最多100手，回合快照含私人手牌，DB/備份仍屬玩家資料；對外回應同時遮蔽目前及歷史快照的對手手牌，掠食者只傳本人有效快照。完整重播只在結束後提供。對戰仍不新增/移轉卡牌所有權。
