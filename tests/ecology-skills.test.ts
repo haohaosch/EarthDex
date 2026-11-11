@@ -89,3 +89,8 @@ test('antipredator counter-flips can be resisted or escaped and can trigger defe
  for(const skill of ['mimicry','defense_mechanism','escape'] as SkillId[]){const s=base();put(s,1,1,'antipredator',[3,3,3,3]);const id=setHand(s,0,skill,[8,8,8,8]);const n=applyMove(s,{side:0,cardId:id,cell:0});if(skill==='escape'){assert.equal(n.board[0],null);assert.ok(n.hands[0].some(c=>c.id===id));}else{assert.equal(n.board[0]!.controller,0);assert.equal(n.board[0]!.spent,1);}conserved(n);}
  const s=base();put(s,1,1,'antipredator',[3,3,3,3]);put(s,1,3,'neutral',[2,2,2,2]);const n=applyMove(s,{side:0,cardId:setHand(s,0,'defensive_aggression',[8,8,8,8]),cell:0});assert.equal(n.board[0]!.controller,1);assert.equal(n.board[3]!.controller,1);assert.ok(n.events.some(e=>e.type==='compared'&&e.from===0&&e.layer===1));
 });
+test('authorized Predator snapshots preserve already-consumed and disabled skill flags',async()=>{
+ const s=base();s.hands[1][0].definition.skill='mimicry';s.hands[1][0].spent=1;s.hands[1][1].definition.skill='predator';s.hands[1][1].spent=1;s.hands[1][1].skillDisabled=true;
+ const n=applyMove(s,{side:0,cardId:setHand(s,0,'predator'),cell:0}),reveal=publicBattleState(n,0)!.handReveals![0];assert.equal(reveal.cards[0].spent,1);assert.equal(reveal.cards[1].skillDisabled,true);
+ const {aiPerception}=await import('../engine/engine');assert.equal(aiPerception(n,0).hands[1][0].spent,1);assert.equal(aiPerception(n,0).hands[1][1].skillDisabled,true);
+});

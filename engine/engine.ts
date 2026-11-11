@@ -104,7 +104,7 @@ export function legalMoves(s:BattleState):Move[]{if(s.ruleVersion===RULE_VERSION
 export function aiPerception(state:BattleState,side:Side):BattleState{
  if(state.ruleVersion!==RULE_VERSION)return state;
  const known=new Map<string,Partial<BattleCard>>();for(const e of state.events)if(e.card)known.set(e.card.id,e.card);
- for(const reveal of activeReveals(state,side))for(const c of reveal.cards)if(c.definition&&!c.hidden)known.set(c.id,{...known.get(c.id),id:c.id,definition:c.definition});
+ for(const reveal of activeReveals(state,side))for(const c of reveal.cards)if(c.definition&&!c.hidden)known.set(c.id,{...known.get(c.id),...c});
  const opponent=(1-side) as Side,hands=[...state.hands] as BattleState['hands'];
  hands[opponent]=state.hands[opponent].map(c=>{const k=known.get(c.id);return {...c,definition:k?.definition||{speciesId:'unknown',version:'ai-unknown',values:[5,5,5,5],skill:'neutral',seed:0},spent:k?.spent||0,skillDisabled:k?.skillDisabled||false};});
  return {...state,hands};

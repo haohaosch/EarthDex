@@ -31,7 +31,7 @@ export function applyEcologyMove(input:BattleState,move:Move):BattleState{
   placed.spent=1;const viewer=placed.controller,opponent=(1-viewer) as Side;
   const cards=s.hands[opponent].map(c=>{
    if(enabled(c,'defense_mechanism')&&c.spent===0){c.spent=1;emit('hand_resisted',undefined,0,'對手一張手牌以防禦機制抵抗查看',{side:opponent,skill:'defense_mechanism'});return {id:c.id,hidden:true as const};}
-   return {id:c.id,definition:structuredClone(c.definition)};
+   return {id:c.id,definition:structuredClone(c.definition),spent:c.spent,...(c.skillDisabled?{skillDisabled:true}:{})};
   });
   s.handReveals.push({sourceCardId:placed.id,viewer,active:true,atMove:s.moves.length,cards});
   emit('revealed',move.cell,0,'掠食者：取得當下對手手牌情報',{skill:'predator',cardId:placed.id,card:structuredClone(placed)});

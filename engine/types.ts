@@ -8,5 +8,5 @@ export interface BattleEvent { seq: number; type: string; cell?: number; from?: 
 export interface BattleState { ruleVersion: string; balanceVersion?:string; seed: number; first: Side; turn: Side; board: (BattleCard | null)[]; hands: [BattleCard[], BattleCard[]]; events: BattleEvent[]; moves: Move[]; status: 'playing' | 'finished'; winner: Side | null; endReason?:'board-full'|'no-moves'|'turn-limit'; handReveals?:HandReveal[]; turnSnapshots?:TurnSnapshot[] }
 export interface Move { side: Side; cardId: string; cell: number }
 
-export interface HandReveal {sourceCardId:string;viewer:Side;active:boolean;atMove:number;cards:{id:string;hidden?:boolean;definition?:CardDefinition}[]}
+export interface HandReveal {sourceCardId:string;viewer:Side;active:boolean;atMove:number;cards:{id:string;hidden?:boolean;definition?:CardDefinition;spent?:number;skillDisabled?:boolean}[]}
 export interface TurnSnapshot {moveNumber:number;board:(BattleCard|null)[];hands:[BattleCard[],BattleCard[]];turn:Side;status:'playing'|'finished';winner:Side|null;endReason?:BattleState['endReason'];eventCount:number}
