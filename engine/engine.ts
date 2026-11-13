@@ -1,6 +1,8 @@
+import {applyTacticalMove,tacticalLegalMoves,initialPlants,tacticalModifier} from './tactical-rules';
+import {TACTICAL_NAMES} from './tactical-skills';
 import {applyEcologyMove,ecologyLegalMoves,activeReveals} from './ecology-rules';
 import type { BattleState, BattleCard, CardDefinition, Move, Side, SkillId, Values } from './types';
-import {LEGACY_RULE_VERSION,RULE_VERSION} from './versions';
+import {LEGACY_RULE_VERSION,RULE_VERSION,ECOLOGY_RULE_VERSION} from './versions';
 export {LEGACY_RULE_VERSION,RULE_VERSION} from './versions';
 export const SKILLS: Record<SkillId,{name:string; english?:string; description:string; cost:number; tag?:string; priority:number; stackCap:number; resetOnFlip:boolean; trigger:string; limit:number}> = {
  neutral:{name:'適應',description:'穩定的基礎能力，沒有額外觸發效果。',cost:0,priority:0,stackCap:0,resetOnFlip:false,trigger:'none',limit:0},
@@ -12,13 +14,23 @@ export const SKILLS: Record<SkillId,{name:string; english?:string; description:s
  collective:{name:'集體行為',english:'Collective behavior',description:'原同色相鄰卡翻面時，本卡跟著翻面；納入最多3層技能連鎖。',cost:0,tag:'COLLECTIVE',priority:30,stackCap:1,resetOnFlip:false,trigger:'NeighborFlipped',limit:99},
  antipredator:{name:'反捕食者防禦',english:'Antipredator defense',description:'任一比較方有此技能時，較小點數翻轉較大者，包含防守反翻；相等不翻。',cost:5,tag:'ANTIPREDATOR',priority:20,stackCap:1,resetOnFlip:false,trigger:'Compare',limit:99},
  defensive_aggression:{name:'防禦性攻擊',english:'Defensive aggression',description:'被翻面後，為新控制者額外比較全部相鄰敵牌；最多3層連鎖。',cost:6,tag:'DEFENSIVE_AGGRESSION',priority:30,stackCap:1,resetOnFlip:false,trigger:'OnFlipped',limit:99},
- defense_mechanism:{name:'防禦機制',english:'Defense mechanism',description:'每局抵抗一次指向本卡的技能效果；不抵抗原本便成立的普通翻面。',cost:5,tag:'DEFENSE_MECHANISM',priority:5,stackCap:1,resetOnFlip:false,trigger:'BeforeSkillEffect',limit:1},
+ defense_mechanism:{name:'防禦機制',english:'Defense mechanism',description:'每局抵抗一次指向本卡的有害技能效果；不抵抗普通翻面。手牌中的本卡不阻擋情報偵察。',cost:5,tag:'DEFENSE_MECHANISM',priority:5,stackCap:1,resetOnFlip:false,trigger:'BeforeSkillEffect',limit:1},
  escape:{name:'逃避行為',english:'Escape behavior',description:'即將被翻面時，改退回原持有者手牌，不發生翻面。',cost:5,tag:'ESCAPE',priority:15,stackCap:1,resetOnFlip:false,trigger:'BeforeFlip',limit:99},
  mimicry:{name:'擬態',english:'Mimicry',description:'每局抵抗一次翻面；翻面或返手不重置次數。',cost:6,tag:'MIMICRY',priority:10,stackCap:1,resetOnFlip:false,trigger:'BeforeFlip',limit:1},
  migration:{name:'遷徙',english:'Migration',description:'可放空格或替換我方控制卡；舊卡退回原持有者，此次算一回合並重新比較四鄰。',cost:4,tag:'MIGRATION',priority:0,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:99},
- predator:{name:'掠食者',english:'Predator',description:'每局一次，出牌後取得當下對手手牌情報；本卡翻面後技能永久失效，情報也關閉。',cost:3,tag:'PREDATOR',priority:0,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:1}
+ predator:{name:'掠食者',english:'Predator',description:'每局一次，出牌後查看對手所有手牌的當下快照；本卡翻面永久失效、離場關閉情報。此技能卡四向總值較低。',cost:3,tag:'PREDATOR',priority:0,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:1},
+ rally:{name:'協同增幅',english:'Team Boost',description:'每張四鄰友軍使本卡比較值 +1；最多 +4。',cost:6,priority:20,stackCap:1,resetOnFlip:false,trigger:'Compare',limit:99},
+ pierce:{name:'隔空突襲',english:'Gap Strike',description:'沿四方向攻擊；緊鄰格空白時可隔一格比較。有牌擋住時僅比較緊鄰敵牌。',cost:7,priority:20,stackCap:1,resetOnFlip:false,trigger:'CompareAttack',limit:99},
+ cascade:{name:'連擊指令',english:'Capture Relay',description:'本卡成功翻面的卡牌，會為新陣營再攻擊一次；受3層連鎖上限限制。',cost:9,priority:20,stackCap:1,resetOnFlip:false,trigger:'OnCapture',limit:99},
+ swap:{name:'換位突襲',english:'Switch Strike',description:'落牌時可選一張四鄰敵牌互換位置，再從新位置攻擊；可略過換位。',cost:7,priority:20,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:99},
+ vengeance:{name:'友軍援擊',english:'Ally Retaliation',description:'原同色四鄰卡被翻面後，本卡為原陣營再攻擊一次；同波自己也翻面則不發動。',cost:7,priority:20,stackCap:1,resetOnFlip:false,trigger:'NeighborFlipped',limit:99},
+ weaken:{name:'全場削弱',english:'Field Drain',description:'落牌後，場上所有卡牌四向 −2（含自己與植物）；只套用一次，隨卡保留。',cost:9,priority:20,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:99},
+ overrun:{name:'強制換防',english:'Enemy Displacement',description:'可覆蓋敵牌，敵牌退回其當前顏色玩家手牌；耗一手後比較四鄰。技能護盾可抵抗並消耗本回合。',cost:8,priority:20,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:99},
+ inspire:{name:'全軍鼓舞',english:'Team Inspiration',description:'落牌後，場上其他友軍四向 +1；只套用一次，隨卡保留。',cost:8,priority:20,stackCap:1,resetOnFlip:false,trigger:'OnPlaced',limit:99},
+ surrounded:{name:'背水增幅',english:'Surrounded Boost',description:'四鄰至少有兩張敵牌時，本卡四向比較值 +2。',cost:5,priority:20,stackCap:1,resetOnFlip:false,trigger:'Compare',limit:99},
 
 };
+for(const [id,[name,english]] of Object.entries(TACTICAL_NAMES))Object.assign(SKILLS[id as SkillId],{name,english});
 export function hash(s:string):number { let h=2166136261; for(const c of s) {h^=c.charCodeAt(0);h=Math.imul(h,16777619);} return h>>>0; }
 export function rng(seed:number) { let a=seed>>>0; return ()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}; }
 const directionalOptions=new Map<number,Values[]>();
@@ -40,9 +52,9 @@ export function generateCard(speciesId:string,tags:string[]=[],version=LEGACY_RU
  else if(!pool.length&&instanceSeed===undefined) {values.fill(budget/4);} else for(let n=4;n<budget;n++){const available=[0,1,2,3].filter(i=>values[i]<10);values[available[Math.floor(random()*available.length)]]++;}
  return {speciesId,version,values,skill,seed};
 }
-export function validateDeck(cards:{speciesId:string;id?:string}[]):string[] {
+export function validateDeck(cards:{speciesId:string;id?:string}[],size=7):string[] {
  const errors:string[]=[];
- if(cards.length!==5) errors.push('每副牌組必須有 5 張卡牌');
+ if(cards.length!==size) errors.push(`每副牌組必須有 ${size} 張卡牌`);
  const counts:Record<string,number>={};for(const c of cards) counts[c.speciesId]=(counts[c.speciesId]||0)+1;
  if(Object.values(counts).some(n=>n>2))errors.push('同一物種最多 2 張');
  if(new Set(cards.map(c=>c.speciesId)).size<3)errors.push('至少需要 3 種不同物種');
@@ -50,19 +62,22 @@ export function validateDeck(cards:{speciesId:string;id?:string}[]):string[] {
  return errors;
 }
 export function createBattle(decks:[{id:string;definition:CardDefinition}[],{id:string;definition:CardDefinition}[]],seed=1,first:Side=(hash(String(seed))%2) as Side):BattleState {
- for(const deck of decks){const e=validateDeck(deck.map(c=>({id:c.id,speciesId:c.definition.speciesId})));if(e.length)throw Error(e.join('；'));}
+ const ruleVersion=decks.every(d=>d.length===5)&&!decks.flat().some(c=>c.definition.version==='official-3')?ECOLOGY_RULE_VERSION:RULE_VERSION;
+ const size=ruleVersion===RULE_VERSION?7:5;
+ for(const deck of decks){const e=validateDeck(deck.map(c=>({id:c.id,speciesId:c.definition.speciesId})),size);if(e.length)throw Error(e.join('；'));}
  for(const {definition:d} of decks.flat())if(!d||d.values.length!==4||!d.values.every(n=>Number.isInteger(n)&&n>=1&&n<=10)||!SKILLS[d.skill])throw Error('卡牌定義無效');
  const versions=new Set(decks.flat().map(c=>c.definition.version));if([...versions].some(v=>v.startsWith('official-'))&&versions.size!==1)throw Error('對戰卡牌平衡版本必須一致');
- if(new Set(decks.flat().map(c=>c.id)).size!==10)throw Error('對局卡牌 ID 必須唯一');
- return {ruleVersion:RULE_VERSION,...(versions.size===1?{balanceVersion:[...versions][0]}:{}),seed,first,turn:first,board:Array(9).fill(null),hands:decks.map((d,i)=>d.map(c=>({...structuredClone(c),originalOwner:i as Side,controller:i as Side,spent:0}))) as [BattleCard[],BattleCard[]],events:[],moves:[],status:'playing',winner:null,handReveals:[],turnSnapshots:[]};
+ if(new Set(decks.flat().map(c=>c.id)).size!==size*2)throw Error('對局卡牌 ID 必須唯一');
+ return {ruleVersion,...(versions.size===1?{balanceVersion:[...versions][0]}:{}),seed,first,turn:first,board:ruleVersion===RULE_VERSION?initialPlants(first):Array(9).fill(null),hands:decks.map((d,i)=>d.map(c=>({...structuredClone(c),originalOwner:i as Side,controller:i as Side,spent:0}))) as [BattleCard[],BattleCard[]],events:[],moves:[],status:'playing',winner:null,handReveals:[],turnSnapshots:[]};
 }
 export function neighbors(cell:number):[number,number,number][] {
  const a:[number,number,number][]=[];if(cell>=3)a.push([cell-3,0,2]);if(cell%3<2)a.push([cell+1,1,3]);if(cell<6)a.push([cell+3,2,0]);if(cell%3>0)a.push([cell-1,3,1]);return a;
 }
 export function comparisonModifier(s:BattleState,cell:number,attacking:boolean):number {
+ if(s.ruleVersion===RULE_VERSION)return tacticalModifier(s,cell,attacking);
  const c=s.board[cell]!;switch(c.definition.skill){case 'cooperate': return Math.min(SKILLS.cooperate.stackCap,neighbors(cell).filter(([i])=>s.board[i]?.controller===c.controller).length);case 'ambush': return attacking&&[0,2,6,8].includes(cell)?SKILLS.ambush.stackCap:0;case 'camouflage':return attacking?0:SKILLS.camouflage.stackCap;default:return 0;}
 }
-export function applyMove(input:BattleState,move:Move):BattleState {if(input.ruleVersion===RULE_VERSION)return applyEcologyMove(input,move);return applyLegacyMove(input,move);}
+export function applyMove(input:BattleState,move:Move):BattleState {if(input.ruleVersion===RULE_VERSION)return applyTacticalMove(input,move);if(input.ruleVersion===ECOLOGY_RULE_VERSION)return applyEcologyMove(input,move);return applyLegacyMove(input,move);}
 function applyLegacyMove(input:BattleState,move:Move):BattleState {
  if(input.ruleVersion!==LEGACY_RULE_VERSION)throw Error('不支援的戰鬥規則版本');
  if(input.status!=='playing')throw Error('對局已結束');
@@ -99,10 +114,10 @@ function applyLegacyMove(input:BattleState,move:Move):BattleState {
  return s;
 }
 export function score(s:BattleState):[number,number]{return [s.board.filter(c=>c?.controller===0).length,s.board.filter(c=>c?.controller===1).length];}
-export function legalMoves(s:BattleState):Move[]{if(s.ruleVersion===RULE_VERSION)return ecologyLegalMoves(s);if(s.status!=='playing')return [];return s.hands[s.turn].flatMap(c=>s.board.flatMap((v,i)=>v?[]:[{side:s.turn,cardId:c.id,cell:i}]));}
+export function legalMoves(s:BattleState):Move[]{if(s.ruleVersion===RULE_VERSION)return tacticalLegalMoves(s);if(s.ruleVersion===ECOLOGY_RULE_VERSION)return ecologyLegalMoves(s);if(s.status!=='playing')return [];return s.hands[s.turn].flatMap(c=>s.board.flatMap((v,i)=>v?[]:[{side:s.turn,cardId:c.id,cell:i}]));}
 /** Hard AI may use public returned cards or its own active Predator snapshot, never hidden live definitions. */
 export function aiPerception(state:BattleState,side:Side):BattleState{
- if(state.ruleVersion!==RULE_VERSION)return state;
+ if(state.ruleVersion===LEGACY_RULE_VERSION)return state;
  const known=new Map<string,Partial<BattleCard>>();for(const e of state.events)if(e.card)known.set(e.card.id,e.card);
  for(const reveal of activeReveals(state,side))for(const c of reveal.cards)if(c.definition&&!c.hidden)known.set(c.id,{...known.get(c.id),...c});
  const opponent=(1-side) as Side,hands=[...state.hands] as BattleState['hands'];
@@ -118,6 +133,6 @@ export function chooseAI(s:BattleState,difficulty='normal'):Move{
   return {move,value:value+([0,2,6,8].includes(move.cell)?0.06:0)+random()*0.01};});
  ranked.sort((a,b)=>b.value-a.value);return ranked[0].move;
 }
-export function dexCandidates(s:BattleState,side:Side,known:string[]):string[]{if(s.status!=='finished')return [];return [...new Set(s.board.filter(c=>c?.controller===side&&c.originalOwner!==side&&!known.includes(c.definition.speciesId)).map(c=>c!.definition.speciesId))];}
+export function dexCandidates(s:BattleState,side:Side,known:string[]):string[]{if(s.status!=='finished')return [];return [...new Set(s.board.filter(c=>c?.controller===side&&!c.obstacle&&c.originalOwner!==side&&!known.includes(c.definition.speciesId)).map(c=>c!.definition.speciesId))];}
 export function replay(initial:BattleState,moves:Move[]):BattleState{return moves.reduce(applyMove,structuredClone(initial));}
 export function distanceKm(a:{lat:number;lng:number},b:{lat:number;lng:number}):number {const rad=Math.PI/180,dlat=(b.lat-a.lat)*rad,dlng=(b.lng-a.lng)*rad;const h=Math.sin(dlat/2)**2+Math.cos(a.lat*rad)*Math.cos(b.lat*rad)*Math.sin(dlng/2)**2;return 6371*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));}

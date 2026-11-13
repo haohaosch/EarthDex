@@ -24,3 +24,9 @@
 新增獨立的v2能力manifest與規則分流，舊v1檔案不改。`generateCard`未指定版本時仍使用原experimental-0.1種子，避免無快照舊卡重算出不同值。新對局才用新技能；舊active與initial.ruleVersion保留走legacy分支，舊等待房間版本不同須重建，沒有刪除原房間。
 
 新增match JSON欄位handReveals/turnSnapshots/endReason、卡牌skillDisabled與技能事件。均不執行DDL或批次覆寫；維運備份/回復流程同上。新遊戲最多100手，回合快照含私人手牌，DB/備份仍屬玩家資料；對外回應同時遮蔽目前及歷史快照的對手手牌，掠食者只傳本人有效快照。完整重播只在結束後提供。對戰仍不新增/移轉卡牌所有權。
+
+## tactics-0.3 / official-3
+
+新增v3 manifest與獨立規則引擎，v1/v2 manifests及舊規則保留。新對局7張牌、後手植物、17種遊戲技能；不再以生態來源作技能資格。BattleCard.modifiers/obstacle、Move.swapCell與遠攻方向事件為JSON可選欄位，無SQL變更。植物不進實例庫；強制換防只把本局卡放到當前陣營手牌，不轉移正式實例所有權。
+
+既有demo五張選擇從已持有卡補足7張並CAS保存，無法補足則保留原選擇讓玩家調整；正式檔案不自動選牌或發卡。已開始對局與重播保留當時5張與原規則，舊等待房間不可混用新版本。回滾注意新對局需要理解tactics-0.3的Worker；只能回滾到仍支援三套規則的修復版。

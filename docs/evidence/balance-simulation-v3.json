@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-11-13T13:44:51.392Z",
+  "ruleVersion": "tactics-0.3",
+  "balanceVersion": "official-3",
+  "seeds": "0..99",
+  "pairedDeckSwap": true,
+  "strategy": "normal",
+  "deckMode": "varied",
+  "deckPolicy": "Deterministic catalog shuffle, seven unique species per deck, no rarity weighting",
+  "opening": "Two second-side plants at cells 1 and 9; directions 3/4; removed on successful attack; score for the second side until removed",
+  "games": 200,
+  "firstWins": 94,
+  "secondWins": 106,
+  "draws": 0,
+  "turnLimit": 1,
+  "meanTurns": 10.265,
+  "firstWinRate": 0.47,
+  "wilson95": [
+    0.4020463337087108,
+    0.5390844266463886
+  ],
+  "skillCounts": {
+    "collective": 180,
+    "rally": 204,
+    "antipredator": 156,
+    "escape": 164,
+    "pierce": 174,
+    "inspire": 136,
+    "cascade": 174,
+    "defensive_aggression": 152,
+    "predator": 164,
+    "migration": 180,
+    "vengeance": 188,
+    "overrun": 132,
+    "swap": 180,
+    "surrounded": 130,
+    "defense_mechanism": 174,
+    "weaken": 156,
+    "mimicry": 156
+  },
+  "note": "AI self-play with paired deck swap; samples are correlated and the Wilson interval is descriptive. This measures these strategies/decks only and does not establish human or population-wide balance."
+}

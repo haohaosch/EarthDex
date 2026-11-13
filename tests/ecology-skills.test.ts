@@ -61,7 +61,7 @@ test('an empty opponent hand is automatically skipped while a legal player can c
  const s=base();for(const cell of [0,1,2,3,4])put(s,1,cell);const n=applyMove(s,{side:0,cardId:setHand(s,0,'neutral',[1,1,1,1]),cell:8});assert.equal(n.status,'playing');assert.equal(n.turn,0);assert.ok(n.events.some(e=>e.type==='turn_skipped'&&e.side===1));conserved(n);
 });
 test('all eight skills have sourced official species; old rule snapshots retain the legacy engine',()=>{
- const species=['sparrow','toad','magpie','turtle','gecko','butterfly','swallow','kingfisher'];assert.deepEqual(new Set(species.map(id=>officialDefinition(id).skill)),new Set(ECOLOGY_SKILLS));
+ const species=['sparrow','toad','magpie','turtle','gecko','butterfly','swallow','kingfisher'];assert.deepEqual(new Set(species.map(id=>officialDefinition(id,'official-2').skill)),new Set(ECOLOGY_SKILLS));
  const s=base();s.ruleVersion=LEGACY_RULE_VERSION;delete s.handReveals;delete s.turnSnapshots;const n=applyMove(s,{side:0,cardId:s.hands[0][0].id,cell:0});assert.equal(n.ruleVersion,LEGACY_RULE_VERSION);assert.equal(n.turnSnapshots,undefined);assert.deepEqual(replay(s,n.moves),n);
 });
 test('all skill mixtures conserve ten identities and terminate within 100 turns with legal AI moves',async()=>{

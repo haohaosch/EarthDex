@@ -43,3 +43,19 @@
 @media(max-width:700px){.predator-intel{padding:30px 20px}.intel-cards{grid-template-columns:repeat(auto-fit,minmax(85px,1fr));gap:9px}.intel-hidden{min-height:140px}.skill-reference-grid{grid-template-columns:1fr}.board-cell>button.migration-place-button{font-size:9px;padding:5px 1px}}
 .board-cell.is-triggering{outline:2px solid #9ee6c0;outline-offset:3px}.board-cell.is-triggering .game-card{animation:skill-value-pop .45s ease-out both}.reverse-label{background:#3b345bea;border-color:#d7b7ff;color:#f2e0ff}
 .intel-card small{display:block;margin-top:10px;color:#d5ddac;font-size:10px;line-height:1.7;text-align:center}
+
+.plant-obstacle {background:linear-gradient(145deg,#325b45,#142b27);color:#e2eee1;border:2px dashed #a6bd8b;isolation:isolate;}
+.plant-obstacle.enemy {background:linear-gradient(145deg,#764e47,#382b2e);border-color:#d5a199;}
+.plant-obstacle>svg {position:absolute;left:calc(50% - 21px);top:29%;opacity:.8;}
+.plant-obstacle .obstacle-label {position:absolute;top:12%;left:0;right:0;font-size:10px;letter-spacing:.12em;}
+.plant-obstacle .game-card-name {bottom:10px;}
+.plant-obstacle .game-card-name small {display:block;font-size:9px;opacity:.75;}
+.is-removing .game-card {animation:plant-break .4s ease-in forwards;}
+.is-swapping .game-card {animation:card-switch .5s ease-out;}
+@keyframes plant-break {to {opacity:0;transform:scale(.55) rotate(12deg);filter:blur(3px);}}
+@keyframes card-switch {0% {transform:scale(.8) rotate(-5deg);opacity:.5;}70% {transform:scale(1.04);}100% {transform:scale(1);opacity:1;}}
+.swap-targets {display:grid;gap:10px;margin:20px 0;}
+.swap-choice>.full {margin-top:10px;}
+.plant-details {text-align:center;padding:25px;line-height:1.8;}
+.direction-bonus {white-space:nowrap;}
+@media (prefers-reduced-motion:reduce) {.is-removing .game-card,.is-swapping .game-card{animation:none;}}

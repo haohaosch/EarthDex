@@ -2,12 +2,13 @@ import {neighbors,SKILLS} from './engine';
 import {speciesById} from './species';
 import type {BattleEvent,BattleState,SkillId} from './types';
 export interface ComparisonExplanation {seq:number;attack:string;defense:string;result:string;text:string}
+const cardName=(id:string)=>id==='plant-obstacle'?'植物障礙':speciesById(id).name;
 const directions=['上','右','下','左'];
 export interface ComparisonOperand {cell:number;direction:number;base:number;total:number;bonus:number;skill:SkillId;role:'attack'|'defense'}
 /** Historical totals come from the server event, never current neighboring controllers. */
 export function comparisonOperands(state:BattleState,event:BattleEvent):{attack:ComparisonOperand;defense:ComparisonOperand}|null{
  if(event.type!=='compared'||event.from===undefined||event.cell===undefined)return null;
- const link=neighbors(event.from).find(([target])=>target===event.cell),a=event.attackCard||state.board[event.from],b=event.defenseCard||state.board[event.cell];
+ const link=event.direction!==undefined&&event.opposite!==undefined?[event.cell,event.direction,event.opposite]:neighbors(event.from).find(([target])=>target===event.cell),a=event.attackCard||state.board[event.from],b=event.defenseCard||state.board[event.cell];
  const totals=event.detail.match(/^(\d+)\s*(?:>|≤|<|≥)\s*(\d+)$/);
  if(!link||!a||!b||!totals)return null;
  const [,dir,opposite]=link,av=Number(totals[1]),bv=Number(totals[2]);
@@ -16,8 +17,8 @@ export function comparisonOperands(state:BattleState,event:BattleEvent):{attack:
 export function explainComparison(state:BattleState,event:BattleEvent):ComparisonExplanation|null{
  const operands=comparisonOperands(state,event);if(!operands)return null;
  const {attack:avalue,defense:bvalue}=operands,a=(event.attackCard||state.board[avalue.cell])!,b=(event.defenseCard||state.board[bvalue.cell])!,dir=avalue.direction,opposite=bvalue.direction,av=avalue.total,bv=bvalue.total;
- const operand=(card:typeof a,direction:number,total:number)=>{const base=card.definition.values[direction],bonus=total-base;return `${speciesById(card.definition.speciesId).name}（${directions[direction]}）${base}${bonus?` ＋ ${SKILLS[card.definition.skill].name} ${bonus}`:''} ＝ ${total}`;};
- const attack=operand(a,dir,av),defense=operand(b,opposite,bv),result=event.reverse?(av<bv?'反捕食者防禦：攻方較小，進入翻面判定':av===bv?'點數相等，不翻面':'反捕食者防禦：防守方較小，反翻攻方'):(av>bv?'攻方較高，進入翻面判定':av===bv?'點數相等，不翻面':'攻方較低，不翻面');
+ const operand=(card:typeof a,direction:number,total:number)=>{const base=card.definition.values[direction],bonus=total-base;return `${cardName(card.definition.speciesId)}（${directions[direction]}）${base}${bonus?` ${bonus>0?'＋':'−'} ${state.ruleVersion==='tactics-0.3'?'戰場修正':SKILLS[card.definition.skill].name} ${Math.abs(bonus)}`:''} ＝ ${total}`;};
+ const attack=operand(a,dir,av),defense=operand(b,opposite,bv),result=event.reverse?(av<bv?'逆轉比較：攻方較小，進入翻面判定':av===bv?'點數相等，不翻面':'逆轉比較：防守方較小，反翻攻方'):(av>bv?'攻方較高，進入翻面判定':av===bv?'點數相等，不翻面':'攻方較低，不翻面');
  return {seq:event.seq,attack,defense,result,text:`${attack}；${defense}。${result}。`};
 }
 export function comparisonsForCard(state:BattleState,id:string):ComparisonExplanation[]{

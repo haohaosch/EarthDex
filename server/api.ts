@@ -6,7 +6,7 @@ import {SourceClient,integrateSpecies,externalOccurrences} from './biodiversity'
 import {applyMove,chooseAI,createBattle,dexCandidates,hash,score,generateCard} from '../engine/engine';
 import {definition,SPECIES,speciesById,SERIES} from '../engine/species';
 import type {BattleState,Move,Side} from '../engine/types';
-import {answerQuiz,newProfile,ownedDeck,publicProfile,type Profile,type Observation} from './model';
+import {answerQuiz,newProfile,ownedDeck,publicProfile,upgradeDemoDeck,type Profile,type Observation} from './model';
 import referenceBank from '../engine/recognition/reference-bank.json';
 import {rankSpecies,type ReferenceBank} from '../engine/recognition/rank';
 import {fieldQuestion,collectObservation} from './field';
@@ -50,6 +50,7 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   let profile:Profile=JSON.parse(row!.data);profile.revision=row!.revision;
   const saveProfile=async()=>{const result=await env.DB.prepare('UPDATE profiles SET data=?,revision=revision+1 WHERE id=? AND revision=?').bind(JSON.stringify(profile),player,profile.revision).run();if(!(result.meta?.changes??result.changes))throw Error('資料已更新，請重新載入後再試');profile.revision++;};
 
+  if(upgradeDemoDeck(profile))await saveProfile();
   if(route==='/observation-map'&&req.method==='GET'){const observations=filterObservations(profile.observations,url.searchParams);return json({observations,stats:ecologyStats(observations,profile.unlocks.map(u=>u.speciesId),profile.demo),repeatPolicyEnforced:false});}
   if(route==='/profile'&&req.method==='GET')return json(publicProfile(profile,player));
   if(route==='/deck'&&req.method==='POST'){const body=await readBody(req);if(!Array.isArray(body.ids))throw Error('牌組格式錯誤');ownedDeck(profile,body.ids);profile.deck=body.ids;await saveProfile();return json(publicProfile(profile,player));}
@@ -89,7 +90,7 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
   }
   if(route==='/matches'&&req.method==='POST'){
    const body=await readBody(req);const mode=body.mode==='pvp'?'pvp':'ai',difficulty=['easy','normal','hard'].includes(body.difficulty)?body.difficulty:'normal',theme=body.theme==='global'?'global':'taiwan';const deck=ownedDeck(profile).map(c=>({...c,id:'p0:'+c.id}));
-   const seed=crypto.getRandomValues(new Uint32Array(1))[0],aiIds=theme==='global'?['turtle','egret','spotbill','moorhen','mudskipper']:['macaque','barbet','kingfisher','bear','cat'];
+   const seed=crypto.getRandomValues(new Uint32Array(1))[0],aiIds=theme==='global'?['turtle','egret','spotbill','moorhen','mudskipper','kingfisher','toad']:['macaque','barbet','kingfisher','bear','cat','gecko','swallow'];
    let state=mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:officialDefinition(id)}))],seed):null;
    while(state?.status==='playing'&&state.turn===1)state=applyMove(state,chooseAI(state,difficulty));
    const match:Match={mode,state,initial:mode==='ai'?createBattle([deck,aiIds.map((id,i)=>({id:'ai:'+i,definition:officialDefinition(id)}))],seed):null,difficulty,theme,settled:[],createdAt:new Date().toISOString()};
@@ -113,7 +114,7 @@ export async function handleApi(req:Request,env:Env,identity:string):Promise<Res
    if(req.method==='GET')return json(matchRoute[2]==='/replay'?{initial:match.initial,moves:match.state?.moves||[],final:match.state}:{id:mrow.id,side,state:publicBattleState(match.state,side),mode:match.mode,revision:mrow.revision});
    if(req.method==='POST'&&matchRoute[2]==='/move'){
     const body=await readBody(req);if(!match.state)throw Error('等待對手加入');if(body.revision!==mrow.revision)return error('回合已更新，請重試',409);
-    match.state=applyMove(match.state,{side,cardId:body.cardId,cell:body.cell});
+    match.state=applyMove(match.state,{side,cardId:body.cardId,cell:body.cell,...(body.swapCell===undefined?{}:{swapCell:body.swapCell})});
     while(match.mode==='ai'&&match.state.status==='playing'&&match.state.turn===1)match.state=applyMove(match.state,chooseAI(match.state,match.difficulty));
     await saveMatch();return json({id:mrow.id,side,state:publicBattleState(match.state,side),mode:match.mode,revision:mrow.revision});
    }

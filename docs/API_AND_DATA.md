@@ -50,3 +50,7 @@ Profile保留：demo、instances、unlocks、observations、deck、pending、att
 `publicBattleState`在create/join/get/move/resign全部回應中遮蔽對手hands及turnSnapshots.hands的species/values/skill/seed。handReveals只回本人且來源仍有效的情報；防禦機制保護的那張牌沒有definition。進行中`/replay`回409；結束後回initial/moves/final，final的turnSnapshots供返手/替換快速重播。沒有新的審核或管理員設定。
 
 完整欄位與事件順序見ECOLOGY_SKILLS。`BattleState.handReveals`是每局資訊，不是玩家正式收藏；`TurnSnapshot`只存回合末盤面/手牌/回合/結算與eventCount，不遞迴包含整份歷史。
+
+## tactics-0.3
+
+新牌組必須7張。新對局official-3，包含後手兩張3/4值植物，植物擊破前計控制分。POST /matches/:id/move可帶swapCell整數，僅換位突襲可選四鄰敵牌；省略代表原地出牌。此選擇與落牌、換位、攻擊同一CAS提交。無效目標拒絕且不改revision。移除、換位、數值變化事件附當時卡牌快照；遠攻比點附direction/opposite。modifiers隨卡保留於本局，obstacle不進收藏；強制換防toHand是當前控制者，其他返手用originalOwner。完整規則見TACTICAL_SKILLS.md。

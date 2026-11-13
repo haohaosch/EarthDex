@@ -1,6 +1,6 @@
 import type {BattleState,BattleCard,BattleEvent,Move,Side,SkillId,TurnSnapshot} from './types';
 import {neighbors,comparisonModifier,SKILLS} from './engine';
-export {RULE_VERSION as ECOLOGY_RULE_VERSION} from './versions';
+export {ECOLOGY_RULE_VERSION} from './versions';
 export const MAX_TURNS=100;
 export const ECOLOGY_SKILLS:SkillId[]=['collective','antipredator','defensive_aggression','defense_mechanism','escape','mimicry','migration','predator'];
 const enabled=(card:BattleCard,skill:SkillId)=>card.definition.skill===skill&&!card.skillDisabled;

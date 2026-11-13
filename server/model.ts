@@ -18,7 +18,7 @@ export function newProfile(demo:boolean):Profile{
  if(demo){
   const ids=['deer','magpie','sparrow','butterfly','egret','magpie','deer'];
   ids.forEach((speciesId,i)=>{const at=new Date(Date.UTC(2026,9,1+i)).toISOString(),observationId='fixture-observation-'+i;profile.observations.push({id:observationId,speciesId,at,status:'verified',region:i<3?'臺灣・低海拔地區':'臺灣・平原地區',accuracy:18,reason:'展示資料：預先建立的觀察與獲卡紀錄，非真實驗證結果'});profile.instances.push({id:'fixture-card-'+i,speciesId,observationId,grantId:'fixture-grant-'+i,issuedAt:at,definition:generateCard(speciesId,speciesById(speciesId).tags,'fixture-0.3',hash('fixture-card-'+i))});});
-  profile.deck=profile.instances.slice(0,5).map(c=>c.id);profile.unlocks=[...new Set(ids)].map(speciesId=>({speciesId,method:'field',at:'2026-10-01T00:00:00.000Z'}));
+  profile.deck=profile.instances.slice(0,7).map(c=>c.id);profile.unlocks=[...new Set(ids)].map(speciesId=>({speciesId,method:'field',at:'2026-10-01T00:00:00.000Z'}));
  }
  return profile;
 }
@@ -34,3 +34,10 @@ export function answerQuiz(p:Profile,speciesId:string,choice:number){
 export function publicProfile(p:Profile,sharingCode?:string){return {...p,sharingCode,instances:p.instances.map(c=>({...c,acquiredDefinition:instanceDefinition(c),definition:officialDefinition(c.speciesId)})),observations:p.observations.map(({mediaKey,...o})=>{const mediaType=mediaKey?(o.mediaType||'video/webm'):undefined;return {...o,...(o.recognition&&['manual_review','appealed'].includes(o.status)?{status:'identified' as const,reason:'舊版候選已改採AI問答流程；可直接回答物種問題收集。'}:{}),mediaType,hasPhoto:!!mediaKey&&mediaType!.startsWith('image/'),hasVideo:!!mediaKey&&mediaType!.startsWith('video/')};})};}
 export type PublicProfile=ReturnType<typeof publicProfile>;
 export function safeCatalog(){return SPECIES.map(s=>({...s,questions:undefined}));}
+
+/** Demo migration only selects already-owned instances; it never grants cards. */
+export function upgradeDemoDeck(p:Profile):boolean{
+ if(!p.demo||p.deck.length!==5)return false;const selected=[...p.deck];
+ for(const c of p.instances){if(selected.length>=7)break;if(!selected.includes(c.id)&&selected.filter(id=>p.instances.find(i=>i.id===id)?.speciesId===c.speciesId).length<2)selected.push(c.id);}
+ if(selected.length!==7)return false;p.deck=selected;return true;
+}
