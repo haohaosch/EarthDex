@@ -1,0 +1,992 @@
+{
+  "version": "official-3",
+  "fixedSeed": "tactics-1",
+  "assignment": "All animals receive a gameplay skill; independent of ecology.",
+  "budget": 28,
+  "cards": {
+    "deer": {
+      "speciesId": "deer",
+      "version": "official-3",
+      "skill": "cascade",
+      "seed": 2701143753,
+      "values": [
+        2,
+        3,
+        7,
+        7
+      ]
+    },
+    "magpie": {
+      "speciesId": "magpie",
+      "version": "official-3",
+      "skill": "surrounded",
+      "seed": 38793916,
+      "values": [
+        3,
+        9,
+        6,
+        5
+      ]
+    },
+    "sparrow": {
+      "speciesId": "sparrow",
+      "version": "official-3",
+      "skill": "inspire",
+      "seed": 3903792819,
+      "values": [
+        5,
+        9,
+        3,
+        3
+      ]
+    },
+    "butterfly": {
+      "speciesId": "butterfly",
+      "version": "official-3",
+      "skill": "overrun",
+      "seed": 65662214,
+      "values": [
+        2,
+        5,
+        8,
+        5
+      ]
+    },
+    "egret": {
+      "speciesId": "egret",
+      "version": "official-3",
+      "skill": "vengeance",
+      "seed": 74901422,
+      "values": [
+        1,
+        5,
+        9,
+        6
+      ]
+    },
+    "kingfisher": {
+      "speciesId": "kingfisher",
+      "version": "official-3",
+      "skill": "swap",
+      "seed": 3566777991,
+      "values": [
+        8,
+        6,
+        5,
+        2
+      ]
+    },
+    "bear": {
+      "speciesId": "bear",
+      "version": "official-3",
+      "skill": "collective",
+      "seed": 2612202027,
+      "values": [
+        5,
+        5,
+        9,
+        9
+      ]
+    },
+    "turtle": {
+      "speciesId": "turtle",
+      "version": "official-3",
+      "skill": "rally",
+      "seed": 2235324575,
+      "values": [
+        5,
+        4,
+        9,
+        4
+      ]
+    },
+    "cat": {
+      "speciesId": "cat",
+      "version": "official-3",
+      "skill": "antipredator",
+      "seed": 4010162407,
+      "values": [
+        7,
+        2,
+        7,
+        6
+      ]
+    },
+    "macaque": {
+      "speciesId": "macaque",
+      "version": "official-3",
+      "skill": "rally",
+      "seed": 720432942,
+      "values": [
+        9,
+        4,
+        1,
+        8
+      ]
+    },
+    "barbet": {
+      "speciesId": "barbet",
+      "version": "official-3",
+      "skill": "escape",
+      "seed": 1763130117,
+      "values": [
+        9,
+        2,
+        3,
+        8
+      ]
+    },
+    "panda": {
+      "speciesId": "panda",
+      "version": "official-3",
+      "skill": "collective",
+      "seed": 840414259,
+      "values": [
+        3,
+        9,
+        9,
+        7
+      ]
+    },
+    "bulbul": {
+      "speciesId": "bulbul",
+      "version": "official-3",
+      "skill": "antipredator",
+      "seed": 3279952499,
+      "values": [
+        3,
+        9,
+        8,
+        2
+      ]
+    },
+    "spotted-dove": {
+      "speciesId": "spotted-dove",
+      "version": "official-3",
+      "skill": "overrun",
+      "seed": 3917955685,
+      "values": [
+        4,
+        8,
+        3,
+        5
+      ]
+    },
+    "red-dove": {
+      "speciesId": "red-dove",
+      "version": "official-3",
+      "skill": "swap",
+      "seed": 779349255,
+      "values": [
+        3,
+        8,
+        6,
+        4
+      ]
+    },
+    "pigeon": {
+      "speciesId": "pigeon",
+      "version": "official-3",
+      "skill": "surrounded",
+      "seed": 3753668823,
+      "values": [
+        6,
+        3,
+        5,
+        9
+      ]
+    },
+    "oriental-magpie": {
+      "speciesId": "oriental-magpie",
+      "version": "official-3",
+      "skill": "predator",
+      "seed": 1825642351,
+      "values": [
+        9,
+        3,
+        2,
+        4
+      ]
+    },
+    "drongo": {
+      "speciesId": "drongo",
+      "version": "official-3",
+      "skill": "pierce",
+      "seed": 679739534,
+      "values": [
+        7,
+        5,
+        7,
+        2
+      ]
+    },
+    "treepie": {
+      "speciesId": "treepie",
+      "version": "official-3",
+      "skill": "weaken",
+      "seed": 4101305721,
+      "values": [
+        8,
+        3,
+        1,
+        7
+      ]
+    },
+    "black-bulbul": {
+      "speciesId": "black-bulbul",
+      "version": "official-3",
+      "skill": "cascade",
+      "seed": 3700751173,
+      "values": [
+        7,
+        4,
+        3,
+        5
+      ]
+    },
+    "crested-myna": {
+      "speciesId": "crested-myna",
+      "version": "official-3",
+      "skill": "defensive_aggression",
+      "seed": 3327857363,
+      "values": [
+        5,
+        7,
+        3,
+        7
+      ]
+    },
+    "javan-myna": {
+      "speciesId": "javan-myna",
+      "version": "official-3",
+      "skill": "mimicry",
+      "seed": 2785459347,
+      "values": [
+        2,
+        10,
+        7,
+        2
+      ]
+    },
+    "white-eye": {
+      "speciesId": "white-eye",
+      "version": "official-3",
+      "skill": "inspire",
+      "seed": 3229846780,
+      "values": [
+        1,
+        10,
+        7,
+        2
+      ]
+    },
+    "swallow": {
+      "speciesId": "swallow",
+      "version": "official-3",
+      "skill": "vengeance",
+      "seed": 1829703810,
+      "values": [
+        8,
+        7,
+        5,
+        1
+      ]
+    },
+    "shrike": {
+      "speciesId": "shrike",
+      "version": "official-3",
+      "skill": "surrounded",
+      "seed": 3967776155,
+      "values": [
+        1,
+        4,
+        10,
+        8
+      ]
+    },
+    "night-heron": {
+      "speciesId": "night-heron",
+      "version": "official-3",
+      "skill": "defense_mechanism",
+      "seed": 2127127068,
+      "values": [
+        7,
+        3,
+        6,
+        7
+      ]
+    },
+    "cattle-egret": {
+      "speciesId": "cattle-egret",
+      "version": "official-3",
+      "skill": "predator",
+      "seed": 2805875170,
+      "values": [
+        4,
+        1,
+        4,
+        9
+      ]
+    },
+    "great-egret": {
+      "speciesId": "great-egret",
+      "version": "official-3",
+      "skill": "antipredator",
+      "seed": 531603298,
+      "values": [
+        4,
+        4,
+        9,
+        5
+      ]
+    },
+    "grey-heron": {
+      "speciesId": "grey-heron",
+      "version": "official-3",
+      "skill": "escape",
+      "seed": 4024292333,
+      "values": [
+        1,
+        7,
+        10,
+        4
+      ]
+    },
+    "spotbill": {
+      "speciesId": "spotbill",
+      "version": "official-3",
+      "skill": "migration",
+      "seed": 3877870310,
+      "values": [
+        6,
+        8,
+        6,
+        3
+      ]
+    },
+    "moorhen": {
+      "speciesId": "moorhen",
+      "version": "official-3",
+      "skill": "cascade",
+      "seed": 2360177527,
+      "values": [
+        5,
+        9,
+        3,
+        2
+      ]
+    },
+    "waterhen": {
+      "speciesId": "waterhen",
+      "version": "official-3",
+      "skill": "mimicry",
+      "seed": 1782247059,
+      "values": [
+        1,
+        6,
+        10,
+        4
+      ]
+    },
+    "kite": {
+      "speciesId": "kite",
+      "version": "official-3",
+      "skill": "cascade",
+      "seed": 2451864708,
+      "values": [
+        10,
+        5,
+        3,
+        1
+      ]
+    },
+    "eagle": {
+      "speciesId": "eagle",
+      "version": "official-3",
+      "skill": "defensive_aggression",
+      "seed": 1587301103,
+      "values": [
+        9,
+        2,
+        2,
+        9
+      ]
+    },
+    "owl": {
+      "speciesId": "owl",
+      "version": "official-3",
+      "skill": "inspire",
+      "seed": 2889369433,
+      "values": [
+        3,
+        10,
+        2,
+        5
+      ]
+    },
+    "squirrel": {
+      "speciesId": "squirrel",
+      "version": "official-3",
+      "skill": "mimicry",
+      "seed": 3643490412,
+      "values": [
+        9,
+        6,
+        5,
+        1
+      ]
+    },
+    "civet": {
+      "speciesId": "civet",
+      "version": "official-3",
+      "skill": "migration",
+      "seed": 2241822734,
+      "values": [
+        9,
+        3,
+        1,
+        10
+      ]
+    },
+    "mongoose": {
+      "speciesId": "mongoose",
+      "version": "official-3",
+      "skill": "pierce",
+      "seed": 88093534,
+      "values": [
+        10,
+        1,
+        4,
+        6
+      ]
+    },
+    "muntjac": {
+      "speciesId": "muntjac",
+      "version": "official-3",
+      "skill": "predator",
+      "seed": 3171445569,
+      "values": [
+        3,
+        9,
+        1,
+        5
+      ]
+    },
+    "boar": {
+      "speciesId": "boar",
+      "version": "official-3",
+      "skill": "collective",
+      "seed": 4158333217,
+      "values": [
+        3,
+        10,
+        7,
+        8
+      ]
+    },
+    "shrew": {
+      "speciesId": "shrew",
+      "version": "official-3",
+      "skill": "weaken",
+      "seed": 3232530318,
+      "values": [
+        5,
+        4,
+        3,
+        7
+      ]
+    },
+    "rat": {
+      "speciesId": "rat",
+      "version": "official-3",
+      "skill": "rally",
+      "seed": 2251345266,
+      "values": [
+        10,
+        1,
+        6,
+        5
+      ]
+    },
+    "bat": {
+      "speciesId": "bat",
+      "version": "official-3",
+      "skill": "escape",
+      "seed": 3056347170,
+      "values": [
+        4,
+        7,
+        6,
+        5
+      ]
+    },
+    "domestic-cat": {
+      "speciesId": "domestic-cat",
+      "version": "official-3",
+      "skill": "collective",
+      "seed": 157034374,
+      "values": [
+        7,
+        9,
+        6,
+        6
+      ]
+    },
+    "dog": {
+      "speciesId": "dog",
+      "version": "official-3",
+      "skill": "cascade",
+      "seed": 1357114197,
+      "values": [
+        7,
+        6,
+        5,
+        1
+      ]
+    },
+    "gecko": {
+      "speciesId": "gecko",
+      "version": "official-3",
+      "skill": "antipredator",
+      "seed": 3762317930,
+      "values": [
+        9,
+        9,
+        1,
+        3
+      ]
+    },
+    "lizard": {
+      "speciesId": "lizard",
+      "version": "official-3",
+      "skill": "migration",
+      "seed": 1469312869,
+      "values": [
+        2,
+        6,
+        9,
+        6
+      ]
+    },
+    "skink": {
+      "speciesId": "skink",
+      "version": "official-3",
+      "skill": "pierce",
+      "seed": 739091701,
+      "values": [
+        8,
+        9,
+        1,
+        3
+      ]
+    },
+    "slider": {
+      "speciesId": "slider",
+      "version": "official-3",
+      "skill": "surrounded",
+      "seed": 1913302590,
+      "values": [
+        5,
+        10,
+        4,
+        4
+      ]
+    },
+    "stripe-turtle": {
+      "speciesId": "stripe-turtle",
+      "version": "official-3",
+      "skill": "mimicry",
+      "seed": 3640177741,
+      "values": [
+        3,
+        9,
+        4,
+        5
+      ]
+    },
+    "softshell": {
+      "speciesId": "softshell",
+      "version": "official-3",
+      "skill": "mimicry",
+      "seed": 3920274685,
+      "values": [
+        5,
+        4,
+        7,
+        5
+      ]
+    },
+    "green-snake": {
+      "speciesId": "green-snake",
+      "version": "official-3",
+      "skill": "rally",
+      "seed": 3828349005,
+      "values": [
+        5,
+        7,
+        4,
+        6
+      ]
+    },
+    "cobra": {
+      "speciesId": "cobra",
+      "version": "official-3",
+      "skill": "swap",
+      "seed": 3965559000,
+      "values": [
+        6,
+        1,
+        7,
+        7
+      ]
+    },
+    "toad": {
+      "speciesId": "toad",
+      "version": "official-3",
+      "skill": "overrun",
+      "seed": 762233133,
+      "values": [
+        2,
+        10,
+        5,
+        3
+      ]
+    },
+    "bankor-toad": {
+      "speciesId": "bankor-toad",
+      "version": "official-3",
+      "skill": "defense_mechanism",
+      "seed": 3916856305,
+      "values": [
+        9,
+        1,
+        3,
+        10
+      ]
+    },
+    "tree-frog": {
+      "speciesId": "tree-frog",
+      "version": "official-3",
+      "skill": "vengeance",
+      "seed": 62726068,
+      "values": [
+        6,
+        10,
+        2,
+        3
+      ]
+    },
+    "paddy-frog": {
+      "speciesId": "paddy-frog",
+      "version": "official-3",
+      "skill": "migration",
+      "seed": 813396600,
+      "values": [
+        5,
+        9,
+        6,
+        3
+      ]
+    },
+    "micro-frog": {
+      "speciesId": "micro-frog",
+      "version": "official-3",
+      "skill": "antipredator",
+      "seed": 2713637202,
+      "values": [
+        5,
+        1,
+        8,
+        8
+      ]
+    },
+    "polytes": {
+      "speciesId": "polytes",
+      "version": "official-3",
+      "skill": "vengeance",
+      "seed": 1940052425,
+      "values": [
+        5,
+        7,
+        3,
+        6
+      ]
+    },
+    "xuthus": {
+      "speciesId": "xuthus",
+      "version": "official-3",
+      "skill": "rally",
+      "seed": 3524132272,
+      "values": [
+        5,
+        4,
+        7,
+        6
+      ]
+    },
+    "lime-butterfly": {
+      "speciesId": "lime-butterfly",
+      "version": "official-3",
+      "skill": "defense_mechanism",
+      "seed": 4211477016,
+      "values": [
+        8,
+        2,
+        4,
+        9
+      ]
+    },
+    "white-butterfly": {
+      "speciesId": "white-butterfly",
+      "version": "official-3",
+      "skill": "weaken",
+      "seed": 2264451810,
+      "values": [
+        3,
+        5,
+        9,
+        2
+      ]
+    },
+    "tiger-butterfly": {
+      "speciesId": "tiger-butterfly",
+      "version": "official-3",
+      "skill": "weaken",
+      "seed": 1842444500,
+      "values": [
+        5,
+        6,
+        1,
+        7
+      ]
+    },
+    "plain-tiger": {
+      "speciesId": "plain-tiger",
+      "version": "official-3",
+      "skill": "defense_mechanism",
+      "seed": 1997033965,
+      "values": [
+        8,
+        1,
+        9,
+        5
+      ]
+    },
+    "blue-crow": {
+      "speciesId": "blue-crow",
+      "version": "official-3",
+      "skill": "defense_mechanism",
+      "seed": 2317253303,
+      "values": [
+        7,
+        4,
+        2,
+        10
+      ]
+    },
+    "paper-kite": {
+      "speciesId": "paper-kite",
+      "version": "official-3",
+      "skill": "migration",
+      "seed": 306803935,
+      "values": [
+        6,
+        4,
+        6,
+        7
+      ]
+    },
+    "emigrant": {
+      "speciesId": "emigrant",
+      "version": "official-3",
+      "skill": "vengeance",
+      "seed": 1128182754,
+      "values": [
+        6,
+        6,
+        6,
+        3
+      ]
+    },
+    "ladybird": {
+      "speciesId": "ladybird",
+      "version": "official-3",
+      "skill": "inspire",
+      "seed": 2256662104,
+      "values": [
+        7,
+        10,
+        2,
+        1
+      ]
+    },
+    "beetle": {
+      "speciesId": "beetle",
+      "version": "official-3",
+      "skill": "swap",
+      "seed": 2485367348,
+      "values": [
+        6,
+        3,
+        2,
+        10
+      ]
+    },
+    "golden-spider": {
+      "speciesId": "golden-spider",
+      "version": "official-3",
+      "skill": "pierce",
+      "seed": 2413736788,
+      "values": [
+        3,
+        7,
+        6,
+        5
+      ]
+    },
+    "jumping-spider": {
+      "speciesId": "jumping-spider",
+      "version": "official-3",
+      "skill": "defensive_aggression",
+      "seed": 3921432571,
+      "values": [
+        1,
+        9,
+        10,
+        2
+      ]
+    },
+    "dragonfly": {
+      "speciesId": "dragonfly",
+      "version": "official-3",
+      "skill": "predator",
+      "seed": 3244922863,
+      "values": [
+        7,
+        6,
+        3,
+        2
+      ]
+    },
+    "skimmer": {
+      "speciesId": "skimmer",
+      "version": "official-3",
+      "skill": "collective",
+      "seed": 3435182491,
+      "values": [
+        10,
+        7,
+        7,
+        4
+      ]
+    },
+    "mantis": {
+      "speciesId": "mantis",
+      "version": "official-3",
+      "skill": "defensive_aggression",
+      "seed": 292904797,
+      "values": [
+        8,
+        2,
+        3,
+        9
+      ]
+    },
+    "cockroach": {
+      "speciesId": "cockroach",
+      "version": "official-3",
+      "skill": "pierce",
+      "seed": 3162137348,
+      "values": [
+        3,
+        5,
+        3,
+        10
+      ]
+    },
+    "tilapia": {
+      "speciesId": "tilapia",
+      "version": "official-3",
+      "skill": "defensive_aggression",
+      "seed": 4242965573,
+      "values": [
+        10,
+        3,
+        1,
+        8
+      ]
+    },
+    "guppy": {
+      "speciesId": "guppy",
+      "version": "official-3",
+      "skill": "swap",
+      "seed": 94804786,
+      "values": [
+        2,
+        2,
+        7,
+        10
+      ]
+    },
+    "mudskipper": {
+      "speciesId": "mudskipper",
+      "version": "official-3",
+      "skill": "escape",
+      "seed": 3004195129,
+      "values": [
+        8,
+        4,
+        7,
+        3
+      ]
+    },
+    "fiddler": {
+      "speciesId": "fiddler",
+      "version": "official-3",
+      "skill": "escape",
+      "seed": 2368952435,
+      "values": [
+        5,
+        1,
+        8,
+        8
+      ]
+    },
+    "hermit": {
+      "speciesId": "hermit",
+      "version": "official-3",
+      "skill": "overrun",
+      "seed": 4291191100,
+      "values": [
+        7,
+        4,
+        6,
+        3
+      ]
+    },
+    "snail": {
+      "speciesId": "snail",
+      "version": "official-3",
+      "skill": "weaken",
+      "seed": 2714755072,
+      "values": [
+        4,
+        8,
+        5,
+        2
+      ]
+    },
+    "apple-snail": {
+      "speciesId": "apple-snail",
+      "version": "official-3",
+      "skill": "predator",
+      "seed": 984473243,
+      "values": [
+        7,
+        1,
+        8,
+        2
+      ]
+    }
+  }
+}

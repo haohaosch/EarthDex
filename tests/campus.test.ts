@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {CAMPUS,validateCampus} from '../engine/campus';import {SPECIES,SERIES,speciesById} from '../engine/species';
+test('campus candidates are maintainable catalog IDs and never imply verified sightings',()=>{assert.equal(validateCampus(),true);for(const c of CAMPUS.candidates){assert.ok(speciesById(c.speciesId));assert.equal(c.status,'candidate');assert.equal(c.evidence.length,0);}assert.ok(CAMPUS.candidates.length<SPECIES.length);assert.ok(!CAMPUS.candidates.some(c=>c.speciesId==='bear'));});
+test('one species unlock contributes to all overlapping collections',()=>{const known=new Set(['sparrow']);for(const id of ['fcu','birds','taiwan']){const s=SERIES.find(s=>s.id===id)!;assert.equal(s.ids.filter(i=>known.has(i)).length,1);}});

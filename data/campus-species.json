@@ -1,0 +1,20 @@
+{
+ "version":"fcu-candidates-1",
+ "regionId":"fcu",
+ "name":"逢甲校園生物圖鑑",
+ "note":"依既有都市/公園棲地挑選的探索候選，並非校園調查結果；外部周邊紀錄不等於校內確認。確認需有具日期、可追溯的校內觀察與位置複核。",
+ "candidates":[
+  {"speciesId":"sparrow","status":"candidate","basis":"聚落與農地","evidence":[]},
+  {"speciesId":"bulbul","status":"candidate","basis":"公園與林緣","evidence":[]},
+  {"speciesId":"spotted-dove","status":"candidate","basis":"公園與農地","evidence":[]},
+  {"speciesId":"pigeon","status":"candidate","basis":"城市與聚落","evidence":[]},
+  {"speciesId":"oriental-magpie","status":"candidate","basis":"平原與公園","evidence":[]},
+  {"speciesId":"treepie","status":"candidate","basis":"低海拔都市樹冠待查","evidence":[]},
+  {"speciesId":"butterfly","status":"candidate","basis":"林緣與花園","evidence":[]},
+  {"speciesId":"gecko","status":"candidate","basis":"都市建物周邊待查","evidence":[]},
+  {"speciesId":"squirrel","status":"candidate","basis":"公園與樹冠待查","evidence":[]},
+  {"speciesId":"domestic-cat","status":"candidate","basis":"都市環境；須區分飼養與野外紀錄","evidence":[]},
+  {"speciesId":"dog","status":"candidate","basis":"都市環境；須區分飼養與野外紀錄","evidence":[]},
+  {"speciesId":"toad","status":"candidate","basis":"都市綠地待查","evidence":[]}
+ ]
+}

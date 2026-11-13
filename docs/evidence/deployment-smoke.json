@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-11-11T16:17:32.051239+00:00",
+  "url": "https://earthdex-field-journal.dan154210.chatgpt.site",
+  "version": 12,
+  "commit": "5c7a159235e76cfae5785c4c9a560e94779f24f0",
+  "browserUI": false,
+  "checks": [
+    {
+      "path": "/api/session",
+      "status": 200,
+      "details": {
+        "guest": true
+      }
+    },
+    {
+      "path": "/api/profile?profile=demo",
+      "status": 200,
+      "details": {
+        "cards": 7,
+        "balanceVersion": "official-1",
+        "demo": true
+      }
+    },
+    {
+      "path": "/api/campus/stats",
+      "status": 200,
+      "details": {
+        "note": "只計入玩家主動公開且審核確認在校內的正式觀察；私人/好友/示範資料不計入。紀錄數不代表族群數量。",
+        "schemaValid": true
+      }
+    },
+    {
+      "path": "/api/species/sparrow",
+      "status": 200,
+      "details": {
+        "externalIds": {
+          "gbif": "5231198",
+          "inaturalist": "13851",
+          "taicol": "t0098364"
+        },
+        "en": "Eurasian Tree Sparrow",
+        "matches": [
+          "matched",
+          "matched",
+          "matched"
+        ]
+      }
+    }
+  ]
+}

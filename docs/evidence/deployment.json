@@ -1,0 +1,16 @@
+{
+  "version": 16,
+  "status": "succeeded",
+  "url": "https://earthdex-field-journal.dan154210.chatgpt.site",
+  "sourceCommit": "d274c5ab583969bda8ce4cf0bb501583532da7f3",
+  "deploymentId": "appgdep_6af7157b190881919b5196ee95b8ca70",
+  "updatedAt": "2026-11-13T13:50:05.643468+00:00",
+  "access": "public (unchanged)",
+  "environmentRevision": 0,
+  "browserUIVerified": false,
+  "manualReviewEnabled": false,
+  "ruleVersion": "tactics-0.3",
+  "balanceVersion": "official-3",
+  "automatedDemoPVPSmoke": "passed; see tactical-live-smoke.json",
+  "unitAndApiTests": 136
+}

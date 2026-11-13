@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-11-11T17:41:01.229Z",
+  "ruleVersion": "ecology-0.2",
+  "balanceVersion": "official-2",
+  "seeds": "0..199",
+  "pairedDeckSwap": true,
+  "strategy": "normal",
+  "deckSpecies": [
+    [
+      "deer",
+      "magpie",
+      "sparrow",
+      "butterfly",
+      "egret"
+    ],
+    [
+      "macaque",
+      "barbet",
+      "kingfisher",
+      "bear",
+      "cat"
+    ]
+  ],
+  "games": 400,
+  "firstWins": 203,
+  "secondWins": 197,
+  "draws": 0,
+  "firstWinRate": 0.5075,
+  "wilson95": [
+    0.458667706127959,
+    0.5561896042630459
+  ],
+  "note": "Fixed deck matchup with paired side swap only; samples are correlated, Wilson interval descriptive. This does not establish population-wide balance. This fixed matchup has no Escape/Migration cards, so first 5 / second 4 holds here; other decks may extend to 100 turns."
+}

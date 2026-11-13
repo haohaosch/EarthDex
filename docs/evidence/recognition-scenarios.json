@@ -1,0 +1,163 @@
+{
+  "checkedAt": "2026-11-11T16:13:19.438Z",
+  "provider": "onnxruntime-web 1.22.0 / wasm",
+  "host": "Node, not actual browser UI",
+  "scenarios": [
+    {
+      "name": "non-animal-forest",
+      "file": "non-animal-forest.f32",
+      "description": "real licensed forest portrait",
+      "synthetic": false,
+      "recognition": {
+        "status": "uncertain",
+        "speciesId": "deer",
+        "similarity": 0.4188878423032716,
+        "margin": 0.0652969558414831,
+        "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
+        "candidates": [
+          {
+            "speciesId": "deer",
+            "similarity": 0.4188878423032716
+          },
+          {
+            "speciesId": "bear",
+            "similarity": 0.3535908864617885
+          },
+          {
+            "speciesId": "boar",
+            "similarity": 0.34564935352642484
+          }
+        ],
+        "lowConfidence": true,
+        "selectionPolicy": "highest"
+      },
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
+    },
+    {
+      "name": "blank",
+      "file": "blank.f32",
+      "description": "synthetic gray image",
+      "synthetic": true,
+      "recognition": {
+        "status": "uncertain",
+        "speciesId": "kingfisher",
+        "similarity": 0.3622702833180179,
+        "margin": 0.009330064408463512,
+        "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
+        "candidates": [
+          {
+            "speciesId": "kingfisher",
+            "similarity": 0.3622702833180179
+          },
+          {
+            "speciesId": "ladybird",
+            "similarity": 0.3529402189095544
+          },
+          {
+            "speciesId": "swallow",
+            "similarity": 0.33434419150690464
+          }
+        ],
+        "lowConfidence": true,
+        "selectionPolicy": "highest"
+      },
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
+    },
+    {
+      "name": "blurred-turtle",
+      "file": "blurred-turtle.f32",
+      "description": "synthetic Gaussian blur radius 24",
+      "synthetic": true,
+      "recognition": {
+        "status": "uncertain",
+        "speciesId": "guppy",
+        "similarity": 0.31977743553246313,
+        "margin": 0.012657541272425743,
+        "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
+        "candidates": [
+          {
+            "speciesId": "guppy",
+            "similarity": 0.31977743553246313
+          },
+          {
+            "speciesId": "plain-tiger",
+            "similarity": 0.3071198942600374
+          },
+          {
+            "speciesId": "great-egret",
+            "similarity": 0.2953972513539987
+          }
+        ],
+        "lowConfidence": true,
+        "selectionPolicy": "highest"
+      },
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
+    },
+    {
+      "name": "multiple-animals",
+      "file": "multiple-animals.f32",
+      "description": "synthetic collage: turtle and sparrow",
+      "synthetic": true,
+      "recognition": {
+        "status": "identified",
+        "speciesId": "turtle",
+        "similarity": 0.6784550763149924,
+        "margin": 0.1579950389432826,
+        "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
+        "candidates": [
+          {
+            "speciesId": "turtle",
+            "similarity": 0.6784550763149924
+          },
+          {
+            "speciesId": "slider",
+            "similarity": 0.5204600373717098
+          },
+          {
+            "speciesId": "night-heron",
+            "similarity": 0.5040203893213291
+          }
+        ],
+        "lowConfidence": false,
+        "selectionPolicy": "highest"
+      },
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
+    },
+    {
+      "name": "unknown-elephant",
+      "file": "unknown-elephant.f32",
+      "description": "real licensed elephant outside supported taxa",
+      "synthetic": false,
+      "recognition": {
+        "status": "uncertain",
+        "speciesId": "plain-tiger",
+        "similarity": 0.421758558667095,
+        "margin": 0.014708825505833967,
+        "modelVersion": "earthdex-taiwan-bioclip-fp16-2",
+        "candidates": [
+          {
+            "speciesId": "plain-tiger",
+            "similarity": 0.421758558667095
+          },
+          {
+            "speciesId": "deer",
+            "similarity": 0.40704973316126103
+          },
+          {
+            "speciesId": "rat",
+            "similarity": 0.39309544170301003
+          }
+        ],
+        "lowConfidence": true,
+        "selectionPolicy": "highest"
+      },
+      "mintedOnlyAfterCorrectQuiz": true,
+      "scientificVerification": false
+    }
+  ],
+  "note": "Latest user policy: highest AI candidate leads directly to quiz, even when uncertain. Blur/multi-animal/unknown detection is not claimed. These scenarios can yield game cards after a correct answer and are never scientific verification."
+}

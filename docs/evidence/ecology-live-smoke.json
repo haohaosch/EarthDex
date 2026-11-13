@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-11T17:53:00.627311+00:00",
+  "version": 15,
+  "url": "https://earthdex-field-journal.dan154210.chatgpt.site",
+  "sourceCommit": "c8d4d6411070c1d79c7e5a1fb8091b302e0e1e22",
+  "browserUI": false,
+  "data": "two isolated automated demo profiles, not real campus observations",
+  "checks": {
+    "ruleVersion": "ecology-0.2",
+    "balanceVersion": "official-2",
+    "privateHandsConcealed": true,
+    "ongoingReplayBlocked": true,
+    "finishedReplayAvailable": true,
+    "turnSnapshotsPersisted": 9,
+    "turns": 9,
+    "battleDidNotMintCards": true,
+    "result": "finished"
+  }
+}

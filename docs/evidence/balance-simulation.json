@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-11-11T15:56:55.537Z",
+  "ruleVersion": "experimental-0.1",
+  "balanceVersion": "official-1",
+  "seeds": "0..199",
+  "pairedDeckSwap": true,
+  "strategy": "normal",
+  "deckSpecies": [
+    [
+      "deer",
+      "magpie",
+      "sparrow",
+      "butterfly",
+      "egret"
+    ],
+    [
+      "macaque",
+      "barbet",
+      "kingfisher",
+      "bear",
+      "cat"
+    ]
+  ],
+  "games": 400,
+  "firstWins": 235,
+  "firstWinRate": 0.5875,
+  "wilson95": [
+    0.5386465880248711,
+    0.634688699870185
+  ],
+  "note": "Fixed deck matchup with paired side swap only; samples are correlated, Wilson interval descriptive. This does not establish population-wide balance. First 5 / second 4 is unchanged."
+}

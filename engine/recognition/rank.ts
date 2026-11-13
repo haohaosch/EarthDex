@@ -12,5 +12,5 @@ export function rankSpecies(input:ArrayLike<number>,bank:ReferenceBank):Recognit
  if(!candidates.length)throw Error('物種比對資料庫尚無可用候選');
  const similarity=candidates[0].similarity,margin=similarity-(candidates[1]?.similarity||0);
  const lowConfidence=unsupportedPreferred||similarity<bank.minSimilarity||margin<bank.minMargin;
- return {status:'identified',speciesId:candidates[0].speciesId,similarity,margin,modelVersion:bank.version,candidates,lowConfidence,selectionPolicy:'highest'};
+ return {status:lowConfidence?'uncertain':'identified',speciesId:candidates[0].speciesId,similarity,margin,modelVersion:bank.version,candidates,lowConfidence,selectionPolicy:'highest'};
 }
