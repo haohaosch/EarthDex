@@ -85,3 +85,5 @@ https://earthdex-field-journal.dan154210.chatgpt.site
 驗證：136/136單元、API、權限、呈現與相容測試通過；npm run build成功；git diff --check通過；v1/v2/v3卡牌可重現。包含17種混合技能40局14張ID守恆、100手上限精確重播、換位API驗證、遠攻遮擋/方向、返手修正、護盾交互作用與植物消失動畫資料。正常AI、100組隨機7種牌組、成對交換先後共200局：先手94、後手106、平手0，平均10.265手、1局達100手。僅為特定AI策略與牌組抽樣，不代表真人勝率或全面平衡；見evidence/balance-simulation-v3.json。
 
 UI嘗試：sites-preview的relay仍無法開啟4173（等待readiness逾時），CUA仍回the gaas-browser node_repl sandbox cannot be disabled。已停止preview，沒有繞過基礎設施；未宣稱完成瀏覽器/手機動畫驗收。未改視覺模型，沒有重跑先前WASM辨識。完整規則、技能互動與相容見TACTICAL_SKILLS.md。發布結果另記部署證據。
+
+第16版已成功發布至原公開網站，source d274c5ab583969bda8ce4cf0bb501583532da7f3，時間2026-11-13T13:50:05.643468Z。線上HTTP PVP以兩個獨立自動化demo檔案完成8手對局：7張牌組、兩張後手植物、規則/平衡版本、敵手牌及歷史快照遮蔽、進行中重播409、回合快照持久化、完成後重播及結算不發卡皆通過，見evidence/tactical-live-smoke.json。這是實際D1/API驗證，不是瀏覽器或手機畫面驗收。

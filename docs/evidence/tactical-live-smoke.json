@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-13T13:50:35.616441+00:00",
+  "version": 16,
+  "url": "https://earthdex-field-journal.dan154210.chatgpt.site",
+  "sourceCommit": "d274c5ab583969bda8ce4cf0bb501583532da7f3",
+  "browserUI": false,
+  "data": "two isolated automated demo profiles, not real campus observations",
+  "checks": {
+    "ruleVersion": "tactics-0.3",
+    "balanceVersion": "official-3",
+    "privateHandsConcealed": true,
+    "ongoingReplayBlocked": true,
+    "finishedReplayAvailable": true,
+    "turnSnapshotsPersisted": 8,
+    "turns": 8,
+    "battleDidNotMintCards": true,
+    "sevenCardDecks": true,
+    "twoSecondSidePlants": true,
+    "result": "finished"
+  }
+}
